@@ -1,0 +1,55 @@
+[
+  {
+    "label": "Home",
+    "icon": "home",
+    "path": "/home",
+    "submenus": []
+  },
+  {
+    "label": "Requirements",
+    "icon": "list-check",
+    "path": "/requirement",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/requirement/add",
+        "icon": "add"
+      },
+      {
+        "label": "Display ",
+        "path": "/requirement/display",
+        "icon": "file-lines"
+      }
+    ]
+  },
+  {
+    "label": "Team Members",
+    "icon": "people-group",
+    "path": "/members",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/members/add",
+        "icon": "user-plus"
+      },
+      {
+        "label": "Manage",
+        "path": "/members/manage",
+        "icon": "user-gear"
+      }
+    ]
+  },
+
+  {
+    "label": "Proposal",
+    "icon": "info-circle",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/proposal",
+        "icon": "user-plus"
+      }
+    ]
+  }
+]
