@@ -19,6 +19,10 @@ import ProposalForm from './pages/proposal/Proposal';
 import StudentResourceRequest from './components/resourceRequest/StudentResourceRequest';
 import DocumentPreview from './components/documents/DocumentPreview';
 import ManageDelieverables from './pages/manageDelieverables/ManageDelieverables';
+import Board from './pages/board/Board';
+import ViewFYPEvaluationPage from './pages/evaluation/FypEvaluation';
+import EmailPage from './pages/email/Email';
+
 function App() {
   return (
     <BrowserRouter>
@@ -27,7 +31,10 @@ function App() {
     <MainLayout />
     <Routes>
     <Route path="/" element={<Home />} />
+    <Route path="/eval" element={<ViewFYPEvaluationPage/>} />
+    <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />
+    <Route path="/board" element={<Board/>} />
     <Route path="/res" element={<StudentResourceRequest/>} />
     <Route path="/doc" element={<DocumentPreview/>} />
     <Route path="/members/add" element={<MemberPage/>} />

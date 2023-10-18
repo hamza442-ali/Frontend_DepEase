@@ -116,8 +116,8 @@ const addDeliverable = (newDeliverable) => {
   
   return (
     <div className="container mx-auto mt-10">
-      {/* Buttons to add modules and deliverables */}
-      
+       <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Delieverables </h1>
+
       <div className="grid grid-cols-3 gap-4">
         <div className="sticky top-0 col-span-1">
           <h1 className="mb-4 text-xl">Modules</h1>

@@ -32,14 +32,21 @@ const StepForm = () => {
   };
 
   const steps = [
-    { label: 'Step 1: Title and Timeline', component: <Step1 onNext={handleNext} /> },
+    { label: 'Step 1: Introduction', component: <Step1 onNext={handleNext} /> },
     { label: 'Step 2: Problem Solution and Scope', component: <Step2 onNext={handleNext} onPrevious={handlePrevious} /> },
     { label: 'Step 3: Timeline and Technology Used', component: <Step3 onNext={handleNext} onPrevious={handlePrevious} /> },
     { label: 'Step 4: Modules', component: <Step4 data={formData} onPrevious={handlePrevious} onSubmit={handleSubmit} /> },
   ];
 
   return (
-    <div className="container mx-auto my-8">
+    <div>
+        <div className="w-full h-16 pt-7 mb-9 bg-zinc-100">
+        <h1 className="mb-3 text-2xl text-blue-300 ml-28">Proposal Submission</h1>
+        <p className=" ml-28 text-slate-700">Home / Proposal/ Add</p>
+      </div>
+    
+    <div className="h-screen mx-24 my-8">
+   
     <div className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
       <ProgressBar currentStep={currentStep} totalSteps={steps.length} />
         <h2 className="mb-4 text-3xl font-semibold">{steps[currentStep - 1].label}</h2>
@@ -47,6 +54,7 @@ const StepForm = () => {
         {error && <div className="mt-2 text-red-500">{error}</div>}
        
       </div>
+    </div>
     </div>
   );
 };

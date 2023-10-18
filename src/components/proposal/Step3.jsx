@@ -1,16 +1,16 @@
-// Step3.jsx
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const Step3 = ({ onNext, onPrevious }) => {
-  const [timeline, setTimeline] = useState('');
+  const [timeline, setTimeline] = useState(['', '', '', '']); // Initialize with 4 empty parts
   const [technologyUsed, setTechnologyUsed] = useState('');
   const [error, setError] = useState('');
 
   const handleNext = () => {
-    if (timeline && technologyUsed) {
-      onNext({ timeline, technologyUsed });
+    const trimmedTimeline = timeline.map(part => part.trim());
+    if (trimmedTimeline.every(part => part) && technologyUsed) {
+      onNext({ timeline: trimmedTimeline, technologyUsed });
       setError('');
     } else {
       setError('Please fill in all fields');
@@ -19,18 +19,27 @@ const Step3 = ({ onNext, onPrevious }) => {
 
   return (
     <div className="text-center">
-      {/* <h2 className="mb-6 text-3xl font-semibold">Step 3: Timeline and Technology Used</h2> */}
-      <div className="mb-6">
-        <textarea
-          placeholder="Timeline"
-          value={timeline}
-          onChange={(e) => setTimeline(e.target.value)}
-          className="w-full h-32 p-3 border rounded focus:outline-none focus:border-blue-500"
-        />
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        {timeline.map((part, index) => (
+          <div key={index}>
+            <label className="block mb-1 text-left text-gray-700">{`Part ${index + 1}`}</label>
+            <input
+              placeholder={`(e.g., Jan-Feb)`}
+              value={part}
+              onChange={(e) => {
+                const newTimeline = [...timeline];
+                newTimeline[index] = e.target.value;
+                setTimeline(newTimeline);
+              }}
+              className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
+        ))}
       </div>
       <div className="mb-6">
+        <label className="block mb-1 text-left text-gray-700">Technology Used</label>
         <textarea
-          placeholder="Technology Used"
+          placeholder="Describe the technologies used"
           value={technologyUsed}
           onChange={(e) => setTechnologyUsed(e.target.value)}
           className="w-full h-32 p-3 border rounded focus:outline-none focus:border-blue-500"

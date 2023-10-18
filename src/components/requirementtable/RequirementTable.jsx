@@ -11,47 +11,47 @@ const RequirementTable = ({ data, onEdit, onAttachment, onDelete, onSubmit }) =>
 
   
   return (
-    <table className="min-w-full divide-y divide-gray-200  ">
-      <thead className="bg-gray-300">
+    <table className="w-full divide-y divide-gray-200 ">
+      <thead className="border border-dotted bg-slate-500 border-opacity-30">
         <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Deadline
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Written By
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Assigned to
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Title
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Priority
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Status
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
             Actions
           </th>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
+      <tbody className="bg-white divide-y divide-gray-300">
         {data.map((row, index) => (
 
           
           <tr
             key={index}
-            className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-200 transition-colors duration-300`}
+            className={`${index % 2 === 0 ? 'bg-slate-100' : 'bg-white'} hover:bg-gray-200 transition-colors duration-300`}
           >
          
-            <td className="px-6 py-4 whitespace-wrap">{formatDate(row.deadline)}</td>
-            <td className="px-6 py-4 whitespace-wrap">{row.writtenby}</td>
-            <td className="px-6 py-4 whitespace-wrap">{row.assignedTo}</td>
-            <td className="px-6 py-4 whitespace-wrap">{row.title}</td>
-            <td className="px-6 py-4 whitespace-wrap">{row.priority}</td>
-            <td className="px-6 py-4 whitespace-wrap">
+            <td className="px-6 py-2 whitespace-wrap">{formatDate(row.deadline)}</td>
+            <td className="px-6 py-2 whitespace-wrap">{row.writtenby}</td>
+            <td className="px-6 py-2 whitespace-wrap">{row.assignedTo}</td>
+            <td className="px-6 py-2 whitespace-wrap">{row.title}</td>
+            <td className="px-6 py-2 whitespace-wrap">{row.priority}</td>
+            <td className="px-6 py-2 whitespace-wrap">
               <span
                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${
                   row.status === 'Pending'
@@ -79,13 +79,13 @@ const RequirementTable = ({ data, onEdit, onAttachment, onDelete, onSubmit }) =>
             </td>
             <td className="px-6 py-4 whitespace-wrap">
               <button
-                className="text-indigo-600 hover:text-indigo-900 mr-2"
+                className="mr-2 text-indigo-600 hover:text-indigo-900"
                 onClick={() => onEdit(index)}
               >
                 <FontAwesomeIcon icon={faEdit} />
               </button>
               <label
-                className="text-indigo-600 hover:text-indigo-900 mr-2 cursor-pointer"
+                className="mr-2 text-indigo-600 cursor-pointer hover:text-indigo-900"
               >
                <FontAwesomeIcon icon={faPaperclip} />
                 <input
@@ -95,7 +95,7 @@ const RequirementTable = ({ data, onEdit, onAttachment, onDelete, onSubmit }) =>
                 />
               </label>
               <button
-                className="text-red-600 hover:text-red-900 mr-2"
+                className="mr-2 text-red-600 hover:text-red-900"
                 onClick={() => onDelete(index)}
               >
                <FontAwesomeIcon icon={faTrash} />

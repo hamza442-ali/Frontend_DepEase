@@ -21,6 +21,7 @@ const Step2 = ({ onNext, onPrevious }) => {
     <div className="text-center">
       {/* <h2 className="mb-6 text-3xl font-semibold">Step 2: Problem Solution and Scope</h2> */}
       <div className="mb-6">
+      <label className="block mb-1 text-left text-gray-700">Problem Solution</label>
         <textarea
           placeholder="Problem Solution"
           value={problemSolution}
@@ -29,6 +30,7 @@ const Step2 = ({ onNext, onPrevious }) => {
         />
       </div>
       <div className="mb-6">
+      <label className="block mb-1 text-left text-gray-700">Project Scope</label>
         <textarea
           placeholder="Scope"
           value={scope}

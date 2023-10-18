@@ -99,7 +99,7 @@ const MemberPage = () => {
     };
   
     return (
-      <div className="min-h-screen ml-64 bg-gray-100">
+      <div className="min-h-screen ">
         <div className="container py-4 mx-auto">
           <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Member List</h1>
           <div className="flex items-center justify-center mb-4">
