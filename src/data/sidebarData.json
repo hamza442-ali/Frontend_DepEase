@@ -51,9 +51,9 @@
     "path": "/",
     "submenus": [
       {
-        "label": "Add",
+        "label": "View",
         "path": "/proposal",
-        "icon": "user-plus"
+        "icon": "file-lines"
       }
     ]
   }
