@@ -7,7 +7,7 @@ const CalendarPage=()=> {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="mb-4 text-3xl font-bold">Project Calendar</h1>
+        <h1 className="mt-10 mb-4 text-3xl font-bold ml-52">Project Calendar</h1>
         <Calendar/>
       </header>
     </div>
