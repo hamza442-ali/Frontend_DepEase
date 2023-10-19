@@ -1,0 +1,55 @@
+[
+  {
+    "label": "Home",
+    "icon": "home",
+    "path": "/home",
+    "submenus": []
+  },
+  {
+    "label": "FYP Panel",
+    "icon": "people-group",
+    "path": "/fypPanel",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/fypPanel/add",
+        "icon": "add"
+      },
+      {
+        "label": "Display ",
+        "path": "/fypPanel/display",
+        "icon": "file-lines"
+      }
+    ]
+  },
+  {
+    "label": "Scheduling",
+    "icon": "list-check",
+    "path": "/scheduling",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/scheduling/add",
+        "icon": "user-plus"
+      },
+      {
+        "label": "Manage",
+        "path": "/members/manage",
+        "icon": "user-gear"
+      }
+    ]
+  },
+
+  {
+    "label": "Proposal",
+    "icon": "fa-book",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/proposal",
+        "icon": "user-plus"
+      }
+    ]
+  }
+]

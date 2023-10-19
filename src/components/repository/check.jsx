@@ -7,7 +7,7 @@ export const Check = () => {
     const handleCheck = () => {
 
         console.log(" handle working fine")
-        axios.get('http://localhost:5001/APIRoutes/Check')
+        axios.get('http://localhost:3001/APIRoutes/Check')
             .then(response => {
                 setCheck(response.data);
             })

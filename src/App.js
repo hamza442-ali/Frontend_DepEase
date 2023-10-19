@@ -1,29 +1,47 @@
 
 import './App.css';
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,     //npm install react-router-dom
+} from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+import {Navbar} from './components/Navbar/Navbar'
+import {MainLayout} from './pages/mainLayout/MainLayout ';
+import {Home} from './pages/home/Home';
+import { PresentationScheduling } from './components/scheduling/PresentationScheduling';
+import { PanelCreation } from './components/panelProcess/createPanel';
 
 // import {RepositoryManagement} from '././components/repository/RepositoryManagement';
-import { Check  } from './components/repository/check';
+// import { Check  } from './components/repository/check';
 
 
 function App() {
-return (
+  return (
+    <BrowserRouter>
+    <Navbar/>
+    <ToastContainer />
+    <MainLayout />
+    <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/scheduling/add" element={<PresentationScheduling />} />
+    <Route path="/fypPanel/add" element={<PanelCreation />} />
 
-    <>
-
-        <h1> APP.js</h1>
-        <Router>
-          <Routes>
-            {/* <Route path="/" element={<RepositoryManagement />} /> */}
-            {/* <h1> Present in APP.js</h1> */}
-         
-            <Route path = "/" element={<Check/>}/>
-          </Routes>
-        </Router>
-    
-    </>
-   
+    {/* <Route path="/del" element={<ManageDelieverables/>} />
+    <Route path="/res" element={<StudentResourceRequest/>} />
+    <Route path="/doc" element={<DocumentPreview/>} />
+    <Route path="/members/add" element={<MemberPage/>} />
+    <Route path="/requirement/display" element={<ManageRequirements  />}/>
+    <Route path="/requirement/add" element={<RequirementForm />}/>
+    <Route path="/proposal" element={<ProposalForm/>} />
+    <Route path="/members/manage" element={<Teammates/>}/> */}
+       {/* Define your routes here */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
