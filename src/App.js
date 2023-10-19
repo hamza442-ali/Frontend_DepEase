@@ -20,6 +20,7 @@ import ProjectPage from './pages/project/ProjectPage';
 import ProjectDetails from './components/project/ProjectDetails';
 import person from "./assets/images/person2.jpeg";
 import Evaluation from './components/evaluation/EvaluationDetails';
+import CalendarPage from './pages/SchedulerPage/Calender';
 
 
 const projectsData = [
@@ -74,6 +75,7 @@ function App() {
     <Route path="/announce" element={<AnnouncementPage/>} />
     <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />
+    <Route path="/cal" element={<CalendarPage/>} />
       </Routes>
     </BrowserRouter>
   );
