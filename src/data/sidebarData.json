@@ -6,20 +6,16 @@
     "submenus": []
   },
   {
-    "label": "Requirements",
+    "label": "Projects",
     "icon": "list-check",
-    "path": "/requirement",
+    "path": "/",
     "submenus": [
       {
-        "label": "Add",
-        "path": "/requirement/add",
-        "icon": "add"
-      },
-      {
-        "label": "Display ",
-        "path": "/requirement/display",
-        "icon": "file-lines"
+        "label": "Manage",
+        "path": "/",
+        "icon": "info-circle"
       }
+     
     ]
   },
   {
@@ -41,13 +37,13 @@
   },
 
   {
-    "label": "Proposal",
+    "label": "Email",
     "icon": "info-circle",
     "path": "/",
     "submenus": [
       {
-        "label": "Add",
-        "path": "/proposal",
+        "label": "Email Manage",
+        "path": "/email",
         "icon": "user-plus"
       }
     ]

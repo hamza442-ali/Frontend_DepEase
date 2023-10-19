@@ -27,19 +27,7 @@ const Sidebar = ({ data}) => {
     setActiveMenu(activeMenu === index ? null : index);
   };
 
-  const teamMembers = [
-    {
-      name: "Ali Hamza",
-      email: "alihamza@gmail.com",
-      avatarUrl: person,
-    },
-    {
-      name: "Mahad Rahat",
-      email: "mahadrahat@gmail.com",
-      avatarUrl: person,
-    },
-    // Add more team members as needed
-  ];
+  
 
   return (
     <nav
@@ -116,27 +104,7 @@ const Sidebar = ({ data}) => {
         ))}
       </ul>
 
-      {/* Team Members Section */}
-      {isExtended && (
-        <div className="p-4 ">
-          <h3 className="mb-2 text-xl font-semibold">Team Members</h3>
-          <ul>
-            {teamMembers.map((member, index) => (
-              <li key={index} className="flex items-center mb-2">
-                <img
-                  src={member.avatarUrl}
-                  alt={`${member.name}'s avatar`}
-                  className="w-8 h-8 mr-2 rounded-full"
-                />
-                <div>
-                  <div className="font-semibold">{member.name}</div>
-                  <div className="text-sm">{member.email}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      
     </nav>
   );
 };

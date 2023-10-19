@@ -9,30 +9,55 @@ import MainLayout from './pages/mainLayout/MainLayout ';
 import Navbar from './components/Navbar/Navbar';
 // import About from './About';
 // import Contact from './Contact';
-import MemberPage from "./pages/membermanage/MemberPage.jsx"
-import Teammates from './pages/managemember/Teammates';
-import RequirementForm from "./pages/requirementPanel/RequirementForm.jsx"
-import ManageRequirements from './pages/managerequirements/ManageRequirements';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProposalForm from './pages/proposal/Proposal';
-import StudentResourceRequest from './components/resourceRequest/StudentResourceRequest';
-import DocumentPreview from './components/documents/DocumentPreview';
 import ManageDelieverables from './pages/manageDelieverables/ManageDelieverables';
-import Board from './pages/board/Board';
-import ViewFYPEvaluationPage from './pages/evaluation/FypEvaluation';
 import EmailPage from './pages/email/Email';
 import PageInfo from './components/PageInfo/PageInfo';
+import AnnouncementPage from './pages/Announcement/AnnouncementPage';
+import ProjectPage from './pages/project/ProjectPage';
+import ProjectDetails from './components/project/ProjectDetails';
+import person from "./assets/images/person2.jpeg";
+import Evaluation from './components/evaluation/EvaluationDetails';
 
 
+const projectsData = [
+  {
+    id: 1,
+    title: "Project 1",
+    problemStatement: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.",
+    problemSolution: "Consectetur adipiscing elit. Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.",
+    scope: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..",
+    members: [
+      { name: "Alice", avatar: person },
+      { name: "Bob", avatar: person },
+    ],
+    timeline: "1 month",
+    modules: "Module 1, Module 2",
+    teamLead: "Alice kob",
+    supervisor: "Jane Smith",
+    technologyUsed: "React, Node.js",
+  },
 
-const routes = [
-  { path: '/', name: 'Home' },
-  { path: '/eval', name: 'Evaluation' },
-  { path: '/email', name: 'Email' },
-  // ... add more routes as needed
+  {
+    id: 2,
+    title: "Project 2",
+    problemStatement: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.",
+    problemSolution: "Consectetur adipiscing elit. Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.",
+    scope: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..",
+    members: [
+      { name: "Alice", avatar: person },
+      { name: "Bob", avatar: person },
+    ],
+    timeline: "1 month",
+    modules: "Module 1, Module 2",
+    teamLead: "Alice kob",
+    supervisor: "Jane Smith",
+    technologyUsed: "React, Node.js",
+  },
+  // Add more sample projects here
 ];
-
 
 function App() {
   return (
@@ -42,20 +67,13 @@ function App() {
     <MainLayout />
     <PageInfo/>
     <Routes>
-    
-    <Route path="/" element={<Home />} />
-    <Route path="/evaluation" element={<ViewFYPEvaluationPage/>} />
+
+    <Route path="/" element={<ProjectPage />} />
+    <Route path="/project/:projectId" element={<ProjectDetails projects={projectsData} />} />
+    <Route path="/evaluation/:projectId" element={<Evaluation/>} />
+    <Route path="/announce" element={<AnnouncementPage/>} />
     <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />
-    <Route path="/board" element={<Board/>} />
-    <Route path="/res" element={<StudentResourceRequest/>} />
-    <Route path="/doc" element={<DocumentPreview/>} />
-    <Route path="/members/add" element={<MemberPage/>} />
-    <Route path="/requirement/display" element={<ManageRequirements  />}/>
-    <Route path="/requirement/add" element={<RequirementForm />}/>
-    <Route path="/proposal" element={<ProposalForm/>} />
-    <Route path="/members/manage" element={<Teammates/>}/>
-      
       </Routes>
     </BrowserRouter>
   );
