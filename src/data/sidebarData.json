@@ -19,6 +19,11 @@
         "label": "Display ",
         "path": "/fypPanel/display",
         "icon": "file-lines"
+      },
+      {
+        "label" : "Assign Panel",
+        "path" : "/fypPanel/assign",
+        "icon" : "user-plus"
       }
     ]
   },

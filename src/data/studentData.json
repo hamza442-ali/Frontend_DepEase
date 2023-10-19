@@ -1,0 +1,83 @@
+[
+    {
+      "student_name": "John Doe",
+      "email_address": "john@example.com",
+      "phone_number": "123-456-7890",
+      "registration_number": "12345",
+      "isTeamLead": false,
+      "password": "password123"
+    },
+    {
+      "student_name": "Jane Smith",
+      "email_address": "jane@example.com",
+      "phone_number": "987-654-3210",
+      "registration_number": "54321",
+      "isTeamLead": true,
+      "password": "secretPassword"
+    },
+    {
+      "student_name": "Alice Johnson",
+      "email_address": "alice@example.com",
+      "phone_number": "555-555-5555",
+      "registration_number": "11111",
+      "isTeamLead": false,
+      "password": "alicePass"
+    },
+    {
+      "student_name": "Bob Brown",
+      "email_address": "bob@example.com",
+      "phone_number": "999-888-7777",
+      "registration_number": "98765",
+      "isTeamLead": false,
+      "password": "bob123"
+    },
+    {
+      "student_name": "Eva White",
+      "email_address": "eva@example.com",
+      "phone_number": "333-222-1111",
+      "registration_number": "56789",
+      "isTeamLead": true,
+      "password": "evaPass"
+    },
+    {
+      "student_name": "David Lee",
+      "email_address": "david@example.com",
+      "phone_number": "777-888-9999",
+      "registration_number": "54321",
+      "isTeamLead": false,
+      "password": "davidPass"
+    },
+    {
+      "student_name": "Olivia Miller",
+      "email_address": "olivia@example.com",
+      "phone_number": "555-666-7777",
+      "registration_number": "13579",
+      "isTeamLead": true,
+      "password": "olivia123"
+    },
+    {
+      "student_name": "Michael Wilson",
+      "email_address": "michael@example.com",
+      "phone_number": "222-111-3333",
+      "registration_number": "98765",
+      "isTeamLead": false,
+      "password": "michaelPass"
+    },
+    {
+      "student_name": "Sophia Brown",
+      "email_address": "sophia@example.com",
+      "phone_number": "444-555-6666",
+      "registration_number": "11111",
+      "isTeamLead": false,
+      "password": "sophia123"
+    },
+    {
+      "student_name": "William Davis",
+      "email_address": "william@example.com",
+      "phone_number": "111-222-3333",
+      "registration_number": "54321",
+      "isTeamLead": true,
+      "password": "williamPass"
+    }
+  ]
+  

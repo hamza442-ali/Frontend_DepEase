@@ -12,12 +12,14 @@ export const PanelCreation = () => {
   const [createdPanel, setCreatedPanel] = useState(null);
 
   const simulatedTeacherList = [
+
     { id: 1, name: 'Syed Muhammad Ali' },
     { id: 2, name: 'Zaheer Sani' },
     { id: 3, name: 'Mudasar Hussain' },
     { id: 4, name: 'Hammad Abbas' },
     { id: 5, name: 'Hussam Ather' },
     { id: 6, name: 'Atif Iqbal' },
+    
   ];
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export const PanelCreation = () => {
   
 
     axios
-      .post('YOUR_BACKEND_API_URL', panelData)
+      .post('http://localhost:3001/panel/createPanel', panelData)
       .then((response) => {
       
         console.log('Response from the server:', response.data);

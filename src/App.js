@@ -15,6 +15,7 @@ import {MainLayout} from './pages/mainLayout/MainLayout ';
 import {Home} from './pages/home/Home';
 import { PresentationScheduling } from './components/scheduling/PresentationScheduling';
 import { PanelCreation } from './components/panelProcess/createPanel';
+import { PanelList } from './components/panelProcess/displayPanels';
 
 // import {RepositoryManagement} from '././components/repository/RepositoryManagement';
 // import { Check  } from './components/repository/check';
@@ -30,6 +31,7 @@ function App() {
     <Route path="/" element={<Home />} />
     <Route path="/scheduling/add" element={<PresentationScheduling />} />
     <Route path="/fypPanel/add" element={<PanelCreation />} />
+    <Route path="/fypPanel/display" element = {<PanelList/>}/>
 
     {/* <Route path="/del" element={<ManageDelieverables/>} />
     <Route path="/res" element={<StudentResourceRequest/>} />
