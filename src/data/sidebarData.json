@@ -24,6 +24,12 @@
         "label" : "Assign Panel",
         "path" : "/fypPanel/assign",
         "icon" : "user-plus"
+      }, {
+
+        "label" : "Make Announcement",
+        "path" : "/fypPanel/announcement",
+        "icon" : "fa-bullhorn"
+
       }
     ]
   },
@@ -32,14 +38,10 @@
     "icon": "list-check",
     "path": "/scheduling",
     "submenus": [
-      {
-        "label": "Add",
-        "path": "/scheduling/add",
-        "icon": "user-plus"
-      },
+   
       {
         "label": "Manage",
-        "path": "/members/manage",
+        "path": "/scheduling/add",
         "icon": "user-gear"
       }
     ]

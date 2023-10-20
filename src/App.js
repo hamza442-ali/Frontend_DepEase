@@ -18,6 +18,7 @@ import { PanelCreation } from './components/panelProcess/createPanel';
 import { PanelList } from './components/panelProcess/displayPanels';
 import { AssignPanel } from './components/panelProcess/assignPanel';
 import {Calendar} from './components/scheduling/Schedulings'
+import { AdminAnnouncement } from './components/panelProcess/makeAnnouncements';
 
 // import {RepositoryManagement} from '././components/repository/RepositoryManagement';
 // import { Check  } from './components/repository/check';
@@ -36,6 +37,7 @@ function App() {
     <Route path="/fypPanel/display" element = {<PanelList/>}/>
     <Route path = "/fypPanel/assign" element = {<AssignPanel/>}/>
     <Route path = "/scheduling/add"  element = {<Calendar/>}/>
+    <Route path = "/fypPanel/announcement"  element = {<AdminAnnouncement/>}/>
     
 
     {/* <Route path="/del" element={<ManageDelieverables/>} />
