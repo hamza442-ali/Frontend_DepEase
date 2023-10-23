@@ -100,8 +100,8 @@ const MemberPage = () => {
   
     return (
       <div className="min-h-screen ">
-        <div className="container py-4 mx-auto">
-          <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Member List</h1>
+        <div className="container py-4 mx-auto my-10">
+          {/* <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Member List</h1> */}
           <div className="flex items-center justify-center mb-4">
             <div className="relative">
               <input

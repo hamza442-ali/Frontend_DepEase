@@ -2,6 +2,19 @@ import React from 'react';
 import person from "../../assets/images/person2.jpeg"
 import logo from "../../assets/images/logo.jpeg"
 const Navbar = () => {
+
+
+  // const dispatch = useDispatch();
+  // const isDarkMode = useSelector(selectDarkMode);
+
+  // const handleDarkModeToggle = () => {
+  //   dispatch(toggleDarkMode());
+  //   if (isDarkMode) {
+  //     document.body.classList.remove('dark-mode');
+  //   } else {
+  //     document.body.classList.add('dark-mode');
+  //   }
+  // };
   return (
     <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
       <div className="flex items-center">

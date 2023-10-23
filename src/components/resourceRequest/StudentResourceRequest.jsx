@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { FiPlus, FiTrash } from 'react-icons/fi'; // Assuming you have these icons installed
-
+import axios from 'axios';
 const StudentResourceRequest = () => {
   const [resourceRequests, setResourceRequests] = useState([]);
   const [formData, setFormData] = useState({
     studentId: '',
     projectId: '',
     projectTitle: '',
-    studentPhone: '',
-    studentEmail: '',
+    phoneNumber: '',
+    email: '',
     requestType: '',
     requestReason: '',
-    requestDate: '2023-09-22', // Hardcoded for this example
+    requestDate: new Date().toISOString().split('T')[0], // Hardcoded for this example
     startDate: '',
     endDate: '',
     acceptTerms: false, 
@@ -26,29 +26,35 @@ const StudentResourceRequest = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
-  };
-  const handleAddRequest = () => {
+  };const handleAddRequest = () => {
     if (formData.requestType.trim() !== '' && formData.acceptTerms) {
-      setResourceRequests([...resourceRequests, formData]);
-      setFormData({
-        ...formData,
-        requestType: '',
-        requestReason: '',
-        startDate: '',
-        endDate: '',
-      });
+      // Make a POST request to the Express.js backend
+
+      
+      axios.post('http://localhost:3001/resource/add', formData)
+        .then(response => {
+          // Handle success, maybe show a success message to the user
+          console.log('Request added successfully:', response.data);
+          setResourceRequests([...resourceRequests, formData]);
+          setFormData({
+            ...formData,
+            requestType: '',
+            requestReason: '',
+            startDate: '',
+            endDate: '',
+          });
+        })
+        .catch(error => {
+          // Handle error, maybe show an error message to the user
+          console.error('Error adding request:', error);
+        });
+    } else {
+      alert('Please fill out all fields and accept the terms.');
     }
-    else {
-        alert('Please fill out all fields and accept the terms.');
-      }
   };
+  
 
-  const handleRemoveRequest = (index) => {
-    const updatedRequests = [...resourceRequests];
-    updatedRequests.splice(index, 1);
-    setResourceRequests(updatedRequests);
-  };
-
+ 
 
   return (
     <div className="max-w-screen-xl p-4 mx-auto my-8">
@@ -90,8 +96,8 @@ const StudentResourceRequest = () => {
           <label className="block text-sm font-medium text-gray-700">Student Phone Number</label>
           <input
             type="text"
-            name="studentPhone"
-            value={formData.studentPhone}
+            name="phoneNumber"
+            value={formData.phoneNumber}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -100,8 +106,8 @@ const StudentResourceRequest = () => {
           <label className="block text-sm font-medium text-gray-700">Student Email</label>
           <input
             type="text"
-            name="studentEmail"
-            value={formData.studentEmail}
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -173,28 +179,7 @@ const StudentResourceRequest = () => {
         </div>
       </form>
 
-      {/* Display Requests */}
-      <div className="mt-8">
-        
-        <ul>
-          {resourceRequests.map((request, index) => (
-            <li
-              key={index}
-              className="p-4 mb-4 border rounded"
-            >
-              <strong>Request Type:</strong> {request.requestType}<br />
-              <strong>Request Reason:</strong> {request.requestReason}<br />
-              {/* Display other request details here */}
-              <button
-                className="text-red-500 hover:text-red-700"
-                onClick={() => handleRemoveRequest(index)}
-              >
-                <FiTrash className="mr-2" /> Remove Request
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+     
     </div>
   );
 };

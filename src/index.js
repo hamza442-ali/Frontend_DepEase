@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { store } from './redux/store'
+import  store  from './redux/store'
 import { Provider } from 'react-redux'  
 //npm install @reduxjs/toolkit react-redux
 

@@ -22,16 +22,36 @@ import ManageDelieverables from './pages/manageDelieverables/ManageDelieverables
 import Board from './pages/board/Board';
 import ViewFYPEvaluationPage from './pages/evaluation/FypEvaluation';
 import EmailPage from './pages/email/Email';
+import PageInfo from './components/PageInfo/PageInfo';
+import Dashboard from './pages/dashboard/Dashboard';
+import { useSelector } from 'react-redux';
+import { selectDarkMode } from './redux/slices/theme/themeSlice'; // Adjust the import path based on your project structure
+import TableComponent from './components/resourceRequest/TableComponent';
+
+
+
+const routes = [
+  { path: '/', name: 'Home' },
+  { path: '/eval', name: 'Evaluation' },
+  { path: '/email', name: 'Email' },
+  // ... add more routes as needed
+];
+
 
 function App() {
+
+  const isDarkMode = useSelector(selectDarkMode);
   return (
     <BrowserRouter>
+    <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
     <Navbar/>
     <ToastContainer />
     <MainLayout />
+    <PageInfo/>
     <Routes>
+    
     <Route path="/" element={<Home />} />
-    <Route path="/eval" element={<ViewFYPEvaluationPage/>} />
+    <Route path="/evaluation" element={<ViewFYPEvaluationPage/>} />
     <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />
     <Route path="/board" element={<Board/>} />
@@ -42,8 +62,10 @@ function App() {
     <Route path="/requirement/add" element={<RequirementForm />}/>
     <Route path="/proposal" element={<ProposalForm/>} />
     <Route path="/members/manage" element={<Teammates/>}/>
-       {/* Define your routes here */}
+    <Route path="/dashboard" element={<Dashboard/>}/>
+    <Route path="/restable" element={<TableComponent/>}/>
       </Routes>
+      </div>
     </BrowserRouter>
   );
 }

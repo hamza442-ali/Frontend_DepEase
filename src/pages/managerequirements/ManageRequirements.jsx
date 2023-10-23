@@ -101,18 +101,15 @@ const MyComponent = () => {
   return (
     
     <div className="container mx-auto ">
-      <div className="container w-full h-16 pt-7 bg-zinc-100">
+      {/* <div className="container w-full h-16 pt-7 bg-zinc-100">
         <h1 className="mb-3 ml-4 text-2xl text-blue-300 ">Requirement Manage</h1>
         <p className="ml-4 text-slate-700">Home / Requirements / Manage</p>
       </div>
 
 
-      
+       */}
 
-      <div className="w-full mt-20 ">
-        
-
- {/*  */}
+      <div className="w-full mt-10">
 
  <div className="grid grid-cols-1 gap-6 mx-auto my-8 sm:grid-cols-2 md:grid-cols-4">
   <div className="p-6 text-center transition duration-300 ease-in-out bg-gray-100 border rounded-lg shadow-lg hover:scale-105">
