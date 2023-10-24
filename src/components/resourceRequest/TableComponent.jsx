@@ -1,45 +1,46 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const TableComponent = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      requestType: 'Sample Request',
-      startDate: '2023-10-01',
-      endDate: '2023-10-10',
-      requestDate: '2023-09-25',
-      adminStatus: 'InProgress',
-      supervisorStatus: 'Pending',
-    },
-    // Add more data objects as needed
-  ]);
+  const [data, setData] = useState([]);
 
   const isAdmin = true; // Set to true if the user is an admin
-  const handleDelete = (id, adminStatus) => {
-    // Delete the request only if adminStatus is not 'InProgress'
+  const handleDelete = async (id, adminStatus) => {
     if (isAdmin && adminStatus !== 'InProgress') {
-      axios.delete(`http://localhost:3001/resource/delete/${id}`)
-        .then(response => {
-          // Update the state after successful deletion
-          setData(data.filter((item) => item.id !== id));
-        })
-        .catch(error => {
-          console.error('Error deleting request:', error);
-        });
+      try {
+        await axios.delete(`http://localhost:3001/resource/delete/${id}`);
+        // Update the state after successful deletion
+        fetchData();
+        toast.success('Request deleted Successfully ');
+      } catch (error) {
+        console.error('Error deleting request:', error);
+        toast.error('Error deleting  request:', error);
+      }
     }
   };
- 
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/resource/getmine/${"F20-126-D"}`);
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching requests:', error);
+    }
+  };
   useEffect(() => {
-    // Fetch data from the backend and update the state
-    axios.get('http://localhost:3001/resource/resource/getall${"Project1"}')
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+    fetchData();
   }, []); 
 
+
+
+  const formatISODateToReadable = (isoDateString) => {
+    const dateObject = new Date(isoDateString);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return dateObject.toLocaleDateString('en-US', options);
+  };
+
+ 
   return (
     <div className="container mx-auto p-8">
       <div className="overflow-x-auto">
@@ -59,9 +60,9 @@ const TableComponent = () => {
             {data.map((item, index) => (
               <tr key={item.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                 <td className="py-3 px-4">{item.requestType}</td>
-                <td className="py-3 px-4">{item.startDate}</td>
-                <td className="py-3 px-4">{item.endDate}</td>
-                <td className="py-3 px-4">{item.requestDate}</td>
+                <td className="py-3 px-4 " >{formatISODateToReadable(item.startDate)}</td>
+                <td className="py-3 px-4">{formatISODateToReadable(item.endDate)}</td>
+                <td className="py-3 px-4">{formatISODateToReadable(item.requestDate)}</td>
                 <td className={`py-3 px-4 ${item.adminStatus === 'InProgress' ? 'text-blue-500' : 'text-green-500'}`}>
                   {item.adminStatus}
                 </td>
@@ -73,7 +74,9 @@ const TableComponent = () => {
                     {item.adminStatus !== 'InProgress' ? (
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out disabled:opacity-50"
-                        onClick={() => handleDelete(item.id, item.adminStatus)}
+                        onClick={() => handleDelete(item._id, item.adminStatus)
+                       
+                        }
                         disabled={item.adminStatus === 'InProgress'}
                         title={item.adminStatus === 'InProgress' ? 'Cannot delete in progress request' : 'Delete'}
                       >

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { FiPlus, FiTrash } from 'react-icons/fi'; // Assuming you have these icons installed
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+
 const StudentResourceRequest = () => {
   const [resourceRequests, setResourceRequests] = useState([]);
   const [formData, setFormData] = useState({
@@ -34,7 +37,7 @@ const StudentResourceRequest = () => {
       axios.post('http://localhost:3001/resource/add', formData)
         .then(response => {
           // Handle success, maybe show a success message to the user
-          console.log('Request added successfully:', response.data);
+          toast.success('Request sent Successfully ');
           setResourceRequests([...resourceRequests, formData]);
           setFormData({
             ...formData,
@@ -46,10 +49,11 @@ const StudentResourceRequest = () => {
         })
         .catch(error => {
           // Handle error, maybe show an error message to the user
-          console.error('Error adding request:', error);
+          console.error('Error sending request:', error);
+          toast.error('Error sending request:', error);
         });
     } else {
-      alert('Please fill out all fields and accept the terms.');
+      toast.info('Please fill out all fields and accept the terms.');
     }
   };
   

@@ -67,7 +67,7 @@ const Teammates = () => {
                 />
               </div>
               <div>
-                <div className="mb-2 text-xl font-semibold">     {teammate.student_name}</div>
+                <div className="mb-2 text-xl font-semibold">{teammate.student_name}</div>
                 <div className="mb-2 text-sm text-gray-600">{teammate.student_id}</div>
                 <div className="mb-2 text-sm text-gray-600">{teammate.student_email}</div>
                 <div className="mb-2 text-sm text-gray-600">{teammate.student_role}</div>

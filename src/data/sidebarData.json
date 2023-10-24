@@ -41,6 +41,24 @@
   },
 
   {
+    "label": "Resoucre Allocation",
+    "icon": "people-group",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Resocue Form",
+        "path": "/resourceForm",
+        "icon": "user-plus"
+      },
+      {
+        "label": "Manage",
+        "path": "/resourceManage",
+        "icon": "user-gear"
+      }
+    ]
+  },
+
+  {
     "label": "Proposal",
     "icon": "info-circle",
     "path": "/",

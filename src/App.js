@@ -55,7 +55,7 @@ function App() {
     <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />
     <Route path="/board" element={<Board/>} />
-    <Route path="/res" element={<StudentResourceRequest/>} />
+    <Route path="/resourceForm" element={<StudentResourceRequest/>} />
     <Route path="/doc" element={<DocumentPreview/>} />
     <Route path="/members/add" element={<MemberPage/>} />
     <Route path="/requirement/display" element={<ManageRequirements  />}/>
@@ -63,7 +63,7 @@ function App() {
     <Route path="/proposal" element={<ProposalForm/>} />
     <Route path="/members/manage" element={<Teammates/>}/>
     <Route path="/dashboard" element={<Dashboard/>}/>
-    <Route path="/restable" element={<TableComponent/>}/>
+    <Route path="/resourceManage" element={<TableComponent/>}/>
       </Routes>
       </div>
     </BrowserRouter>
