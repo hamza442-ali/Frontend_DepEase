@@ -1,4 +1,5 @@
-// StepForm.jsx
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import Step1 from '../../components/proposal/Step1';
 import Step2 from '../../components/proposal/Step2';
@@ -14,7 +15,7 @@ const StepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
   const [error, setError] = useState('');
-
+ 
   const handleNext = (data) => {
     setFormData({ ...formData, ...data });
     setCurrentStep(currentStep + 1);
@@ -26,9 +27,26 @@ const StepForm = () => {
     setError('');
   };
 
-  const handleSubmit = (data) => {
-    // You can submit the final data here
-    console.log('Final Data:', data);
+  const handleSubmit = async (data) => {
+    try {
+      const { teamLeadId, teammate1Id, teammate2Id} =data;
+      const groupData = {
+        teamLeadId,
+        teammate1Id,
+        teammate2Id
+      };
+
+      await axios.post('http://localhost:3001/proposals/add', data);
+      toast.success('Proposal submitted Successfully ');
+      await axios.post('http://localhost:3001/group/add', groupData);
+      toast.success('Group created Successfully ');
+     
+      setCurrentStep(1);
+      setFormData({});
+    } catch (error) {
+      console.error('Error submitting proposal:', error);
+      toast.error('Error submitting proposal:', error);
+    }
   };
 
   const steps = [
@@ -40,10 +58,7 @@ const StepForm = () => {
 
   return (
     <div>
-        <div className="w-full h-16 pt-7 mb-9 bg-zinc-100">
-        <h1 className="mb-3 text-2xl text-blue-300 ml-28">Proposal Submission</h1>
-        <p className=" ml-28 text-slate-700">Home / Proposal/ Add</p>
-      </div>
+         
     
     <div className="h-screen mx-24 my-8">
    

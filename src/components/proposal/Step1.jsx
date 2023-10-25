@@ -3,29 +3,37 @@ import React, { useState } from 'react';
 const Step1 = ({ onNext }) => {
   const [title, setTitle] = useState('');
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
+  const [teamLeadId, setTeamLeadId] = useState('');
+  const [teammate1Id, setTeammate1Id] = useState('');
+  const [teammate2Id, setTeammate2Id] = useState('');
   const [problemStatement, setProblemStatement] = useState('');
   const [error, setError] = useState('');
-
+  const [ProjectType, setSelectedProjectType] = useState('');
   const supervisors = [
     { id: 1, name: 'Supervisor 1' },
     { id: 2, name: 'Supervisor 2' },
     // Add more supervisors if needed
   ];
 
-  const teammates = [
-    { id: 1, name: 'Ali Hamza', rollNo: '12345' },
-    { id: 2, name: 'Mahad Rahat', rollNo: '67890' },
-    // Add more teammates if needed
-  ];
+  const projectTypes = ["Development", "Research and Development"];
 
   const handleNext = () => {
-    if (title && selectedSupervisor && problemStatement) {
-      onNext({ title, supervisor: selectedSupervisor, problemStatement, teammates });
+    if (title && selectedSupervisor && problemStatement && teamLeadId && teammate1Id && teammate2Id && ProjectType) {
+      onNext({
+        title,
+         selectedSupervisor,
+        problemStatement,
+        teamLeadId,
+        teammate1Id,
+        teammate2Id,
+        ProjectType
+      });
       setError('');
     } else {
       setError('Please fill in all fields');
     }
   };
+
 
   return (
     <div className="text-center">
@@ -38,6 +46,22 @@ const Step1 = ({ onNext }) => {
           onChange={(e) => setTitle(e.target.value)}
           className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
         />
+      </div>
+
+      <div className="mb-4">
+        <label className="block mb-1 text-left text-gray-700">Project Type</label>
+        <select
+          value={ProjectType}
+          onChange={(e) => setSelectedProjectType(e.target.value)}
+          className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+        >
+          <option value="">Select project type</option>
+          {projectTypes.map((type, index) => (
+            <option key={index} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="mb-4">
         <label className="block mb-1 text-left text-gray-700">Select Supervisor</label>
@@ -55,6 +79,36 @@ const Step1 = ({ onNext }) => {
         </select>
       </div>
       <div className="mb-4">
+        <label className="block mb-1 text-left text-gray-700">Team Lead ID</label>
+        <input
+          type="text"
+          placeholder="Enter Team Lead ID"
+          value={teamLeadId}
+          onChange={(e) => setTeamLeadId(e.target.value)}
+          className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-1 text-left text-gray-700">Teammate 1 ID</label>
+        <input
+          type="text"
+          placeholder="Enter Teammate 1 ID"
+          value={teammate1Id}
+          onChange={(e) => setTeammate1Id(e.target.value)}
+          className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-1 text-left text-gray-700">Teammate 2 ID</label>
+        <input
+          type="text"
+          placeholder="Enter Teammate 2 ID"
+          value={teammate2Id}
+          onChange={(e) => setTeammate2Id(e.target.value)}
+          className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
         <label className="block mb-1 text-left text-gray-700">Problem Statement</label>
         <textarea
           placeholder="Describe the problem statement"
@@ -62,17 +116,6 @@ const Step1 = ({ onNext }) => {
           onChange={(e) => setProblemStatement(e.target.value)}
           className="w-full h-32 p-3 border rounded focus:outline-none focus:border-blue-500"
         />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1 text-left text-gray-700">Teammates</label>
-        <div className="flex justify-between">
-          <div>
-            <strong>{teammates[0].name}</strong> (Roll No: {teammates[0].rollNo})
-          </div>
-          <div>
-            <strong>{teammates[1].name}</strong> (Roll No: {teammates[1].rollNo})
-          </div>
-        </div>
       </div>
       <button onClick={handleNext} className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
         Next

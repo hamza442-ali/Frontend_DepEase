@@ -18,8 +18,8 @@ const BoardList = ({ title, status, tasks, moveTask, deleteTask }) => {
      
       {filteredTasks.map(task => (
         <TaskCard
-          key={task.id}
-          id={task.id}
+          key={task._id}
+          id={task._id}
           issueKey={task.issueKey}
           summary={task.summary}
           assignee={task.assignee}
