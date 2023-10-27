@@ -27,6 +27,8 @@ import {ScrollUp} from './components/scrollUp'
 import { AboutSectionOne } from './components/about/About';
 import { Header } from './components/header/Header';
 import { Panels } from './components/panelProcess/dPanel';
+import {Footer} from './components/footer/footer'
+import { Features } from './components/features/features';
 
 
 function App() {
@@ -36,10 +38,12 @@ function App() {
     <ScrollUp/>
     <Header />
     <LandingPage />
+    <Features/>
     <AboutSectionOne/>
-    <Panels/>
-    <SignupPage />
-    <SigninPage />
+    {/* <Panels/> */}
+    {/* <SignupPage /> */}
+    {/* <SigninPage /> */}
+    <Footer/>
     {/* <Navbar/> */}
     {/* <ToastContainer /> */}
     {/* <MainLayout /> */}
