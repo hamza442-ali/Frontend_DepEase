@@ -27,6 +27,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from './redux/slices/theme/themeSlice'; // Adjust the import path based on your project structure
 import TableComponent from './components/resourceRequest/TableComponent';
+import Login from './pages/signin/Login';
 
 
 
@@ -49,8 +50,8 @@ function App() {
     <MainLayout />
     <PageInfo/>
     <Routes>
-    
-    <Route path="/" element={<Home />} />
+    <Route path="/" element={<Login/>} />
+    <Route path="/home" element={<Home />} />
     <Route path="/evaluation" element={<ViewFYPEvaluationPage/>} />
     <Route path="/email" element={<EmailPage/>} />
     <Route path="/del" element={<ManageDelieverables/>} />

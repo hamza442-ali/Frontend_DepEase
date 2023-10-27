@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 const Step1 = ({ onNext }) => {
   const [title, setTitle] = useState('');
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
@@ -16,12 +16,27 @@ const Step1 = ({ onNext }) => {
   ];
 
   const projectTypes = ["Development", "Research and Development"];
+  // const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   // Fetch supervisors from the backend when the component mounts
+  //   axios.get('/api/supervisors') // Replace '/api/supervisors' with the actual API endpoint
+  //     .then(response => {
+  //       setSupervisors(response.data); // Assuming the response contains an array of supervisors
+  //       setLoading(false);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching supervisors:', error);
+  //       setLoading(false);
+  //     });
+  // }, []); 
+
+  
   const handleNext = () => {
     if (title && selectedSupervisor && problemStatement && teamLeadId && teammate1Id && teammate2Id && ProjectType) {
       onNext({
         title,
-         selectedSupervisor,
+       supervisor:  selectedSupervisor,
         problemStatement,
         teamLeadId,
         teammate1Id,

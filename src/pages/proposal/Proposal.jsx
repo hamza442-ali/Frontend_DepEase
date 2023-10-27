@@ -5,6 +5,7 @@ import Step1 from '../../components/proposal/Step1';
 import Step2 from '../../components/proposal/Step2';
 import Step3 from '../../components/proposal/Step3';
 import Step4 from '../../components/proposal/Step4';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +16,9 @@ const StepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
   const [error, setError] = useState('');
- 
+  const studentData = useSelector((state) => state.student);
+
+
   const handleNext = (data) => {
     setFormData({ ...formData, ...data });
     setCurrentStep(currentStep + 1);
@@ -27,6 +30,7 @@ const StepForm = () => {
     setError('');
   };
 
+
   const handleSubmit = async (data) => {
     try {
       const { teamLeadId, teammate1Id, teammate2Id} =data;
@@ -36,10 +40,23 @@ const StepForm = () => {
         teammate2Id
       };
 
-      await axios.post('http://localhost:3001/proposals/add', data);
+     
+     const proposalcr= await axios.post('http://localhost:3001/proposals/add', data);
+      
+      const groupcr= await axios.post('http://localhost:3001/group/add', groupData);
+     
+
+      const projectData = {
+        ProjectId: "Fa"+studentData.batch.toString().slice(2,4)+"-"+teamLeadId.slice(4,8)+"-"+proposalcr.data.ProjectType.slice(0,1),
+        batch: studentData.batch,
+        semester: studentData.semester,
+        teacher: proposalcr.data.supervisor,
+        group: groupcr.data._id,
+        projectProposal: proposalcr.data._id,
+       };
+
+      await axios.post('http://localhost:3001/projects/add', projectData);
       toast.success('Proposal submitted Successfully ');
-      await axios.post('http://localhost:3001/group/add', groupData);
-      toast.success('Group created Successfully ');
      
       setCurrentStep(1);
       setFormData({});

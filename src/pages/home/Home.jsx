@@ -55,6 +55,13 @@ function Home() {
     // Add more announcements as needed
   ]);
 
+
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
+  };
+
   // Function to update announcements (e.g., when marking as read)
   const updateAnnouncements = (updatedAnnouncements) => {
     setAnnouncements(updatedAnnouncements);
@@ -62,11 +69,10 @@ function Home() {
 
   return (
     <div>
-      {/* Render the AnnouncementSidebar component and pass the updateAnnouncements function */}
-      <AnnouncementSidebar announcements={announcements} onUpdateAnnouncements={updateAnnouncements} />
-
-      {/* The rest of your application */}
-    </div>
+    <button onClick={toggleSidebar}>Announcement</button>
+    {isSidebarVisible && <AnnouncementSidebar announcements={announcements} />}
+    {/* The rest of your application */}
+  </div>
   );
 }
 
