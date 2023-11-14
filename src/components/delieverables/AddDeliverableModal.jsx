@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AddDeliverableModal = ({ onAddDeliverable, onClose }) => {
+  
+  const projectData = useSelector(state => state.project);
+  
   // State for form fields
   const [deliverableData, setDeliverableData] = useState({
     name: '',
@@ -18,14 +22,21 @@ const AddDeliverableModal = ({ onAddDeliverable, onClose }) => {
     });
   };
 
+  
+
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Check if all fields are filled
-    if (deliverableData.name && deliverableData.deadline) {
+    if (deliverableData.name && deliverableData.deadline && deliverableData.status) {
+
+      const dataWithProjectId = {
+        ...deliverableData,
+        projectId: projectData.ProjectId,
+      };
       // Call the parent component's function to add the deliverable
-      onAddDeliverable(deliverableData);
+      onAddDeliverable(dataWithProjectId);
 
       // Clear the form and close the modal
       setDeliverableData({
@@ -38,7 +49,7 @@ const AddDeliverableModal = ({ onAddDeliverable, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
       <div className="p-6 bg-white rounded-lg shadow-lg w-96">
         <h2 className="mb-4 text-2xl font-semibold">Add Deliverable</h2>
         <form onSubmit={handleSubmit}>
@@ -101,6 +112,14 @@ const AddDeliverableModal = ({ onAddDeliverable, onClose }) => {
             >
               Add Deliverable
             </button>
+
+            <button
+              type="submit"
+              className="px-4 py-2 ml-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-200"
+            >
+              Update 
+            </button>
+
           </div>
         </form>
       </div>

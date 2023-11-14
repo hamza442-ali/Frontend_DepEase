@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-
+import { useSelector } from 'react-redux';
 library.add(fas);
 
 const MyComponent = () => {
@@ -18,13 +18,15 @@ const MyComponent = () => {
   const [index, setIndex] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
   const [selectedRequirement, setSelectedRequirement] = useState(null);
+  const projectData = useSelector(state => state.project);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/requirements/getRequirements/${"Project1"}`
-        ); // intially it will be hardcoded as login is nto implemented yet
+          `http://localhost:3001/requirements/getRequirements/${projectData.ProjectId}`
+        ); // intially it will be hardcoded as login is not implemented yet
         setRequirements(response.data);
       } catch (error) {
         toast.error("Failed to fetch requirements");
@@ -98,6 +100,8 @@ const MyComponent = () => {
   ).length;
   const totalPending = data.filter((req) => req.status === "Pending").length;
   const totalRequirements = data.length;
+
+  
   return (
     
     <div className="container mx-auto ">

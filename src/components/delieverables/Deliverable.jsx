@@ -1,11 +1,11 @@
 import React from 'react';
 import Module from '../modules/Module';
 
-const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove }) => {
+const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondeleteDelieverable }) => {
   const handleModuleDrop = (e) => {
     e.preventDefault();
     const moduleId = e.dataTransfer.getData('moduleId');
-    const moduleToAdd = modules.find((module) => module.id === parseInt(moduleId));
+    const moduleToAdd = modules.find((module) => module._id === parseInt(moduleId));
 
     if (deliverable.modules && deliverable.modules.includes(moduleToAdd)) {
       // Module is already in this deliverable, show alert
@@ -31,7 +31,7 @@ const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove }) => 
             <button className="px-3 py-1 text-blue-500 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none focus:ring focus:ring-blue-300">
               Edit
             </button>
-            <button className="px-3 py-1 text-red-500 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none focus:ring focus:ring-red-300">
+            <button className="px-3 py-1 text-red-500 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none focus:ring focus:ring-red-300" onClick={() => ondeleteDelieverable(deliverable)}>
               Delete
             </button>
           </div>
@@ -44,13 +44,13 @@ const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove }) => 
       >
         {deliverable.modules?.map((module) => (
           <div
-            key={module.id}
+            key={module._id}
             className="relative"
             draggable
             onDragStart={(e) => {
-              e.dataTransfer.setData('moduleId', module.id.toString());
+              e.dataTransfer.setData('moduleId', module._id.toString());
             }}
-            onDragEnd={() => handleModuleRemove(module.id)}
+            onDragEnd={() => handleModuleRemove(module._id)}
           >
             <Module module={module} />
           </div>

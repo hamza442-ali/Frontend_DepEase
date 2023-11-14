@@ -7,7 +7,26 @@ const data = [
   { name: 'Alice Johnson', completed: 25 },
 ];
 
-const WorkDistributionChart = () => {
+const WorkDistributionChart = (props) => {
+
+  // const filteredRequirements = props.data.filter(req => {
+  //   const validStatus = req.status === 'completed';
+  //   const validAssignees = ['Mahad Rahat', 'Mian Abdullah', 'Ali Hamza'].includes(req.assignedTo);
+  //   return validStatus && validAssignees;
+  // });
+  
+  // const data = filteredRequirements.reduce((result, req) => {
+  //   const existingIndex = result.findIndex(item => item.name === req.assignedTo);
+  //   if (existingIndex !== -1) {
+  //     result[existingIndex].completed++;
+  //   } else {
+  //     result.push({ name: req.assignedTo, completed: 1 });
+  //   }
+  //   return result;
+  // }, []);
+  
+  // console.log(data);
+
   return (
     <ResponsiveContainer width="100%" height={200}>
       <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>

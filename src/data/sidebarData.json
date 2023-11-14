@@ -69,5 +69,21 @@
         "icon": "user-plus"
       }
     ]
+  },
+
+  {
+    "label": "Modules And Deliverables",
+    "icon": "info-circle",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Manage",
+        "path": "/deliverable",
+        "icon": "user-plus"
+      }
+      
+    ]
   }
 ]
+
+

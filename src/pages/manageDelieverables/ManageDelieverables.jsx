@@ -1,5 +1,5 @@
 // src/ManageDeliverables.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Deliverable from '../../components/delieverables/Deliverable';
 import Module from '../../components/modules/Module';
 import ModuleDetailsModal from '../../components/modules/ModuleDetailsModal'; 
@@ -8,20 +8,41 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import AddModuleModal from '../../components/modules//AddModuleModal'; 
 import AddDeliverableModal from '../../components/delieverables/AddDeliverableModal'; 
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 library.add(fas);
 function ManageDeliverables() {
-  const [modules, setModules] = useState([
-    { id: 1, name: 'Module 1', status: 'Active', type: 'Type A', details:'testing the usecases' },
-    { id: 2, name: 'Module 2', status: 'Inactive', type: 'Type B', details:'deployment through jenkins' },
-    { id: 3, name: 'Module 3', status: 'Active', type: 'Type C' , details:'user all processes are here'},
-  ]);
+  const projectData = useSelector(state => state.project);
+  const [modules, setModules] = useState([]);
 
-  const [deliverables, setDeliverables] = useState([
-    { name: 'Deliverable 1', status: 'Pending', deadline: '2023-10-01', modules: [] },
-    { name: 'Deliverable 2', status: 'In Progress', deadline: '2023-11-15', modules: [] },
-    { name: 'Deliverable 3', status: 'In Progress', deadline: '2023-11-15', modules: [] },
-  ]);
+  const [deliverables, setDeliverables] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/modules/getmine/${projectData.ProjectId}`);
+      setModules(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching requests:', error);
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:3001/deliverables/getmine/${projectData.ProjectId}`);
+      setDeliverables(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching requests:', error);
+    }
+
+
+  };
+  useEffect(() => {
+    fetchData();
+  }, []); 
+
+
   // Modal state and functions
   const [isModuleDetailsModalOpen, setIsModuleDetailsModalOpen] = useState(false);
   const [selectedModule, setSelectedModule] = useState(null);
@@ -58,74 +79,124 @@ function ManageDeliverables() {
     setSelectedModule(null);
   };
 
-  const handleModuleDrop = (moduleId, deliverableName) => {
-    const updatedDeliverables = deliverables.map((deliverable) => {
-      if (deliverable.name === deliverableName) {
-        return {
-          ...deliverable,
-          modules: [...deliverable.modules, modules.find((m) => m.id === parseInt(moduleId))],
-        };
-      }
-      return deliverable;
-    });
 
-    setDeliverables(updatedDeliverables);
+  const handleModuleDrop = async (moduleId, deliverableName) => {
+    try {
+      // there is an API endpoint to handle adding modules to deliverables
+      const response = await axios.post('http://localhost:3001/deliverables/addModuleToDeliverable', {
+        moduleId: parseInt(moduleId),
+        deliverableName: deliverableName,
+      });
+  
+      const updatedDeliverables = deliverables.map((deliverable) => {
+        if (deliverable.name === deliverableName) {
+          return {
+            ...deliverable,
+            modules: [...deliverable.modules, response.data], // Assuming the API returns the updated deliverable
+          };
+        }
+        return deliverable;
+      });
+  
+      setDeliverables(updatedDeliverables);
+    } catch (error) {
+      console.error('Error adding module to deliverable:', error);
+    }
   };
-
-
-  const handleModuleRemove = (moduleId, deliverableName) => {
-    const updatedDeliverables = deliverables.map((deliverable) => {
-      if (deliverable.name === deliverableName) {
-        return {
-          ...deliverable,
-          modules: deliverable.modules.filter((module) => module.id !== parseInt(moduleId)),
-        };
-      }
-      return deliverable;
-    });
-
-    setDeliverables(updatedDeliverables);
+  
+  const handleModuleRemove = async (moduleId, deliverableName) => {
+    try {
+      //  there is an API endpoint to handle removing modules from deliverables
+      await axios.delete(`http://localhost:3001/deliverables/removeModuleFromDeliverable/${parseInt(moduleId)}/${deliverableName}`);
+  
+      const updatedDeliverables = deliverables.map((deliverable) => {
+        if (deliverable.name === deliverableName) {
+          return {
+            ...deliverable,
+            modules: deliverable.modules.filter((module) => module.id !== parseInt(moduleId)),
+          };
+        }
+        return deliverable;
+      });
+  
+      setDeliverables(updatedDeliverables);
+    } catch (error) {
+      console.error('Error removing module from deliverable:', error);
+    }
   };
   
 // Function to add a new deliverable
-const addDeliverable = (newDeliverable) => {
-    // Update the deliverables state with the new deliverable
-    setDeliverables([...deliverables, newDeliverable]);
+const addDeliverable = async (newDeliverable) => {
+  try {
+    // Send axios POST request to add deliverable
+    const response = await axios.post('http://localhost:3001/deliverables/add', newDeliverable);
+    
+    // Update the deliverables state with the new deliverable from the response
+    setDeliverables([...deliverables, response.data]);
+    toast.success('Successfully initialized Deliverable');
     closeAddDeliverableModal();
-  };
+  } catch (error) {
+    console.error('Error adding deliverable:', error);
+    toast.error('Error adding deliverable :', error); 
+  }
+};
 
-  
-  const addModule = (newModule) => {
-    const newModuleWithId = {
-      id: generateUniqueId(), // Replace with your actual unique ID generation logic
-      ...newModule,
-    };
-    // Update the modules state with the new module
-    setModules([...modules, newModuleWithId]);
+// Function to add a new module
+const addModule = async (newModule) => {
+  try {
+    // Send axios POST request to add module
+    const response = await axios.post('http://localhost:3001/modules/add', newModule);
+    
+    // Update the modules state with the new module from the response
+    setModules([...modules, response.data]);
+    toast.success('Successfully added Module');
     closeAddModuleModal();
-  };
+  } catch (error) {
+    console.error('Error adding module:', error);
+    toast.error('Error adding module:', error); 
+  }
+};
+  
 
-  const generateUniqueId = () => {
-    // based on the maximum existing ID + 1
-    const currentMaxId = modules.reduce((maxId, module) => {
-      return module.id > maxId ? module.id : maxId;
-    }, 0); // Start with 0 if no modules exist
-  
-    return currentMaxId + 1; // Increment the maximum ID to generate a new unique ID
-  };
-  
+const ondeleteModule = async (module) => {
+  try {
+    let id = module._id;
+    const response = await axios.delete(`http://localhost:3001/modules/delete/${id}`);
+    setModules((prevModules) => prevModules.filter((m) => m._id !== id));
+    toast.success('Successfully deleted module');
+  } catch (error) {
+    // Handle errors
+    console.error('Error deleting module:', error);
+    toast.error('Error deleting modules:', error);
+  }
+};
+
+const ondeleteDelieverable = async (delieverable) => {
+  try {
+    let id = delieverable._id;
+    const response = await axios.delete(`http://localhost:3001/deliverables/delete/${id}`);
+    setDeliverables((prevdeliverables) => prevdeliverables.filter((m) => m._id !== id));
+    toast.success('Successfully deleted deliverables');
+  } catch (error) {
+    // Handle errors
+    console.error('Error deleting deliverables:', error);
+    toast.error('Error deleting deliverables:', error);
+  }
+};
+
   return (
     <div className="container mx-auto mt-10">
        <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Delieverables </h1>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="top-0 col-span-1 ">
+        <div className="top-0 col-span-1">
           <h1 className="mb-4 text-xl">Modules</h1>
           {modules.map((module) => (
             <Module
-              key={module.id}
+              key={module._id}
               module={module}
               onDetailsClick={() => handleModuleDetailsClick(module)}
+              ondeleteModule={() => ondeleteModule(module)}
             />
           ))}
           <button
@@ -149,11 +220,12 @@ const addDeliverable = (newDeliverable) => {
           </div>
           {deliverables.map((deliverable) => (
             <Deliverable
-              key={deliverable.name}
+              key={deliverable._id}
               deliverable={deliverable}
               modules={modules}
               onModuleDrop={handleModuleDrop}
               onModuleRemove={handleModuleRemove}
+              ondeleteDelieverable={() => ondeleteDelieverable(deliverable)}
             />
           ))}
         </div>

@@ -5,8 +5,11 @@ import FileInput from '../../components/fileinput/FileInput';
 import SelectInput from '../../components/selectinput/SelectInput';
 import TextAreaInput from '../../components/textareainput/TextAreaInput';
 import TextInput from '../../components/textinput/TextInput';
-
+import { useSelector } from 'react-redux';
 const Form = () => {
+  const projectData = useSelector(state => state.project);
+  const groupData = useSelector((state) => state.group);
+  const studentData = useSelector(state => state.student);
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('Low');
   const [status, setStatus] = useState('Pending');
@@ -15,7 +18,8 @@ const Form = () => {
   const [comments, setComment] = useState([]);
   const [attachments, setAttachment] = useState('');
   const [description, setRequirement] = useState('');
-  const [projectid, setprojectid] = useState('');
+  const [projectid, setprojectid] = useState(projectData.ProjectId);
+  
 
   const handleReset = () => {
     setprojectid('');
@@ -28,7 +32,12 @@ const Form = () => {
     setAttachment('');
     setRequirement('');
   };
+  
 
+
+
+  // console.log("blah balh");
+  // console.log(groupData);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,11 +60,11 @@ const Form = () => {
       formData.append('deadline', deadline);
       formData.append('attachments', attachments); 
       if(comments.length !== 0){ 
-         const commentObj = { content: comments, createdBy: 'Mian Abdullah' };
+         const commentObj = { content: comments, createdBy: studentData.student_name };
          formData.append('comments', JSON.stringify([commentObj]));
      }
      
-      formData.append('writtenby', "Mian Abdullah"); // as of now hardcoded
+      formData.append('writtenby', studentData.student_name); 
       formData.append('projectid', projectid);
      
      
@@ -77,28 +86,19 @@ const Form = () => {
   };
 
   return (
-    <div className='h-full ml-64 bg-zinc-200'>
-      <div className="container w-full h-16 pt-7 bg-zinc-100">
-        <h1 className='mb-3 ml-4 text-2xl text-blue-300'>Requirement Form</h1>
-        <p className='ml-4 text-slate-700'>Home / Requirement / Requirement Form</p>
-      </div>
+    <div className='h-full ml-64 '>
+     
 
       <div className="container py-8 mx-auto">
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
 
-        <SelectInput
-            label="Project Id *"
-            value={projectid}
-            onChange={(e) => setprojectid(Array.from(e.target.selectedOptions, (option) => option.value))}
-            options={['Project1', 'Project2', 'project3']} // Replace with your dynamic options
-            multiple
-          />
+       
 
           <SelectInput
             label="Assigned To"
             value={assignedTo}
             onChange={(e) => setAssignedTo(Array.from(e.target.selectedOptions, (option) => option.value))}
-            options={['Mian Abdullah', 'Mahad Rahahat', 'Ali Hamza']} // Replace with your dynamic options
+            options={Object.values(groupData).filter(obj => obj.student_name).map(student => student.student_name)}
             multiple
           />
 

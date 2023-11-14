@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const AddModuleModal = ({ onAddModule, onClose }) => {
+const AddModuleModal = ({ onAddModule, onClose,onUpdate }) => {
+  const projectData = useSelector(state => state.project);
+
   const [formData, setFormData] = useState({
     name: '',
     status: '',
-    type: '',
     details: '',
   });
 
@@ -15,13 +17,29 @@ const AddModuleModal = ({ onAddModule, onClose }) => {
       [name]: value,
     });
   };
-
   const handleSubmit = () => {
-    // Perform validation here if needed
-    if (formData.name && formData.status && formData.type && formData.details) {
-      onAddModule(formData);
+   
+    if (formData.name && formData.status && formData.details) {
+      // Add projectId to formData before calling onAddModule
+      const dataWithProjectId = {
+        ...formData,
+        projectId: projectData.ProjectId,
+      };
+      onAddModule(dataWithProjectId);
     }
   };
+
+  const handleUpdate = () => {  
+    if (formData.name && formData.status && formData.details) {
+      // Add projectId to formData before calling onAddModule
+      const dataWithProjectId = {
+        ...formData,
+        projectId: projectData.ProjectId,
+      };
+      onUpdate(dataWithProjectId);
+    }
+  }
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -41,24 +59,17 @@ const AddModuleModal = ({ onAddModule, onClose }) => {
 
         <div className="mb-4">
           <label className="block mb-2 text-sm font-semibold text-gray-700">Status</label>
-          <input
-            type="text"
+          <select
             name="status"
             value={formData.status}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-semibold text-gray-700">Type</label>
-          <input
-            type="text"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
-          />
+          >
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
 
         <div className="mb-4">
@@ -76,7 +87,14 @@ const AddModuleModal = ({ onAddModule, onClose }) => {
             onClick={handleSubmit}
             className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
           >
-            Add
+            Add Module
+          </button>
+
+          <button
+            onClick={handleUpdate}
+            className="px-4 py-2 ml-4 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
+          >
+            Update
           </button>
 
           <button

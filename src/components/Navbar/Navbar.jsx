@@ -12,7 +12,6 @@ const Navbar = () => {
     return <div className=' ml-96'>Loading...</div>; // or handle the loading state in your desired way
   }
 
-
   return (
     <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
       <div className="flex items-center">

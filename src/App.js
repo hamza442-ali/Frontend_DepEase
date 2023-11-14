@@ -54,7 +54,7 @@ function App() {
     <Route path="/home" element={<Home />} />
     <Route path="/evaluation" element={<ViewFYPEvaluationPage/>} />
     <Route path="/email" element={<EmailPage/>} />
-    <Route path="/del" element={<ManageDelieverables/>} />
+    <Route path="/deliverable" element={<ManageDelieverables/>} />
     <Route path="/board" element={<Board/>} />
     <Route path="/resourceForm" element={<StudentResourceRequest/>} />
     <Route path="/doc" element={<DocumentPreview/>} />

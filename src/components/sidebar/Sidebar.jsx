@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import person from "../../assets/images/person2.jpeg"
 import logo from "../../assets/images/logo.jpeg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { setProjectData } from "../../redux/slices/project/projectSlice";
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 library.add(fas);
 
 const Sidebar = ({ data}) => {
@@ -26,6 +29,31 @@ const Sidebar = ({ data}) => {
   const handleMenuClick = (index) => {
     setActiveMenu(activeMenu === index ? null : index);
   };
+
+
+  // const [groupdata, setData] = useState([]);
+
+
+  // const projectData = useSelector((state) => state.project);
+
+
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:3001/group/getone/${projectData.group}`); 
+  //     setData(response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchData();
+  // }, []); 
+  
+
+  // if (!projectData) {
+  //   return <div className=' ml-96'>Loading...</div>; // or handle the loading state in your desired way
+  // }
 
   const teamMembers = [
     {

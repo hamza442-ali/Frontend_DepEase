@@ -2,13 +2,16 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCubes, faPencilAlt, faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const Module = ({ module, onDetailsClick }) => {
+
+const Module = ({ module, onDetailsClick,ondeleteModule }) => {
   return (
     <div
       draggable
       onDragStart={(e) => {
-        e.dataTransfer.setData('moduleId', module.id.toString());
+        e.dataTransfer.setData('moduleId', module._id.toString());
       }}
       className="p-4 transition duration-300 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-xl"
     >
@@ -25,7 +28,7 @@ const Module = ({ module, onDetailsClick }) => {
           <button className="text-blue-500 hover:text-blue-600">
             <FontAwesomeIcon icon={faPencilAlt} />
           </button>
-          <button className="ml-2 text-red-500 hover:text-red-600">
+          <button className="ml-2 text-red-500 hover:text-red-600"  onClick={() => ondeleteModule(module)} >
             <FontAwesomeIcon icon={faTrash} />
           </button>
           <button

@@ -1,9 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 const TableComponent = () => {
   const [data, setData] = useState([]);
-
+  const projectData = useSelector(state => state.project);
   const isAdmin = true; // Set to true if the user is an admin
   const handleDelete = async (id, adminStatus) => {
     if (isAdmin && adminStatus !== 'InProgress') {
@@ -21,11 +22,11 @@ const TableComponent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/resource/getmine/${"F20-126-D"}`);
+      const response = await axios.get(`http://localhost:3001/resource/getmine/${projectData.ProjectId}`);
       setData(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Error fetching requests:', error);
+      console.error('Error fetching  resource  requests:', error);
+      toast.error('Error fetching  resource requests:', error);
     }
   };
   useEffect(() => {

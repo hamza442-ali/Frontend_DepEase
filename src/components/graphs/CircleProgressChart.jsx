@@ -1,21 +1,20 @@
 import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
-const data = [
-  { name: 'Pending', value: 30 },
-  { name: 'In Progress', value: 45 },
-  { name: 'Completed', value: 25 },
-];
+
 
 const COLORS = ['#FF5733', '#FFC300', '#4CAF50'];
 
-const CircleProgressChart = () => {
+const CircleProgressChart = (props) => {
+
+
+  
   return (
     <div className="flex items-center justify-center">
       <ResponsiveContainer width={300} height={300}>
         <PieChart>
           <Pie
-            data={data}
+            data={props.data}
             dataKey="value"
             nameKey="name"
             outerRadius={80}
@@ -28,12 +27,12 @@ const CircleProgressChart = () => {
 
               return (
                 <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-                  {`${data[index].name}`}
+                  {`${props.data[index].name}`}
                 </text>
               );
             }}
           >
-            {data.map((entry, index) => (
+            {props.data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>

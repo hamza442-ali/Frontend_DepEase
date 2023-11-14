@@ -12,8 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async () => {
+    
     try {
       const response = await axios.post("http://localhost:3001/student/login", {
         email_address,
@@ -33,8 +33,8 @@ const Login = () => {
             try {
               const response2 = await axios.get(`http://localhost:3001/projects/getone/${group}`);
               if (response2.status === 200) {
-                
-                dispatch(setProjectData(response2.data)); // Store project data in Redux
+                // console.log(response2.data[0])
+                dispatch(setProjectData(response2.data[0])); // Store project data in Redux
               } else {
                 console.error("Error fetching project data:", response2.statusText);
               }
@@ -48,7 +48,7 @@ const Login = () => {
           console.error("Error fetching group data:", error);
         }
   
-       // navigate('/dashboard'); // Use navigate to redirect to the dashboard route
+        navigate('/dashboard'); // Use navigate to redirect to the dashboard route
       } else {
         setError("Invalid credentials. Please try again.");
       }
