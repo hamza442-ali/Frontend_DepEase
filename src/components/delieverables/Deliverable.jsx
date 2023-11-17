@@ -1,24 +1,30 @@
 import React from 'react';
 import Module from '../modules/Module';
+import AddDeliverableModal from './AddDeliverableModal'; 
 
-const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondeleteDelieverable }) => {
+const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondeleteDelieverable,onupdateDelieverable }) => {
   const handleModuleDrop = (e) => {
     e.preventDefault();
     const moduleId = e.dataTransfer.getData('moduleId');
-    const moduleToAdd = modules.find((module) => module._id === parseInt(moduleId));
+    const moduleToAdd = modules.find((module) => module._id === moduleId);
 
-    if (deliverable.modules && deliverable.modules.includes(moduleToAdd)) {
-      // Module is already in this deliverable, show alert
-      alert('Module is already added to this deliverable.');
-    } else {
-      onModuleDrop(moduleId, deliverable.name);
-    }
+
+// there is issue here that you need to fix later on 
+
+if (deliverable.modules && deliverable.modules.some(module => module._id.toString() === moduleId.toString())) {
+  // Module is already in this deliverable, show alert
+  alert('Module is already added to this deliverable.');
+} else {  
+  onModuleDrop(moduleId, deliverable._id);
+  console.log("not again");
+}
   };
 
   const handleModuleRemove = (moduleId) => {
     // Remove module from deliverable
-    onModuleRemove(moduleId, deliverable.name);
+    onModuleRemove(moduleId, deliverable._id);
   };
+  
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
@@ -28,8 +34,8 @@ const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondele
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-500">Status: {deliverable.status}</span>
             <span className="text-sm text-gray-500">Deadline: {deliverable.deadline}</span>
-            <button className="px-3 py-1 text-blue-500 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none focus:ring focus:ring-blue-300">
-              Edit
+            <button className="px-3 py-1 text-blue-500 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none focus:ring focus:ring-blue-300" onClick={()=> onupdateDelieverable(deliverable)}>
+              Status
             </button>
             <button className="px-3 py-1 text-red-500 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none focus:ring focus:ring-red-300" onClick={() => ondeleteDelieverable(deliverable)}>
               Delete
@@ -42,15 +48,17 @@ const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondele
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleModuleDrop}
       >
+      
         {deliverable.modules?.map((module) => (
           <div
-            key={module._id}
+            key={module}
             className="relative"
             draggable
             onDragStart={(e) => {
-              e.dataTransfer.setData('moduleId', module._id.toString());
+              e.dataTransfer.setData('moduleId', module);
             }}
-            onDragEnd={() => handleModuleRemove(module._id)}
+            onDragEnd={() => handleModuleRemove(module)}
+            
           >
             <Module module={module} />
           </div>

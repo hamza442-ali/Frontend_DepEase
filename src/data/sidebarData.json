@@ -80,6 +80,11 @@
         "label": "Manage",
         "path": "/deliverable",
         "icon": "user-plus"
+      },
+      {
+        "label": "Project Details",
+        "path": "/detail",
+        "icon": "user-plus"
       }
       
     ]

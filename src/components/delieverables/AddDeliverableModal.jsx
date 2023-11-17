@@ -112,14 +112,6 @@ const AddDeliverableModal = ({ onAddDeliverable, onClose }) => {
             >
               Add Deliverable
             </button>
-
-            <button
-              type="submit"
-              className="px-4 py-2 ml-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-200"
-            >
-              Update 
-            </button>
-
           </div>
         </form>
       </div>

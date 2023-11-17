@@ -91,13 +91,6 @@ const AddModuleModal = ({ onAddModule, onClose,onUpdate }) => {
           </button>
 
           <button
-            onClick={handleUpdate}
-            className="px-4 py-2 ml-4 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
-          >
-            Update
-          </button>
-
-          <button
             onClick={onClose}
             className="px-4 py-2 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
           >

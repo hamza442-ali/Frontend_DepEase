@@ -31,6 +31,7 @@ function ManageDeliverables() {
     try {
       const response = await axios.get(`http://localhost:3001/deliverables/getmine/${projectData.ProjectId}`);
       setDeliverables(response.data);
+      console.log(deliverables);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Error fetching requests:', error);
@@ -80,16 +81,16 @@ function ManageDeliverables() {
   };
 
 
-  const handleModuleDrop = async (moduleId, deliverableName) => {
+  const handleModuleDrop = async (moduleId, deliverableId) => {
     try {
       // there is an API endpoint to handle adding modules to deliverables
       const response = await axios.post('http://localhost:3001/deliverables/addModuleToDeliverable', {
-        moduleId: parseInt(moduleId),
-        deliverableName: deliverableName,
+        moduleId: moduleId,
+        deliverableId: deliverableId,
       });
-  
+     
       const updatedDeliverables = deliverables.map((deliverable) => {
-        if (deliverable.name === deliverableName) {
+        if (deliverable._id === deliverableId) {
           return {
             ...deliverable,
             modules: [...deliverable.modules, response.data], // Assuming the API returns the updated deliverable
@@ -104,16 +105,16 @@ function ManageDeliverables() {
     }
   };
   
-  const handleModuleRemove = async (moduleId, deliverableName) => {
+  const handleModuleRemove = async (moduleId, deliverableId) => {
     try {
       //  there is an API endpoint to handle removing modules from deliverables
-      await axios.delete(`http://localhost:3001/deliverables/removeModuleFromDeliverable/${parseInt(moduleId)}/${deliverableName}`);
+      await axios.delete(`http://localhost:3001/deliverables/removeModuleFromDeliverable/${moduleId}/${deliverableId}`);
   
       const updatedDeliverables = deliverables.map((deliverable) => {
-        if (deliverable.name === deliverableName) {
+        if (deliverable._id === deliverableId) {
           return {
             ...deliverable,
-            modules: deliverable.modules.filter((module) => module.id !== parseInt(moduleId)),
+            modules: deliverable.modules.filter((module) => module !== moduleId),
           };
         }
         return deliverable;
@@ -184,6 +185,100 @@ const ondeleteDelieverable = async (delieverable) => {
   }
 };
 
+
+const onupdateDelieverable = async (updatedDeliverable) => {
+  try {
+    
+
+    // Check the current status of the deliverable and update it accordingly
+    const currentStatus = updatedDeliverable.status;
+    let newStatus;
+
+    switch (currentStatus) {
+      case 'Pending':
+        newStatus = 'In Progress';
+        break;
+      case 'In Progress':
+        newStatus = 'Completed';
+        break;
+      case 'Completed':
+        newStatus = 'Pending';
+        break;
+      default:
+        newStatus = currentStatus; // Handle any unexpected status
+    }
+
+    // Update the status in the updatedData
+    updatedDeliverable.status = newStatus;
+
+
+    const id = updatedDeliverable._id;
+
+    // Assuming your server expects a PUT request for updating
+    const response = await axios.put(`http://localhost:3001/deliverables/update/${id}`, updatedDeliverable);
+
+    // Assuming the server responds with the updated deliverable
+    const updatedData = response.data;
+
+    // Update the state with the modified deliverable
+    setDeliverables((prevDeliverables) =>
+      prevDeliverables.map((m) => (m._id === id ? updatedData : m))
+    );
+
+    toast.success(`Successfully updated deliverable. New status: ${newStatus}`);
+  } catch (error) {
+    // Handle errors
+    console.error('Error updating deliverable:', error);
+    toast.error('Error updating deliverable:', error);
+  }
+};
+
+
+const onupdateModule = async (updatedModule) => {
+  try {
+    
+
+    // Check the current status of the deliverable and update it accordingly
+    const currentStatus = updatedModule.status;
+    let newStatus;
+
+    switch (currentStatus) {
+      case 'Pending':
+        newStatus = 'In Progress';
+        break;
+      case 'In Progress':
+        newStatus = 'Completed';
+        break;
+      case 'Completed':
+        newStatus = 'Pending';
+        break;
+      default:
+        newStatus = currentStatus; // Handle any unexpected status
+    }
+
+    // Update the status in the updatedData
+    updatedModule.status = newStatus;
+
+    const id = updatedModule._id;
+
+    // Assuming your server expects a PUT request for updating
+    const response = await axios.put(`http://localhost:3001/modules/update/${id}`, updatedModule);
+
+    // Assuming the server responds with the updated deliverable
+    const updatedData = response.data;
+    // Update the state with the modified deliverable
+    setModules((prevModules) =>
+      prevModules.map((m) => (m._id === id ? updatedData : m))
+    );
+
+    toast.success(`Successfully updated Module. New status: ${newStatus}`);
+  } catch (error) {
+    // Handle errors
+    console.error('Error updating Module:', error);
+    toast.error('Error updating Moduel:', error);
+  }
+};
+
   return (
     <div className="container mx-auto mt-10">
        <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Delieverables </h1>
@@ -197,6 +292,7 @@ const ondeleteDelieverable = async (delieverable) => {
               module={module}
               onDetailsClick={() => handleModuleDetailsClick(module)}
               ondeleteModule={() => ondeleteModule(module)}
+              onupdateModule={()=> onupdateModule(module)}
             />
           ))}
           <button
@@ -226,6 +322,7 @@ const ondeleteDelieverable = async (delieverable) => {
               onModuleDrop={handleModuleDrop}
               onModuleRemove={handleModuleRemove}
               ondeleteDelieverable={() => ondeleteDelieverable(deliverable)}
+              onupdateDelieverable={()=> onupdateDelieverable(deliverable)}
             />
           ))}
         </div>
