@@ -3,8 +3,11 @@ import { Link, Outlet } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-// import person from "../../assets/images/person2.jpeg"
 import logo from "../../assets/images/logo.jpeg"
+
+
+
+
 library.add(fas);
 
 const Sidebar = ({ data}) => {

@@ -83,17 +83,17 @@ export const Header = () => {
 
                       <Link
                           href=""    
-                          className="block rounded  text-sm text-dark hover:opacity-70 dark:text-white mt-3 text-xl">
+                          className="block rounded  text-sm text-dark hover:text-custom-blue dark:text-white mt-3 text-xl">
                           Home
                       </Link>
                       <Link
                           href=""    
-                          className="block rounded  text-sm text-dark hover:opacity-70 dark:text-white mt-3 text-xl">
+                          className="block rounded  text-sm text-dark hover:text-custom-blue dark:text-white mt-3 text-xl">
                           About
                       </Link>
                       <Link
                           href=""    
-                          className="block rounded  text-sm text-dark hover:opacity-70 dark:text-white mt-3 text-xl">
+                          className="block rounded  text-sm text-dark hover:text-custom-blue dark:text-white mt-3 text-xl">
                           Contact
                       </Link>
                     
@@ -104,17 +104,17 @@ export const Header = () => {
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
                 <Link
-                  href="/signin"
-                  className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
+                  to="signin"
+                  className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block "
                 >
                   Sign In
                 </Link>
                 <Link
-  to="/signup"
-  className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-black hover:text-white hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
->
-  Sign Up
-</Link>
+                  to="/signup"
+                  className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-black hover:text-white hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
+                  >
+                      Sign Up
+                      </Link>
 
               </div>
             </div>

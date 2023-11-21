@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import imageP from '../../assets/images/myPic.jpeg';
+import imageP from '../../assets/images/myPicReduced.JPG';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
-export const Panels = () => {
+export const AddTeacher = () => {
     // Sample data to manage panels
     const [panels, setPanels] = useState([
         {
@@ -40,9 +40,9 @@ export const Panels = () => {
     ]);
 
     return (
-        <div className="p-8">
+        <div className="p-8 ml-32">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">All Panels</h1>
+                <h1 className="text-2xl font-bold">Teachers</h1>
                 <div>
                     <button className="bg-purple-500 text-white px-4 py-2 rounded">+ Add new</button>
                 </div>
@@ -73,7 +73,7 @@ export const Panels = () => {
                     {panels.map((panel) => (
                         <tr key={panel.id}>
                             <td className="border-none p-2 text-center flex items-center">
-                                <img src={imageP} alt="Profile" className="w-14 h-14 rounded-full mr-8" />
+                                <img src={imageP} alt="Profile" className="w-12 h-12 rounded-full mr-8" />
                                 {panel.name}
                             </td>
                             <td className="border-none p-2 text-center">{panel.department}</td>

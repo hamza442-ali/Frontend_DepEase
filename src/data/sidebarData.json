@@ -5,6 +5,7 @@
     "path": "/home",
     "submenus": []
   },
+
   {
     "label": "FYP Panel",
     "icon": "people-group",
@@ -24,15 +25,29 @@
         "label" : "Assign Panel",
         "path" : "/fypPanel/assign",
         "icon" : "user-plus"
-      }, {
-
-        "label" : "Make Announcement",
-        "path" : "/fypPanel/announcement",
-        "icon" : "fa-bullhorn"
-
       }
     ]
   },
+
+  {
+    "label": "Add Users",
+    "icon": "people-group",
+    "path": "/users",
+    "submenus": [
+      {
+        "label": "Add Teacher",
+        "path": "/users/addTeacher",
+        "icon": "add"
+      },
+      {
+        "label": "Add Student",
+        "path": "/users/addStudent",
+        "icon": "add"
+      }
+    ]
+  },
+
+  
   {
     "label": "Scheduling",
     "icon": "list-check",
@@ -58,5 +73,42 @@
         "icon": "file-lines"
       }
     ]
+  }, 
+  {
+
+    "label" : "FYP Projects",
+    "path" : "/fypProject",
+    "icon" : "fa-file",
+    "submenus": [
+
+      {
+        "label": "Add",
+        "path": "/fypProject/add",
+        "icon": "add"
+      },
+      {
+        "label": "Display ",
+        "path": "/fypProject/display",
+        "icon": "file-lines"
+      }
+
+    ]
+
+  },
+  {
+
+    "label" : "Make Announcement",
+    "path" : "/announcement",
+    "icon" : "fa-bullhorn",
+    "submenus": [
+
+      {
+        "label": "Add",
+        "path": "/announcement/add",
+        "icon": "add"
+      }
+
+    ]
+
   }
 ]

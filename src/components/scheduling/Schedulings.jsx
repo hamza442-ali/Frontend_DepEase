@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSort, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 
+import { CalendarFoucs } from './Calendar';
+
 
 
 const SelectInput = ({ options, value, onChange }) => (
@@ -77,6 +79,7 @@ export const Calendar = () => {
   };
 
   return (
+    <>
     <div className="container p-4 mx-auto my-8 bg-white rounded-lg shadow-lg ml-20 ">
       <div className="flex items-center mb-4">
         <SelectInput options={projectOptions} value={newSlot} onChange={setNewSlot} />
@@ -155,6 +158,10 @@ export const Calendar = () => {
         </table>
       </div>
     </div>
+    <h1 className='text-5xl ml-24' > Calender</h1>   
+    <CalendarFoucs/>
+
+    </>
   );
 };
 
