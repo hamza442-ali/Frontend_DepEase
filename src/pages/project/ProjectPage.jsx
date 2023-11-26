@@ -1,66 +1,71 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import ProjectList from "../../components/project/ProjectList";
 import person from "../../assets/images/person2.jpeg";
 import { useNavigate } from "react-router-dom";
 import AnnouncementModal from "../../components/announcement/AnnouncementModal"; 
+import axios from "axios";
+import { toast } from 'react-toastify';
+import NoDataFound from "../../components/handlers/NoDataFound";
 
-const projectsData = [
-    {
-      id: 1,
-      title: "Project 1",
-      problemStatement: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.",
-      problemSolution: "Consectetur adipiscing elit. Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.",
-      scope: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..",
-      members: [
-        { name: "Alice", avatar: person },
-        { name: "Bob", avatar: person },
-      ],
-      timeline: "1 month",
-      modules: "Module 1, Module 2",
-      teamLead: "Alice kob",
-      supervisor: "Jane Smith",
-      technologyUsed: "React, Node.js",
-    },
+
   
-    {
-      id: 2,
-      title: "Project 2",
-      problemStatement: "Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.",
-      problemSolution: "Consectetur adipiscing elit. Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.Consectetur adipiscing elit.",
-      scope: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..",
-      members: [
-        { name: "Alice", avatar: person },
-        { name: "Bob", avatar: person },
-      ],
-      timeline: "1 month",
-      modules: "Module 1, Module 2",
-      teamLead: "Alice kob",
-      supervisor: "Jane Smith",
-      technologyUsed: "React, Node.js",
-    },
-    // Add more sample projects here
-  ];
   const ProjectPage = () => {
     const navigate = useNavigate();
-    const [selectedProject, setSelectedProject] = useState(null); // State to track the selected project
+    const [selectedProject, setSelectedProject] = useState(null);
     const [isAnnouncementModalOpen, setAnnouncementModalOpen] = useState(false);
+   const [projectsData,setprojectsData]=useState([]);
   
+
+    const fetchData = async () => {
+      let teacher='TCH54321'
+      try {
+        const response = await axios.get(`http://localhost:3001/projects/getallmine/${teacher}`);
+        setprojectsData(response.data);
+      } catch (error) {
+        console.error('Error fetching  Projects:', error);
+        toast.error('Error fetching  Projects:', error);
+      }
+    };
+    useEffect(() => {
+      fetchData();
+    }, []); 
+  
+    
+
+
+
     const handleViewDetails = (project) => {
       setSelectedProject(project);
-      navigate(`/project/${project.id}`);
+      navigate(`/project/${project._id}`, { state: { projectsData }});
     };
   
     const handleViewEvaluation = (project) => {
-      navigate(`/evaluation/${project.id}`, { state: { project } });
+      navigate(`/evaluation/${project._id}`, { state: { projectsData } });
     };
   
+    const handleAnnouncementClick = (project) => {
+      setSelectedProject(project);
+      setAnnouncementModalOpen(true);
+    };
+  
+    // New function for handling progress button click
+    const handleShowProgress = (project) => {
+      setSelectedProject(project);
+      navigate(`/progress/${project._id}`, { state: { projectsData } });
+    };
+  
+    // New function for handling deliverables button click
+    const handleShowDeliverables = (project) => {
+      setSelectedProject(project);
+      navigate(`/deliverables/${project._id}`, { state: { projectsData } });
+    };
+  
+    
+    if (!projectsData) {
+      return <NoDataFound/>;  
+    }
 
-    // Inside ProjectPage.js
-const handleAnnouncementClick = (project) => {
-  setSelectedProject(project);
-  setAnnouncementModalOpen(true);
-};
-
+    
     return (
       <div className="container p-8 mx-auto">
         <ProjectList
@@ -68,8 +73,10 @@ const handleAnnouncementClick = (project) => {
           onViewDetails={handleViewDetails}
           onViewEvaluation={handleViewEvaluation}
           onAnnouncementClick={handleAnnouncementClick}
+          onShowDeliverables={handleShowDeliverables}
+          onShowProgress={handleShowProgress}
         />
-        {/* Render the AnnouncementModal component */}
+  
         {selectedProject && (
           <AnnouncementModal
             isOpen={isAnnouncementModalOpen}

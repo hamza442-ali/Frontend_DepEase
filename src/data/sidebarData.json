@@ -18,20 +18,28 @@
      
     ]
   },
+  
   {
-    "label": "Team Members",
-    "icon": "people-group",
-    "path": "/members",
+    "label": "Scheduler",
+    "icon": "info-circle",
+    "path": "/",
     "submenus": [
       {
-        "label": "Add",
-        "path": "/members/add",
+        "label": "Scheduler Manage",
+        "path": "/scheduler",
         "icon": "user-plus"
-      },
+      }
+    ]
+  },
+  {
+    "label": "Prject Ideas",
+    "icon": "info-circle",
+    "path": "/",
+    "submenus": [
       {
-        "label": "Manage",
-        "path": "/members/manage",
-        "icon": "user-gear"
+        "label": "Ideas Manage",
+        "path": "/ProjectIdeas",
+        "icon": "user-plus"
       }
     ]
   },

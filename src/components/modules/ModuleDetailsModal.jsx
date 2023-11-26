@@ -24,9 +24,6 @@ const ModuleDetailsModal = ({ module, onClose }) => {
             <span className="font-semibold text-gray-700">Status:</span> {module.status}
           </div>
           <div className="mb-2">
-            <span className="font-semibold text-gray-700">Type:</span> {module.type}
-          </div>
-          <div className="mb-2">
             <span className="font-semibold text-gray-700">Details:</span> {module.details}
           </div>
           {/* Add more details as needed */}
