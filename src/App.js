@@ -39,6 +39,7 @@ import { Post } from './components/announcement/announcement';
 import { AddStudent } from './components/users/AddStudent';
 
 import { ProjectCard } from './components/project/projectCard';
+import {EvaluationForm} from './components/evaluation/CreateEvaluation'
 
 // import { SmartTable}  from './components/checkNbalance/smartTable';
 // import  {File}  from './components/files/filePicker';
@@ -84,7 +85,8 @@ function App() {
           <Route path = "/users/addTeacher" element = {<AddTeacher/>}/>
           <Route path = "/users/addStudent" element = {<AddStudent/>}/>
           <Route path = "/fypProject/add" element =   {<ProjectCard  />}   /> 
-          {/* <Route path = "/signin" element = {<LoginPage/>}/> */}
+          <Route path = "/signin" element = {<LoginPage/>}/>
+          <Route path = "/eval/add" element = {<EvaluationForm/>}/>
           
       </Routes>
   </BrowserRouter>

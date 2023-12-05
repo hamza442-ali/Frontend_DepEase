@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-
 export const PanelCreation = () => {
   const [panelId, setPanelId] = useState('');
   const [teacherList, setTeacherList] = useState([]);
@@ -12,14 +10,12 @@ export const PanelCreation = () => {
   const [createdPanel, setCreatedPanel] = useState(null);
 
   const simulatedTeacherList = [
-
     { id: 1, name: 'Syed Muhammad Ali' },
     { id: 2, name: 'Zaheer Sani' },
     { id: 3, name: 'Mudasar Hussain' },
     { id: 4, name: 'Hammad Abbas' },
     { id: 5, name: 'Hussam Ather' },
     { id: 6, name: 'Atif Iqbal' },
-    
   ];
 
   useEffect(() => {
@@ -56,26 +52,22 @@ export const PanelCreation = () => {
       id: panelId,
       teachers: selectedTeachers,
     };
-  
 
     axios
       .post('http://localhost:3001/panel/createPanel', panelData)
       .then((response) => {
-      
         console.log('Response from the server:', response.data);
       })
       .catch((error) => {
-
         console.error('Error:', error);
       });
-  
+
     // Close the popup
     setIsPopUpOpen(false);
-  
+
     // Clear the selections
     setSelectedTeachers([]);
   };
-  
 
   return (
     <div className="flex h-screen ml-32">
@@ -108,19 +100,19 @@ export const PanelCreation = () => {
       <div className="w-3/4 p-6 bg-white shadow-md">
         <p>Selected Teachers:</p>
         <table className="w-full border-collapse border border-solid border-neutral-300">
-          <thead>
+          <thead className="bg-table-blue text-white">
             <tr>
-              <th className="border border-solid border-neutral-300 text-center">ID</th>
-              <th className="border border-solid border-neutral-300 text-center">Name</th>
-              <th className="border border-solid border-neutral-300 text-center">Actions</th>
+              <th className="border border-solid border-neutral-300 text-center px-4 py-2">ID</th>
+              <th className="border border-solid border-neutral-300 text-center px-4 py-2">Name</th>
+              <th className="border border-solid border-neutral-300 text-center px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {teacherList.map((teacher) => (
               <tr key={teacher.id}>
-                <td className="border border-solid border-neutral-300 text-center">{teacher.id}</td>
-                <td className="border border-solid border-neutral-300 text-center">{teacher.name}</td>
-                <td className="border border-solid border-neutral-300 text-center">
+                <td className="border border-solid border-neutral-300 text-center px-4 py-2">{teacher.id}</td>
+                <td className="border border-solid border-neutral-300 text-center px-4 py-2">{teacher.name}</td>
+                <td className="border border-solid border-neutral-300 text-center px-4 py-2">
                   <button
                     onClick={() => handleTeacherSelection(teacher)}
                     className={`px-2 py-1 rounded ${
@@ -148,15 +140,15 @@ export const PanelCreation = () => {
             <table className="w-full border-collapse border border-solid border-neutral-300">
               <thead>
                 <tr>
-                  <th className="border border-solid border-neutral-300 text-center">ID</th>
-                  <th className="border border-solid border-neutral-300 text-center">Name</th>
+                  <th className="border border-solid border-neutral-300 text-center px-4 py-2">ID</th>
+                  <th className="border border-solid border-neutral-300 text-center px-4 py-2">Name</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedTeachers.map((teacher) => (
                   <tr key={teacher.id}>
-                    <td className="border border-solid border-neutral-300 text-center">{teacher.id}</td>
-                    <td className="border border-solid border-neutral-300 text-center">{teacher.name}</td>
+                    <td className="border border-solid border-neutral-300 text-center px-4 py-2">{teacher.id}</td>
+                    <td className="border border-solid border-neutral-300 text-center px-4 py-2">{teacher.name}</td>
                   </tr>
                 ))}
               </tbody>

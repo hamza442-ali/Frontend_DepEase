@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-export const AddStudentForm = ({ onClose, onSubmit }) => {
+export const AddTeacherForm = ({ onClose, onSubmit }) => {
   const [newStudent, setNewStudent] = useState({
-
     name: '',
-    rollNumber: '',
-    degree: '',
-    section: '',
+    employeeId: '',  // Corrected from 'employeeId' to match the state
+    education: '',   // Corrected from 'degree' to match the state
+    mobile: '',
     gender: '',
-    
   });
 
   const handleChange = (e) => {
@@ -30,7 +28,7 @@ export const AddStudentForm = ({ onClose, onSubmit }) => {
 
   return (
     <animated.div style={formAnimation} className="fixed top-0 right-0 h-full w-1/3 bg-white shadow-lg p-8">
-      <h2 className="text-2xl font-bold mb-4 text-black">Add Student</h2>
+      <h2 className="text-2xl font-bold mb-4 text-black">Add Teacher</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -44,76 +42,49 @@ export const AddStudentForm = ({ onClose, onSubmit }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Roll Number</label>
+          <label className="block text-sm font-medium text-gray-700">Employee Id</label>
+          <input
+            type="text"
+            name="employeeId"
+            value={newStudent.employeeId}
+            onChange={handleChange}
+            className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Education</label>
+          <input
+            type="text"
+            name="education"
+            value={newStudent.education}
+            onChange={handleChange}
+            className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Mobile</label>
           <input
             type="text"
             name="mobile"
-            value={newStudent.rollNumber}
-            onChange={handleChange}
-            className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Degree</label>
-          <input
-            type="text"
-            name="email"
-            value={newStudent.degree}
-            onChange={handleChange}
-            className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Section</label>
-          <input
-            type="text"
-            name="rollNumber"
-            value={newStudent.section}
+            value={newStudent.mobile}
             onChange={handleChange}
             className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
           />
         </div>
 
-
-        {/* <div>
-            <label className="block text-sm font-medium text-gray-700">Department</label>
-            <div className="relative flex items-center">
-                <select
-                name="department"
-                value={newStudent.department}
-                onChange={handleChange}
-                className="mt-1 p-2 border rounded-l w-full bg-slate-700 text-white focus:outline-none focus:ring "
-                >
-                <option value="">Select Department</option>
-                <option value="Software Engineering">Software Engineering</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Artificial Intelligence">Artificial Intelligence</option>
-                <option value="Data Science">Data Science</option>
-                </select>
-                <input
-                type="text"
-                name="department"
-                value={newStudent.department}
-                onChange={handleChange}
-                placeholder="Or enter custom department"
-                className="p-2 border rounded-r border-l-0 focus:outline-none focus:ring focus:border-blue-500"
-                />
-            </div>
-        </div> */}
-
         <div>
-                <label className="  block text-sm font-medium text-gray-600">Gender</label>
-                <select
-                    name="gender"
-                    value={newStudent.gender}
-                    onChange={handleChange}
-                    className="mt-1 p-2 border rounded w-full bg-slate-800 text-white "
-                >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
+          <label className="  block text-sm font-medium text-gray-600">Gender</label>
+          <select
+            name="gender"
+            value={newStudent.gender}
+            onChange={handleChange}
+            className="mt-1 p-2 border rounded w-full bg-slate-800 text-white "
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
 
         <div className="flex justify-end space-x-2">
           <button

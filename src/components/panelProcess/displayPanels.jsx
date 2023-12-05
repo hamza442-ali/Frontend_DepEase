@@ -31,7 +31,6 @@ export const PanelList = () => {
         .delete(`http://localhost:3001/panel/deletePanelbyID/${panelId}`)
         .then((response) => {
           if (response.status === 200) {
-           
             setPanels((prevPanels) => prevPanels.filter((panel) => panel.id !== panelId));
           } else {
             console.error('Failed to delete panel.');
@@ -42,17 +41,16 @@ export const PanelList = () => {
         });
     }
   };
-  
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="ml-32">
+    <div className="mx-32  ">
       <h1 className="text-2xl font-bold mb-4">Panel List</h1>
-      <table className="w-full border-collapse border border-solid border-neutral-300">
-        <thead>
+      <table className="w-full border-collapse border border-solid border-neutral-300 rounded-lg shadow-lg">
+        <thead className="bg-table-blue text-white">
           <tr>
             <th className="border border-solid border-neutral-300 px-4 py-2">ID</th>
             <th className="border border-solid border-neutral-300 px-4 py-2">Teachers</th>
@@ -60,44 +58,44 @@ export const PanelList = () => {
           </tr>
         </thead>
         <tbody>
-  {panels.map((panel) => (
-    <tr key={panel.id}>
-      <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{panel.id}</td>
-      <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="border border-solid border-neutral-300 px-4 py-2">Name</th>
-              <th className="border border-solid border-neutral-300 px-4 py-2">ID</th>
+          {panels.map((panel) => (
+            <tr key={panel.id} className="border-t hover:bg-gray-100">
+              <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{panel.id}</td>
+              <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+                <table className="w-full">
+                  <thead>
+                    <tr>
+                      <th className="border border-solid border-neutral-300 px-4 py-2">Name</th>
+                      <th className="border border-solid border-neutral-300 px-4 py-2">ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {panel.teachers.map((teacher, index) => (
+                      <tr key={index}>
+                        <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{teacher.name}</td>
+                        <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{teacher.id}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </td>
+              <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+                <button
+                  onClick={() => handleEdit(panel.id)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(panel.id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {panel.teachers.map((teacher, index) => (
-              <tr key={index}>
-                <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{teacher.name}</td>
-                <td className="border border-solid border-neutral-300 px-4 py-2 text-center">{teacher.id}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </td>
-      <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-        <button
-          onClick={() => handleEdit(panel.id)}
-          className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDelete(panel.id)}
-          className="bg-red-500 text-white px-4 py-2 rounded"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+          ))}
+        </tbody>
       </table>
     </div>
   );
