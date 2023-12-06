@@ -20,7 +20,30 @@ const MyComponent = () => {
   const [selectedRequirement, setSelectedRequirement] = useState(null);
   const projectData = useSelector(state => state.project);
 
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,9 +72,9 @@ const MyComponent = () => {
     setShowSidebar(false);
   };
 
-  const handleAttachment = (index) => {
-    // Handle attachment button click
-  };
+  // const handleAttachment = (index) => {
+  //   // Handle attachment button click
+  // };
 
   const handleDelete = async (index) => {
     const requirement = filteredData[index];
@@ -68,9 +91,6 @@ const MyComponent = () => {
     }
   };
 
-  const handleSubmit = (index) => {
-    // Handle submit button click
-  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -105,13 +125,6 @@ const MyComponent = () => {
   return (
     
     <div className="container mx-auto ">
-      {/* <div className="container w-full h-16 pt-7 bg-zinc-100">
-        <h1 className="mb-3 ml-4 text-2xl text-blue-300 ">Requirement Manage</h1>
-        <p className="ml-4 text-slate-700">Home / Requirements / Manage</p>
-      </div>
-
-
-       */}
 
       <div className="w-full mt-10">
 
@@ -190,9 +203,9 @@ const MyComponent = () => {
         <RequirementTable
           data={filteredData}
           onEdit={handleEdit}
-          onAttachment={handleAttachment}
+          // onAttachment={handleAttachment}
           onDelete={handleDelete}
-          onSubmit={handleSubmit}
+          
         />
         {showSidebar && selectedRequirement && (
           <EditRequirementSidebar

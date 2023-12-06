@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit,faTrash, faLocationArrow,faPaperclip  } from '@fortawesome/free-solid-svg-icons';
+import { faEdit,faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const RequirementTable = ({ data, onEdit, onAttachment, onDelete, onSubmit }) => {
+const RequirementTable = ({ data, onEdit, onAttachment, onDelete }) => {
 
   const formatDate = (dateTimeString) => {
     const dateOnly = dateTimeString.split("T")[0];
@@ -77,35 +77,21 @@ const RequirementTable = ({ data, onEdit, onAttachment, onDelete, onSubmit }) =>
                 <span className="ml-1">{row.status}</span>
               </span>
             </td>
-            <td className="px-6 py-4 whitespace-wrap">
+            <td className="px-10 py-4 whitespace-wrap">
               <button
                 className="mr-2 text-indigo-600 hover:text-indigo-900"
                 onClick={() => onEdit(index)}
               >
                 <FontAwesomeIcon icon={faEdit} />
               </button>
-              <label
-                className="mr-2 text-indigo-600 cursor-pointer hover:text-indigo-900"
-              >
-               <FontAwesomeIcon icon={faPaperclip} />
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => onAttachment(e.target.files[0], index)}
-                />
-              </label>
+             
               <button
                 className="mr-2 text-red-600 hover:text-red-900"
                 onClick={() => onDelete(index)}
               >
                <FontAwesomeIcon icon={faTrash} />
               </button>
-              <button
-                className="text-green-600 hover:text-green-900"
-                onClick={() => onSubmit(index)}
-              >
-                <FontAwesomeIcon icon={faLocationArrow} />
-              </button>
+              
             </td>
           </tr>
         ))}

@@ -3,7 +3,18 @@
     "label": "Home",
     "icon": "home",
     "path": "/home",
-    "submenus": []
+    "submenus": [
+      {
+        "label": "Dashboard",
+        "path": "/dashboard",
+        "icon": "add"
+      },
+      {
+        "label": "Documents",
+        "path": "/doc",
+        "icon": "add"
+      }
+    ]
   },
   {
     "label": "Requirements",
@@ -23,26 +34,21 @@
     ]
   },
   {
-    "label": "Team Members",
+    "label": "Resource Request",
     "icon": "people-group",
     "path": "/members",
     "submenus": [
       {
         "label": "Add",
-        "path": "/members/add",
+        "path": "/request/approval",
         "icon": "user-plus"
-      },
-      {
-        "label": "Manage",
-        "path": "/members/manage",
-        "icon": "user-gear"
       }
     ]
   },
 
   {
     "label": "Resoucre Allocation",
-    "icon": "people-group",
+    "icon": "screwdriver-wrench",
     "path": "/",
     "submenus": [
       {
@@ -60,7 +66,7 @@
 
   {
     "label": "Proposal",
-    "icon": "info-circle",
+    "icon": "file-import",
     "path": "/",
     "submenus": [
       {
@@ -73,7 +79,7 @@
 
   {
     "label": "Modules And Deliverables",
-    "icon": "info-circle",
+    "icon": "folder-tree",
     "path": "/",
     "submenus": [
       {
@@ -88,7 +94,30 @@
       }
       
     ]
+  },
+  {
+    "label": "Task Board",
+    "icon": "square-check",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Task Board",
+        "path": "/board",
+        "icon": "user-plus"
+      }
+    ]
+  },
+
+  {
+    "label": "Settings",
+    "icon": "right-from-bracket",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Logout",
+        "path": "/logout",
+        "icon": "right-from-bracket"
+      }
+    ]
   }
 ]
-
-

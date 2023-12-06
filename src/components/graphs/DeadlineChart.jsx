@@ -22,8 +22,6 @@ const DeadlineChart = (props) => {
       deadlines: deadlines,
     };
   });
-  
-  console.log(monthlyData);
 
 
   return (

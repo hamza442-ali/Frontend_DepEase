@@ -19,6 +19,35 @@ function ManageDeliverables() {
 
   const [deliverables, setDeliverables] = useState([]);
 
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+
+
+
+
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/modules/getmine/${projectData.ProjectId}`);
@@ -31,7 +60,7 @@ function ManageDeliverables() {
     try {
       const response = await axios.get(`http://localhost:3001/deliverables/getmine/${projectData.ProjectId}`);
       setDeliverables(response.data);
-      console.log(deliverables);
+      
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Error fetching requests:', error);
@@ -283,7 +312,7 @@ const onupdateModule = async (updatedModule) => {
     <div className="container mx-auto mt-10">
        <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Delieverables </h1>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 ml-28 gap-4">
         <div className="top-0 col-span-1">
           <h1 className="mb-4 text-xl">Modules</h1>
           {modules.map((module) => (

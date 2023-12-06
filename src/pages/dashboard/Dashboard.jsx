@@ -3,8 +3,6 @@ import TeamMemberCard from '../../components/dashboard/TeamMemberCard';
 import CircleProgressChart from '../../components/graphs/CircleProgressChart';
 import BarChartComponent from '../../components/graphs/BarChart';
 import AssignedRequirementsCard from '../../components/dashboard/AssignedRequirementsCard';
-import WorkDistributionChart from '../../components/graphs/WorkDistributionChart';
-import MonthlyRequirementsChart from '../../components/graphs/MonthlyRequirementsChart';
 import DeadlineChart from '../../components/graphs/DeadlineChart';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -17,6 +15,30 @@ const Dashboard = () => {
   const [getRequirements, setRequirements] = useState([]);
 
   const projectData = useSelector(state => state.project);
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
 
   const fetchData = async () => {
     try {
@@ -35,10 +57,11 @@ if(response.status===200){
       .filter(response => response.status === 200)
       .map(response => response.data);
   
-      console.log("holaaa");
-    console.log(teammatesData);
+     
     const formattedData = teammatesData.map(innerArray => innerArray[0]);
     setTeamMembers(formattedData)
+
+    
     dispatch(setGroupData(formattedData)); // Store group data in Redux
 
   } catch (error) {
@@ -69,10 +92,6 @@ if(response.status===200){
   if (!projectData) {
     return <div className=' ml-96'>Loading...</div>; // or handle the loading state in your desired way
   }
-
-
-  
-
 
 // mechanism for  circle progres chart component
   const totalInProgress = getRequirements.filter(
@@ -108,9 +127,9 @@ if(response.status===200){
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2">
-        <div className="p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold">Work Distribution</h2>
-          <WorkDistributionChart data={getRequirements} />
+      <div className="p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="mb-4 text-2xl font-semibold">Pending This Week</h2>
+          <AssignedRequirementsCard  data={getRequirements} />
         </div>
         <div className="p-6 bg-white rounded-lg shadow-lg">
           <h2 className="mb-4 text-2xl font-semibold">Deliverable Deadlines</h2>
@@ -118,14 +137,6 @@ if(response.status===200){
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2">
-        <div className="p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold">Pending This Week</h2>
-          <AssignedRequirementsCard  data={getRequirements} />
-        </div>
-        <div className="p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold">Requirements Completed </h2>
-          <MonthlyRequirementsChart />
-        </div>
       </div>
     </div>
   );

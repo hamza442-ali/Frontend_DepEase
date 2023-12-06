@@ -4,19 +4,15 @@ import person from "../../assets/images/person2.jpeg"
 import logo from "../../assets/images/logo.jpeg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { setProjectData } from "../../redux/slices/project/projectSlice";
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 library.add(fas);
 
 const Sidebar = ({ data}) => {
   const [isExtended, setIsExtended] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
-
-  const toggleSidebar = () => {
-    setIsExtended(!isExtended);
-  };
+  const groupData = useSelector(state => state.group);
+  
 
   const handleMouseEnter = () => {
     setIsExtended(true);
@@ -29,45 +25,6 @@ const Sidebar = ({ data}) => {
   const handleMenuClick = (index) => {
     setActiveMenu(activeMenu === index ? null : index);
   };
-
-
-  // const [groupdata, setData] = useState([]);
-
-
-  // const projectData = useSelector((state) => state.project);
-
-
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:3001/group/getone/${projectData.group}`); 
-  //     setData(response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []); 
-  
-
-  // if (!projectData) {
-  //   return <div className=' ml-96'>Loading...</div>; // or handle the loading state in your desired way
-  // }
-
-  const teamMembers = [
-    {
-      name: "Ali Hamza",
-      email: "alihamza@gmail.com",
-      avatarUrl: person,
-    },
-    {
-      name: "Mahad Rahat",
-      email: "mahadrahat@gmail.com",
-      avatarUrl: person,
-    },
-    // Add more team members as needed
-  ];
 
   return (
     <nav
@@ -83,8 +40,8 @@ const Sidebar = ({ data}) => {
         {isExtended ? (
           <div className="flex items-center">
             <div className="mr-2">
-              <FontAwesomeIcon icon={logo} size="lg" />
-              {/* <img src={logo} alt="DepEase" className="w-10 h-8 mr-2 rounded-full" /> */}
+              {/* <FontAwesomeIcon icon={logo} size="lg" /> */}
+              <img src={logo} alt="DepEase" className="w-8 h-8 mr-2 rounded-full" />
             </div>
             <div className="font-semibold">Dep Ease</div>
           </div>
@@ -132,7 +89,7 @@ const Sidebar = ({ data}) => {
                         className="flex items-center py-3 pl-12 pr-4 hover:bg-blue-600 hover:text-white"
                       >
                         <span className="mr-2">
-                          <FontAwesomeIcon icon={submenu.icon} size="lg" />
+                          <h1> - </h1>
                         </span>
                         <span>{submenu.label}</span>
                       </Link>
@@ -149,16 +106,16 @@ const Sidebar = ({ data}) => {
         <div className="p-4 ">
           <h3 className="mb-2 text-xl font-semibold">Team Members</h3>
           <ul>
-            {teamMembers.map((member, index) => (
+            {Object.values(groupData).filter(value => typeof value === 'object').map((member, index) => (
               <li key={index} className="flex items-center mb-2">
                 <img
-                  src={member.avatarUrl}
-                  alt={`${member.name}'s avatar`}
+                  src={person}  // for now hardcode until we find a free storage for avatars
+                  alt={`${member.student_name}'s avatar`}
                   className="w-8 h-8 mr-2 rounded-full"
                 />
                 <div>
-                  <div className="font-semibold">{member.name}</div>
-                  <div className="text-sm">{member.email}</div>
+                  <div className="font-semibold">{member.student_name}</div>
+                  <div className="text-sm">{member.email_address}</div>
                 </div>
               </li>
             ))}

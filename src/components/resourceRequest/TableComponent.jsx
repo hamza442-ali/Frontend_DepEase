@@ -6,8 +6,38 @@ const TableComponent = () => {
   const [data, setData] = useState([]);
   const projectData = useSelector(state => state.project);
   const isAdmin = true; // Set to true if the user is an admin
+
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+
+
+
+
   const handleDelete = async (id, adminStatus) => {
-    if (isAdmin && adminStatus !== 'InProgress') {
+    if (isAdmin && adminStatus !== 'InProgress' && adminStatus !== 'Approved' ) {
       try {
         await axios.delete(`http://localhost:3001/resource/delete/${id}`);
         // Update the state after successful deletion
@@ -59,7 +89,7 @@ const TableComponent = () => {
           </thead>
           <tbody>
             {data.map((item, index) => (
-              <tr key={item.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+              <tr key={item._id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                 <td className="py-3 px-4">{item.requestType}</td>
                 <td className="py-3 px-4 " >{formatISODateToReadable(item.startDate)}</td>
                 <td className="py-3 px-4">{formatISODateToReadable(item.endDate)}</td>

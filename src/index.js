@@ -5,9 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import  store  from './redux/store'
+import  { store, persistor }  from './redux/store'
 import { Provider } from 'react-redux'  
-//npm install @reduxjs/toolkit react-redux
+import { PersistGate } from 'redux-persist/integration/react';
+//npm install @reduxjs/toolkit react-redux redux-persist
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,9 +17,11 @@ root.render(
   <React.StrictMode>
   {/*  abhi hamare components ke passs access ha hamare store ka */}
   <Provider store={store}>  
+  <PersistGate loading={null} persistor={persistor}>
   <DndProvider backend={HTML5Backend}>
     <App />
     </DndProvider>
+    </PersistGate>
     </Provider>
   </React.StrictMode>
   

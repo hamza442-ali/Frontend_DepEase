@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Step1 from '../../components/proposal/Step1';
 import Step2 from '../../components/proposal/Step2';
 import Step3 from '../../components/proposal/Step3';
@@ -17,6 +17,33 @@ const StepForm = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState('');
   const studentData = useSelector((state) => state.student);
+
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+
 
 
   const handleNext = (data) => {

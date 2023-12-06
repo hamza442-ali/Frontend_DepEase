@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setStudentData } from "../../redux/slices/student/studentSlice";
@@ -12,46 +12,71 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
   const handleLogin = async () => {
     
     try {
-      const response = await axios.post("http://localhost:3001/student/login", {
+      const response = await axios.post("http://localhost:3001/login", {
         email_address,
         password,
       });
-  
+      const { student, token } = response.data;
+
       if (response.status === 200) {
         // Successful login, redirect to Dashboard Page
-        dispatch(setStudentData(response.data)); // Store student data in Redux
-        let id = response.data.registration_number;
+        dispatch(setStudentData(student)); // Store specific student data in Redux
+        let id = student.registration_number;
   
+      // Save the token in localStorage or a secure storage method
+      localStorage.setItem('token', token);
+
         try {
           const response1 = await axios.get(`http://localhost:3001/group/getone/${id}`);
           if (response1.status === 200) {
             const group = response1.data._id;
-              
+
             try {
               const response2 = await axios.get(`http://localhost:3001/projects/getone/${group}`);
               if (response2.status === 200) {
                 // console.log(response2.data[0])
                 dispatch(setProjectData(response2.data[0])); // Store project data in Redux
-              } else {
-                console.error("Error fetching project data:", response2.statusText);
-              }
+                navigate('/dashboard'); // Use navigate to redirect to the dashboard route
+              } 
             } catch (error) {
               console.error("Error fetching project data:", error);
             }
-          } else {
-            console.error("Error fetching group data:", response1.statusText);
-          }
+          } 
         } catch (error) {
-          console.error("Error fetching group data:", error);
+          console.error("you have no group yet:", error);
+            navigate('/proposal');
         }
   
-        navigate('/dashboard'); // Use navigate to redirect to the dashboard route
-      } else {
-        setError("Invalid credentials. Please try again.");
-      }
+        
+      } 
     } catch (error) {
       setError("Error occurred. Please try again later.");
     }

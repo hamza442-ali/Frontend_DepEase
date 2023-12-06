@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
+
 const Step1 = ({ onNext }) => {
   const [title, setTitle] = useState('');
   const [selectedSupervisor, setSelectedSupervisor] = useState('');
@@ -9,28 +11,24 @@ const Step1 = ({ onNext }) => {
   const [problemStatement, setProblemStatement] = useState('');
   const [error, setError] = useState('');
   const [ProjectType, setSelectedProjectType] = useState('');
-  const supervisors = [
-    { id: 1, name: 'Supervisor 1' },
-    { id: 2, name: 'Supervisor 2' },
-    // Add more supervisors if needed
-  ];
-
+ 
+ 
   const projectTypes = ["Development", "Research and Development"];
-  // const [loading, setLoading] = useState(true);
+  const [supervisors, setSupervisors] = useState([]);
 
-  // useEffect(() => {
-  //   // Fetch supervisors from the backend when the component mounts
-  //   axios.get('/api/supervisors') // Replace '/api/supervisors' with the actual API endpoint
-  //     .then(response => {
-  //       setSupervisors(response.data); // Assuming the response contains an array of supervisors
-  //       setLoading(false);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching supervisors:', error);
-  //       setLoading(false);
-  //     });
-  // }, []); 
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/teacher/getall`);
+      setSupervisors(response.data.data);
+    } catch (error) {
+      console.error('Error fetching  teachers:', error);
+      toast.error('Error fetching  teachers:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []); 
   
   const handleNext = () => {
     if (title && selectedSupervisor && problemStatement && teamLeadId && teammate1Id && teammate2Id && ProjectType) {
@@ -87,8 +85,8 @@ const Step1 = ({ onNext }) => {
         >
           <option value="">Select a supervisor</option>
           {supervisors.map((supervisor) => (
-            <option key={supervisor.id} value={supervisor.name}>
-              {supervisor.name}
+            <option key={supervisor._id} value={supervisor.registration_number}>
+              {supervisor.teacher_name}
             </option>
           ))}
         </select>

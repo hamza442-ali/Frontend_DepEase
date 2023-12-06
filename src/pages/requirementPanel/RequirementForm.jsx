@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import FileInput from '../../components/fileinput/FileInput';
 import SelectInput from '../../components/selectinput/SelectInput';
 import TextAreaInput from '../../components/textareainput/TextAreaInput';
 import TextInput from '../../components/textinput/TextInput';
@@ -16,7 +15,7 @@ const Form = () => {
   const [deadline, setDeadline] = useState('');
   const [assignedTo, setAssignedTo] = useState([]);
   const [comments, setComment] = useState([]);
-  const [attachments, setAttachment] = useState('');
+  // const [attachments, setAttachment] = useState('');
   const [description, setRequirement] = useState('');
   const [projectid, setprojectid] = useState(projectData.ProjectId);
   
@@ -29,15 +28,35 @@ const Form = () => {
     setDeadline('');
     setAssignedTo([]);
     setComment([]);
-    setAttachment('');
+    // setAttachment('');
     setRequirement('');
   };
   
 
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
 
 
-  // console.log("blah balh");
-  // console.log(groupData);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,7 +77,7 @@ const Form = () => {
       formData.append('status', status);
       formData.append('description', description);
       formData.append('deadline', deadline);
-      formData.append('attachments', attachments); 
+      // formData.append('attachments', attachments); 
       if(comments.length !== 0){ 
          const commentObj = { content: comments, createdBy: studentData.student_name };
          formData.append('comments', JSON.stringify([commentObj]));
@@ -80,17 +99,17 @@ const Form = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setAttachment(file);
-  };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setAttachment(file);
+  // };
 
   return (
-    <div className='h-full ml-64 '>
+    <div className='h-full ml-28 '>
      
 
       <div className="container py-8 mx-auto">
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
+        <form onSubmit={handleSubmit} className="max-w-lg mx-auto ">
 
        
 
@@ -135,7 +154,7 @@ const Form = () => {
             onChange={(e) => setRequirement(e.target.value)}
           />
 
-          <FileInput label="Attachment" onChange={handleFileChange} />
+          {/* <FileInput label="Attachment" onChange={handleFileChange} /> */}
 
           <button
             type="reset"

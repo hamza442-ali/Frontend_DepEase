@@ -7,10 +7,7 @@ import {
 import Home from './pages/home/Home';
 import MainLayout from './pages/mainLayout/MainLayout ';
 import Navbar from './components/Navbar/Navbar';
-// import About from './About';
-// import Contact from './Contact';
-import MemberPage from "./pages/membermanage/MemberPage.jsx"
-import Teammates from './pages/managemember/Teammates';
+import RequestApprovalPage from "./pages/membermanage/RequestApprovalPage.jsx"
 import RequirementForm from "./pages/requirementPanel/RequirementForm.jsx"
 import ManageRequirements from './pages/managerequirements/ManageRequirements';
 import { ToastContainer } from 'react-toastify';
@@ -24,58 +21,47 @@ import ViewFYPEvaluationPage from './pages/evaluation/FypEvaluation';
 import EmailPage from './pages/email/Email';
 import PageInfo from './components/PageInfo/PageInfo';
 import Dashboard from './pages/dashboard/Dashboard';
-import { useSelector } from 'react-redux';
-import { selectDarkMode } from './redux/slices/theme/themeSlice'; // Adjust the import path based on your project structure
 import TableComponent from './components/resourceRequest/TableComponent';
 import Login from './pages/signin/Login';
 import ProjectDetails from './pages/projectDetails/ProjectDetails.jsx';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx';
+import LogoutPage from './pages/signin/Logout.jsx';
 
-
-
-const routes = [
-  { path: '/', name: 'Home' },
-  { path: '/eval', name: 'Evaluation' },
-  { path: '/email', name: 'Email' },
-  // ... add more routes as needed
-];
 
 
 function App() {
 
-  const isDarkMode = useSelector(selectDarkMode);
   return (
     <BrowserRouter>
-    <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
+    
     <Navbar/>
     <ToastContainer />
     <MainLayout />
     <PageInfo/>
     <Routes>
     <Route path="/" element={<Login/>} />
-    <Route path="/detail" element={<ProjectDetails/>} />
-    <Route path="/home" element={<Home />} />
-    <Route path="/evaluation" element={<ViewFYPEvaluationPage/>} />
-    <Route path="/email" element={<EmailPage/>} />
-    <Route path="/deliverable" element={<ManageDelieverables/>} />
-    <Route path="/board" element={<Board/>} />
-    <Route path="/resourceForm" element={<StudentResourceRequest/>} />
-    <Route path="/doc" element={<DocumentPreview/>} />
-    <Route path="/members/add" element={<MemberPage/>} />
-    <Route path="/requirement/display" element={<ManageRequirements  />}/>
-    <Route path="/requirement/add" element={<RequirementForm />}/>
-    <Route path="/proposal" element={<ProposalForm/>} />
-    <Route path="/members/manage" element={<Teammates/>}/>
-    <Route path="/dashboard" element={<Dashboard/>}/>
-    <Route path="/resourceManage" element={<TableComponent/>}/>
+    <Route path="/logout" element={<PrivateRoute Component={LogoutPage}/>} />
+    <Route path="/announce" element={<PrivateRoute Component={Home}/>} />
+    <Route path="/detail" element={<PrivateRoute Component={ProjectDetails}/>} />
+    <Route path="/evaluation" element={<PrivateRoute Component={ViewFYPEvaluationPage}/>} />
+    <Route path="/email" element={<PrivateRoute Component={EmailPage}/>} />
+    <Route path="/deliverable" element={<PrivateRoute Component={ManageDelieverables}/>} />
+    <Route path="/board" element={<PrivateRoute Component={Board}/>} />
+    <Route path="/resourceForm" element={<PrivateRoute Component={StudentResourceRequest}/>} />
+    <Route path="/doc" element={<PrivateRoute Component={DocumentPreview}/>} />
+    <Route path="/request/approval" element={<PrivateRoute Component={RequestApprovalPage}/>} />
+    <Route path="/requirement/display" element={<PrivateRoute Component={ManageRequirements } />}/>
+    <Route path="/requirement/add" element={<PrivateRoute Component={RequirementForm} />}/>
+    <Route path="/proposal" element={<PrivateRoute Component={ProposalForm}/>} />
+    <Route path="/dashboard" element={<PrivateRoute Component={Dashboard}/>}/>
+    <Route path="/resourceManage" element={<PrivateRoute Component={TableComponent}/>}/>
       </Routes>
-      </div>
     </BrowserRouter>
   );
 }
 
 export default App;
-//npm install react-icons react-hook-form
-//npm install framer-motion
+
 
 
 
