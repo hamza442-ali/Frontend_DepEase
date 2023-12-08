@@ -41,6 +41,8 @@ import { AddStudent } from './components/users/AddStudent';
 import { ProjectCard } from './components/project/projectCard';
 import {EvaluationForm} from './components/evaluation/CreateEvaluation'
 
+import { Grid } from './components/checkNbalance/grid';
+
 // import { SmartTable}  from './components/checkNbalance/smartTable';
 // import  {File}  from './components/files/filePicker';
 
@@ -87,6 +89,7 @@ function App() {
           <Route path = "/fypProject/add" element =   {<ProjectCard  />}   /> 
           <Route path = "/signin" element = {<LoginPage/>}/>
           <Route path = "/eval/add" element = {<EvaluationForm/>}/>
+          <Route path = '/grid' element = {<Grid/>}/>
           
       </Routes>
   </BrowserRouter>

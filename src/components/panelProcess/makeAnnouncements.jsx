@@ -72,7 +72,7 @@ export const AdminAnnouncement = () => {
   };
 
   return (
-    <Paper className="p-4 mx-4 mx-40 rounded-lg shadow-lg">
+    <Paper className="p-4 mx-4 mx-40 rounded-lg shadow-lg mt-14">
 <img src={announcImg} alt="Announcement"  className=" rounded-lg shadow-lg mb-4" />
 
 

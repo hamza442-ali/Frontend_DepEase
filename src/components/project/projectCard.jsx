@@ -28,7 +28,7 @@ export const ProjectCard = () => {
 
 
 
-    <div className="p-16 ml-32">
+    <div className="p-16 ml-32 mt-14">
           {/* <img src={projectImg } alt="Announcement"  className="  p-4  rounded-lg shadow-lg mb-4" /> */}
 
     <div className="flex justify-between items-center mb-4">

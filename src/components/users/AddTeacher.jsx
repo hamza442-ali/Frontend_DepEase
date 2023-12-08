@@ -14,8 +14,7 @@ export const AddTeacher = () => {
       gender: 'Male',
       education: 'M.COM., P.H.D.',
       mobile: '123 456 7890',
-    },
-    // Add more data as needed
+    }
   ]);
 
   const [showForm, setShowForm] = useState(false);
@@ -26,16 +25,22 @@ export const AddTeacher = () => {
   };
 
   return (
-    <div className="p-8 ml-32">
-      <h1 className="text-2xl font-bold">Teachers</h1>
-      <div className="p-8 ">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold"></h1>
-          <div>
-            <button onClick={() => setShowForm(true)} className="bg-blue-500 text-white px-4 py-2 rounded">
+    <>
+    <div className='p-8 ml-32 mt-14  rounded-3xl shadow-lg mr-32   bg-neutral-100'>
+    <h1 className="text-2xl font-bold">Add Teachers
+    
+    <button onClick={() => setShowForm(true)} className="bg-blue-500 text-white px-4 py-2 rounded float-right text-base font-normal">
               + Add new
             </button>
-          </div>
+    
+    </h1>
+
+    </div>
+    <div className="p-8 ml-32 mt-4 rounded-3xl shadow-lg mr-32   bg-neutral-100">
+      
+      <div className="p-8 ">
+        <div className="flex justify-between items-center mb-4">
+          
         </div>
         {showForm && <AddTeacherForm onClose={() => setShowForm(false)} onSubmit={handleAddTeacher} />}
         <div className="flex justify-between mb-4">
@@ -45,7 +50,7 @@ export const AddTeacher = () => {
           </div>
           <div className="flex items-center"></div>
         </div>
-        <table className="w-full border-collapse border">
+        <table className="w-full border-collapse border bg-white">
           <thead className="bg-blue-500 text-white">
             <tr>
               <th className="p-3 text-center">Name</th>
@@ -78,6 +83,7 @@ export const AddTeacher = () => {
         </table>
       </div>
     </div>
+    </>
   );
 };
 

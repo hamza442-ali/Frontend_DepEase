@@ -47,8 +47,15 @@ export const AddStudent = () => {
   };
 
   return (
-    <div className="p-8 ml-32">
-      <h1 className="text-2xl font-bold">Student</h1>
+
+    <>
+
+<div className='p-8 ml-32 mt-14  rounded-3xl shadow-lg mr-32   bg-neutral-100'>
+    <h1 className="text-2xl font-bold">Add Students</h1>
+
+    </div>
+
+    <div className="p-8 ml-32 mt-4 rounded-3xl shadow-lg  mr-32  bg-neutral-100">
 
       <div className="p-8">
         <div className="flex justify-between items-center mb-4">
@@ -62,6 +69,7 @@ export const AddStudent = () => {
         
         <div className="flex justify-between mb-4 ">
           <div className="flex">
+            
             <select
               value={searchCriteria}
               onChange={(e) => setSearchCriteria(e.target.value)}
@@ -72,6 +80,7 @@ export const AddStudent = () => {
               <option value="degree">Degree</option>
               <option value="section">Section</option>
             </select>
+
             <input
               type="text"
               value={searchValue}
@@ -81,7 +90,7 @@ export const AddStudent = () => {
             />
           </div>
         </div>
-        <table className="w-full border-collapse border">
+        <table className="w-full border-collapse border bg-white">
           <thead className="bg-table-blue text-white">
             <tr>
               <th className="p-3 text-center">Name</th>
@@ -115,5 +124,6 @@ export const AddStudent = () => {
         {showPopup && <AddStudentForm onClose={() => setShowPopup(false)} onSubmit={handleAddStudent} />}
       </div>
     </div>
+    </>
   );
 };

@@ -4,8 +4,10 @@ import logo from "../../assets/images/logo_DepEase.png"
 import { Link } from 'react-router-dom';
 import { ProfilePage } from '../profile/userProfile';
 export const  Navbar = () => {
+
+  
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md ">
+    <nav className="  fixed top-0 left-16 right-0   flex items-center justify-between px-6 py-4 bg-white shadow-md ">
 
         <Link href='' className='' >
               
@@ -27,7 +29,7 @@ export const  Navbar = () => {
 
               
 
-      <div className="flex items-center px-7">
+      <div className="flex items-center px-7 ">
         <ul className="block lg:flex lg:space-x-12">
 
 

@@ -37,7 +37,7 @@ export const CalendarFoucs = () => {
   };
 
   return (
-    <div className="m-5 ml-24">
+    <div className="m-5 ml-24 mr-32">
       {/* <Header title="Calendar" subtitle="Full Calendar (Events Management)" /> */}
 
       <div className="flex justify-between">

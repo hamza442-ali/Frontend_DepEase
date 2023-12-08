@@ -57,13 +57,16 @@
         "label": "Add",
         "path": "/eval/add",
         "icon": "add"
+      },
+      {
+        "label": "Display",
+        "path": "/eval/view",
+        "icon": "file-lines"
       }
 
     ]
 
   }
-  
-  
   
   ,
 
@@ -105,13 +108,7 @@
         "label": "Add",
         "path": "/fypProject/add",
         "icon": "add"
-      },
-      {
-        "label": "Display ",
-        "path": "/fypProject/display",
-        "icon": "file-lines"
-      }
-
+      } 
     ]
 
   },
@@ -126,6 +123,22 @@
         "label": "Add",
         "path": "/announcement/add",
         "icon": "add"
+      }
+
+    ]
+
+  },
+  {
+
+    "label" : "Resource Management",
+    "path" : "/resource",
+    "icon" : "fa-layer-group",
+    "submenus": [
+
+      {
+        "label": "Display",
+        "path": "/Resource Management/display",
+        "icon": "file-lines"
       }
 
     ]

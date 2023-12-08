@@ -80,7 +80,7 @@ export const Calendar = () => {
 
   return (
     <>
-    <div className="container p-4 mx-auto my-8 bg-white rounded-lg shadow-lg ml-20 ">
+    <div className="container p-4 mx-auto my-8 bg-white rounded-lg shadow-lg ml-20 mt-14  ">
       <div className="flex items-center mb-4">
         <SelectInput options={projectOptions} value={newSlot} onChange={setNewSlot} />
         <input

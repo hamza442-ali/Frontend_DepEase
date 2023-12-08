@@ -63,7 +63,7 @@ export const EvaluationForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-8 bg-white rounded shadow-lg  ">
+    <div className="max-w-4xl mx-auto mt-14 p-8 bg-white rounded shadow-lg  ">
       <h1 className="text-2xl tracking-wid text-3xl">Create Evaluation</h1>
       <img
         src={evalPic}

@@ -2,7 +2,7 @@ import React from 'react';
 
 export const ProfilePage = () => {
   return (
-    <section className="bg-gray-100  py-3 ml-20">
+    <section className="bg-gray-100  py-3 ml-20 mt-14">
       <div className="container mx-auto px-4" >
         <div className="flex flex-wrap">
 
