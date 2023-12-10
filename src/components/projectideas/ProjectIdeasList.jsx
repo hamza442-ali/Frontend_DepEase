@@ -13,7 +13,7 @@ const ProjectIdeasList = ({ projectIdeas }) => {
       <input
         type="text"
         placeholder="Search by description..."
-        className="w-full p-2 mb-4 rounded"
+        className="w-full p-2 mb-4 border rounded focus:outline-none focus:border-blue-500"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
