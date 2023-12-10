@@ -101,9 +101,18 @@ if(response.status===200){
           Teammates
         </h3>
         <ul className="pl-6 text-gray-600 list-disc">
-          {groupData.map((member, index) => (
-            <li key={index}>{member.student_name}  <span className="ml-5 "> {member.email_address }</span></li>
-          ))}
+        {groupData.map((member, index) => (
+  <li key={index}>
+    {member && member.student_name ? (
+      <>
+        {member.student_name} <span className="ml-5">{member.email_address}</span>
+      </>
+    ) : (
+      <span>Member data not available</span>
+    )}
+  </li>
+))}
+
         </ul>
       </div>
 
