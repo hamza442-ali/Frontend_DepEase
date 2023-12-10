@@ -7,6 +7,13 @@ export const EvaluationForm = () => {
   const [formErrors, setFormErrors] = useState({});
   const [evaluationType, setEvaluationType] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [totalWeightage, setTotalWeightage] = useState();
+
+
+  const handleTotalWeightageChange = (event) => {
+    const newValue = parseInt(event.target.value, 10) || 0;
+    setTotalWeightage(newValue);
+  };
 
   const handleInputChange = (index, fieldName, value) => {
     const newFields = [...fields];
@@ -64,16 +71,17 @@ export const EvaluationForm = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-14 p-8 bg-white rounded shadow-lg  ">
-      <h1 className="text-2xl tracking-wid text-3xl">Create Evaluation</h1>
+      <h1 className="text-2xl tracking-wid ">Create Evaluation</h1>
       <img
         src={evalPic}
         alt="EvaluationBg"
         className="rounded-lg shadow-lg mb-4 mt-8"
         style={{ width: "850px", height: "200px" }}
       />
+     
       <div className="p-2">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold"></h1>
+        <h1 className=" tracking-wid ml-2  "> </h1>
           <button
             onClick={() => setShowForm(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 "
@@ -87,7 +95,7 @@ export const EvaluationForm = () => {
             <select
               value={evaluationType}
               onChange={(e) => setEvaluationType(e.target.value)}
-              className="border rounded p-2 bg-blue-500 text-white"
+              className="border rounded p-2 bg-blue-500 text-white "
             >
               <option value="Proposal Evaluation">Proposal Evaluation</option>
               <option value="Mid Evaluation">Mid Evaluation</option>
@@ -99,10 +107,19 @@ export const EvaluationForm = () => {
               <input
                 type="text"
                 placeholder="Enter Title"
-                className="border rounded p-2"
+                className="border rounded p-2 ml-2"
               />
             )}
           </div>
+          {/* <h1 className=" tracking-wid ml-2  "> Total Weightage:  </h1> */}
+        <input
+        type="number"
+        id="totalWeightage"
+        placeholder="Total Weightage"
+        value={totalWeightage}
+        onChange={handleTotalWeightageChange}
+        className="border rounded p-2 ml-2"
+      />
         </div>
 
         {!showForm && (
@@ -116,7 +133,7 @@ export const EvaluationForm = () => {
             {fields.map((field, index) => (
               <div key={index} className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">
-                  Field Name:
+                  Criteria:
                 </label>
                 <input
                   type="text"
@@ -131,7 +148,7 @@ export const EvaluationForm = () => {
                 </div>
 
                 <label className="block text-sm font-medium text-gray-700 mt-3">
-                  Weightage:
+                  Marks:
                 </label>
                 <input
                   type="number"
