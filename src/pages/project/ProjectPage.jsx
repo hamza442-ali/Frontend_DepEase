@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from "react";
 import ProjectList from "../../components/project/ProjectList";
-import person from "../../assets/images/person2.jpeg";
 import { useNavigate } from "react-router-dom";
 import AnnouncementModal from "../../components/announcement/AnnouncementModal"; 
 import axios from "axios";
