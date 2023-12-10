@@ -40,18 +40,24 @@
         "label": "Ideas Manage",
         "path": "/ProjectIdeas",
         "icon": "user-plus"
+      },
+      {
+        "label": "Resoure Request",
+        "path": "/resourceApprove",
+        "icon": "user-plus"
       }
+      
     ]
   },
 
   {
-    "label": "Email",
-    "icon": "info-circle",
+    "label": "Announcements",
+    "icon": "bell",
     "path": "/",
     "submenus": [
       {
-        "label": "Email Manage",
-        "path": "/email",
+        "label": "Announcement",
+        "path": "/announce",
         "icon": "user-plus"
       }
     ]
