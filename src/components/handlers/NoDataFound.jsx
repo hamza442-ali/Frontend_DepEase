@@ -19,7 +19,7 @@ const NoDataFound = () => {
           />
         </div>
       </div>
-    </div>
+    </div>  
   );
 };
 
