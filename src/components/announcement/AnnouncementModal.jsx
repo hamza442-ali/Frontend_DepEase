@@ -2,19 +2,41 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
 Modal.setAppElement("#root");
 
 const AnnouncementModal = ({ isOpen, onRequestClose, project }) => {
+  const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementText, setAnnouncementText] = useState("");
+
+  const handleTitleChange = (e) => {
+    setAnnouncementTitle(e.target.value);
+  };
 
   const handleAnnouncementChange = (e) => {
     setAnnouncementText(e.target.value);
   };
 
   const handleAnnouncementSubmit = () => {
-    // Handle the announcement submission logic here
-    console.log("Announcement submitted:", announcementText);
+    // Create an announcement object with title and content
+    const announcementData = {
+      title: announcementTitle,
+      content: announcementText,
+      TeacherId: project.teacher, 
+      ProjectId: project.ProjectId,
+    };
+
+    // Send the announcement to the backend using Axios
+    axios.post("http://localhost:3001/announcement/add", announcementData)
+      .then((response) => {
+        toast.success('Announcement submitted successfully!');
+      })
+      .catch((error) => {
+        console.error("Error submitting announcement:", error);
+        toast.error('Error submitting announcement::', error);
+      });
   };
 
   return (
@@ -25,23 +47,20 @@ const AnnouncementModal = ({ isOpen, onRequestClose, project }) => {
       overlayClassName="modal-overlay"
     >
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold text-gray-800">{project.title}</h2>
         <button onClick={onRequestClose} className="close-button">
           <FontAwesomeIcon icon={faTimes} className="text-lg" />
         </button>
       </div>
-      <p className="mb-6 text-gray-600">Project ID: {project.id}</p>
-      <p className="mb-6 text-gray-600">Team Lead: {project.teamLead}</p>
-      <div className="flex mb-4">
-        {project.members.map((member, index) => (
-          <img
-            key={index}
-            src={member.avatar}
-            alt={member.name}
-            className="w-10 h-10 mb-2 mr-4 rounded-full"
-          />
-        ))}
-      </div>
+      <p className="mb-6 text-gray-600">Project ID: {project._id}</p>
+     
+     
+      <input
+        type="text"
+        className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none"
+        placeholder="Announcement Title"
+        value={announcementTitle}
+        onChange={handleTitleChange}
+      />
       <textarea
         className="w-full h-32 p-4 mb-6 border border-gray-300 rounded focus:outline-none"
         placeholder="Type your announcement here..."
