@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSort, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 import { CalendarFoucs } from './Calendar';
+
 
 
 
@@ -34,6 +36,18 @@ export const Calendar = () => {
     { label: 'Project B', value: 'Project B' },
     { label: 'Project C', value: 'Project C' },
   ];
+  const [projects, setProjects] = useState([]);
+
+  // Fetch project data from the server
+  useEffect(() => {
+    axios.get('http://localhost:3001/project/')
+      .then((response) => {
+        setProjects(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching project data:', error);
+      });
+  }, []); 
 
   const addSlot = () => {
     if (newSlot && type && span > 0 && newSlot.trim() !== '' && type.trim() !== '') {

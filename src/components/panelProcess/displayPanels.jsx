@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { TeacherDetailsModal } from "./teacherDetailModel";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit , faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
+
+
+import avatarPic from '../../assets/images/avatar.png'
 
 export const PanelList = () => {
   const [panels, setPanels] = useState([]);
@@ -9,8 +14,15 @@ export const PanelList = () => {
   const [selectedView, setSelectedView] = useState("card");
   const [dropdownVisible, setDropdownVisible] = useState({});
 
+  const [editedPanelData, setEditedPanelData] = useState({ id: '' });
+  const [editedPanelId, setEditedPanelId] = useState(null);
+  
+  
   const [selectedPanel, setSelectedPanel] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+
+
 
   const handleViewDetails = (panel) => {
     setSelectedPanel(panel);
@@ -32,9 +44,40 @@ export const PanelList = () => {
       });
   }, []);
 
+
+
   const handleEdit = (panelId) => {
-    // Implement the edit functionality here.
-    console.log("Edit panel with ID", panelId);
+    const panelToEdit = panels.find((panel) => panel.id === panelId);
+
+
+    // Set the currently edited panel ID
+    setEditedPanelId(panelId);
+    setEditedPanelData({ ...editedPanelData, id: panelToEdit.id });
+  };
+  
+  const handleSave = async (panelId, newPanelId) => {
+    try {
+      // Make an Axios request to update the panelId
+      const response = await axios.put(`http://localhost:3001/panel/editPanelId/${panelId}`, {
+        newPanelId: newPanelId,
+      });
+
+      if (response.status === 200) {
+        // Update the local state with the modified panel
+        setPanels((prevPanels) =>
+          prevPanels.map((panel) =>
+            panel.id === panelId ? { ...panel, id: newPanelId } : panel
+          )
+        );
+      } else {
+        console.error("Failed to update panelId.");
+      }
+
+      // Clear the edited panel ID
+      setEditedPanelId(null);
+    } catch (error) {
+      console.error("Error updating panelId:", error);
+    }
   };
 
   const handleDelete = (panelId) => {
@@ -73,7 +116,6 @@ export const PanelList = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   const renderTable = () => (
     <table className="w-full bg-white border-collapse border border-solid border-neutral-300 rounded-lg shadow-lg">
       <thead className="bg-table-blue text-white">
@@ -93,7 +135,20 @@ export const PanelList = () => {
         {filteredPanels.map((panel) => (
           <tr key={panel.id} className="border-t hover:bg-gray-100">
             <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-              {panel.id}
+              {editedPanelId === panel.id ? (
+                
+                <input
+                  type="text"
+                  value={editedPanelData.id}
+                  
+                  onChange={(e) =>
+                    setEditedPanelData({ ...editedPanelData, id: e.target.value })
+                  }
+                  onBlur={() => handleSave(panel.id, editedPanelData.id)}
+                />
+              ) : (
+                panel.id
+              )}
             </td>
             <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
               <table className="w-full">
@@ -112,10 +167,9 @@ export const PanelList = () => {
                     <tr key={index}>
                       <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
                         {teacher.name}
-                        
                       </td>
                       <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-                        {teacher.id}
+                        {teacher.employeeId}
                       </td>
                     </tr>
                   ))}
@@ -127,13 +181,17 @@ export const PanelList = () => {
                 onClick={() => handleEdit(panel.id)}
                 className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
               >
-                Edit
+                {editedPanelId === panel.id ? (
+                  <FontAwesomeIcon icon={faCheck} />
+                ) : (
+                  <FontAwesomeIcon icon={faEdit} />
+                )}
               </button>
               <button
                 onClick={() => handleDelete(panel.id)}
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
-                Delete
+                <FontAwesomeIcon icon={faTrash} />
               </button>
             </td>
           </tr>
@@ -141,6 +199,77 @@ export const PanelList = () => {
       </tbody>
     </table>
   );
+  
+  
+  // const renderTable = () => (
+  //   <table className="w-full bg-white border-collapse border border-solid border-neutral-300 rounded-lg shadow-lg">
+  //     <thead className="bg-table-blue text-white">
+  //       <tr>
+  //         <th className="border border-solid border-neutral-300 px-4 py-2">
+  //           ID
+  //         </th>
+  //         <th className="border border-solid border-neutral-300 px-4 py-2">
+  //           Teachers
+  //         </th>
+  //         <th className="border border-solid border-neutral-300 px-4 py-2">
+  //           Actions
+  //         </th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       {filteredPanels.map((panel) => (
+  //         <tr key={panel.id} className="border-t hover:bg-gray-100">
+  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+  //             {panel.id}
+  //           </td>
+  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+  //             <table className="w-full">
+  //               <thead>
+  //                 <tr>
+  //                   <th className="border border-solid border-neutral-300 px-4 py-2">
+  //                     Name
+  //                   </th>
+  //                   <th className="border border-solid border-neutral-300 px-4 py-2">
+  //                     ID
+  //                   </th>
+  //                 </tr>
+  //               </thead>
+  //               <tbody>
+  //                 {panel.teachers.map((teacher, index) => (
+  //                   <tr key={index}>
+  //                     <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+  //                       {teacher.name}
+                        
+  //                     </td>
+  //                     <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+  //                       {teacher.employeeId}
+  //                     </td>
+  //                   </tr>
+  //                 ))}
+  //               </tbody>
+  //             </table>
+  //           </td>
+  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
+  //             <button
+  //               onClick={() => handleEdit(panel.id)}
+  //               className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+  //             >
+  //               <FontAwesomeIcon icon={faEdit} />
+                
+  //             </button>
+  //             <button
+  //               onClick={() => handleDelete(panel.id)}
+  //               className="bg-red-500 text-white px-4 py-2 rounded"
+  //             >
+  //               <FontAwesomeIcon icon={faTrash}/>
+                
+  //             </button>
+  //           </td>
+  //         </tr>
+  //       ))}
+  //     </tbody>
+  //   </table>
+  // );
 
   const displayPanelHead = (panel) => {
     const panelHeadTeacher = panel.teachers.find((teacher) => teacher.panelHead === true);
@@ -162,10 +291,10 @@ export const PanelList = () => {
     <div className="grid grid-cols-3 gap-4">
       {filteredPanels.map((panel) => (
         <div key={panel.id} className="p-4">
-          <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105">
             <div className="flex flex-col items-center pb-10 mt-8">
               <img
-                src={""}
+                src={avatarPic}
                 alt={"Hamza"}
                 className="w-24 h-24 mb-3 rounded-full shadow-lg"
               />
