@@ -48,15 +48,24 @@ export const EvaluationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
       try {
+        // Prepare data to send to the backend
+        const formData = {
+          totalWeightage,
+          fields,
+          evaluationType,
+        };
+  
+        console.log(formData, "Form Data")
         // Assume 'apiEndpoint' is the backend API endpoint for storing evaluation form data
-        const response = await axios.post("apiEndpoint", { fields });
-
+        const response = await axios.post("http://localhost:3001/evaluation/create", formData);
+  
         if (response.status === 200) {
           setShowForm(false);
           console.log("Form submitted successfully!");
+          alert(" Successfully Stored data")
           // Additional logic on successful form submission
         } else {
           console.error("Form submission failed. Please try again.");
@@ -68,6 +77,7 @@ export const EvaluationForm = () => {
       }
     }
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto mt-14 p-8 bg-white rounded shadow-lg  ">

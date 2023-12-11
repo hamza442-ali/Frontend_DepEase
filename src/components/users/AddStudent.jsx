@@ -2,45 +2,78 @@ import React, { useState, useEffect } from 'react';
 import { AddStudentForm } from './AddStudentForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-export const AddStudent = () => {
+export const AddStudent = ({onClose, onSubmit}) => {
   const [showPopup, setShowPopup] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState('name');
   const [searchValue, setSearchValue] = useState('');
-  const [panels, setPanels] = useState([
+  const [Student, setStudent] = useState([
     {
-      id: 1,
+      
       name: 'Hamza Azam',
+      registration_number: '20I-1881',
       degree: 'BSSE',
       gender: 'Male',
       section: 'BSE-203P',
-      rollNumber: '20I-1881',
+      email_address : "hamza@gmail.com",
+      password: "hamza"
+      
+
     },
     
     // Add more initial data as needed
   ]);
-  const [originalPanels, setOriginalPanels] = useState([...panels]);
+
+
+  
+  // const [originalstudents, setOriginalstudents] = useState([]);
 
   useEffect(() => {
-    // Update the original panels whenever panels change
-    setOriginalPanels([...panels]);
-  }, [panels]);
+    // Fetch data from the backend when the component mounts
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/student/getAllStudents'); 
+
+      setStudent(response.data);
+   
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleDeleteStudent = async (studentId) => {
+    try {
+      await axios.delete(`http://localhost:3001/student/delete/${studentId}`);
+
+       fetchData();
+
+      // const response = await axios.get('http://localhost:3001/teacher/getAll'); 
+      // setStudent(response.data);
+    } catch (error) {
+      console.error('Error deleting teacher:', error);
+    }
+  };
 
   const handleAddStudent = (newStudent) => {
-    setPanels((prevPanels) => [...prevPanels, { id: prevPanels.length + 1, ...newStudent }]);
+    setStudent((prevStudent) => [...prevStudent, { id: prevStudent.length + 1, ...newStudent }]);
+    
   };
 
   const handleSearch = () => {
-    const filteredPanels = originalPanels.filter((panel) =>
-      panel[searchCriteria].toLowerCase().includes(searchValue.toLowerCase())
+    const filteredStudent = Student.filter((student) =>
+      student[searchCriteria].toLowerCase().includes(searchValue.toLowerCase())
     );
-    setPanels(filteredPanels);
+    setStudent(filteredStudent);
   };
 
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
     if (e.target.value === '') {
-      setPanels([...originalPanels]);
+      setStudent([...Student]);
     } else {
       handleSearch();
     }
@@ -76,7 +109,7 @@ export const AddStudent = () => {
               className="border rounded p-2 mr-2 bg-blue-500 text-white"
             >
               <option value="name">Name</option>
-              <option value="rollNumber">Roll Number</option>
+              <option value="registration_number">Roll Number</option>
               <option value="degree">Degree</option>
               <option value="section">Section</option>
             </select>
@@ -95,22 +128,26 @@ export const AddStudent = () => {
             <tr>
               <th className="p-3 text-center">Name</th>
               <th className="p-3 text-center">Roll Number</th>
+              <th className="p-3 text-center">Email</th>
               <th className="p-3 text-center">Degree</th>
               <th className="p-3 text-center">Section</th>
               <th className="p-3 text-center">Gender</th>
+              <th className="p-3 text-center">Password</th>
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            {panels.map((panel) => (
-              <tr key={panel.id} className="border-t hover:bg-gray-100">
-                <td className="p-3 text-center">{panel.name}</td>
-                <td className="p-3 text-center">{panel.rollNumber}</td>
-                <td className="p-3 text-center">{panel.degree}</td>
-                <td className="p-3 text-center">{panel.section}</td>
-                <td className="p-3 text-center">{panel.gender}</td>
+            {Student.map((student) => (
+              <tr key={student.id} className="border-t hover:bg-gray-100">
+                <td className="p-3 text-center">{student.name}</td>
+                <td className="p-3 text-center">{student.registration_number}</td>
+                <td className="p-3 text-center">{student.email_address  }</td>
+                <td className="p-3 text-center">{student.degree}</td>
+                <td className="p-3 text-center">{student.section}</td>
+                <td className="p-3 text-center">{student.gender}</td>
+                <td className="p-3 text-center">{student.password}</td>
                 <td className="p-3 text-center">
-                  <button className="text-red-500 mr-2">
+                <button className="text-red-500 mr-2" onClick={() => handleDeleteStudent(student.registration_number)}>
                     <FontAwesomeIcon icon={faTrash} /> Delete
                   </button>
                   <button className="text-green-500">

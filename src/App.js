@@ -46,29 +46,29 @@ import { RequestApprovalPage } from "./pages/resourceRequestPage/requestApproval
 // import  {File}  from './components/files/filePicker';
 
 function App() {
-  const evaluationForms = [
-    {
-      evaluationTitle: "Proposal Evaluation ",
-      totalWeightage: 100,
-      fields: [
-        { name: "Field 1", weightage: 30 },
-        { name: "Field 2", weightage: 70 },
-      ],
-    },
-    {
-      evaluationTitle: "Final Evaluation",
-      totalWeightage: 100,
-      fields: [
-        { name: "Field 1", weightage: 30 },
-        { name: "Field 2", weightage: 70 },
-        { name: "Field 1", weightage: 30 },
-        { name: "Field 2", weightage: 70 },
-        { name: "Field 1", weightage: 30 },
-        { name: "Field 2", weightage: 70 },
-      ],
-    },
+  // const evaluationForms = [
+  //   {
+  //     evaluationTitle: "Proposal Evaluation ",
+  //     totalWeightage: 100,
+  //     fields: [
+  //       { name: "Field 1", weightage: 30 },
+  //       { name: "Field 2", weightage: 70 },
+  //     ],
+  //   },
+  //   {
+  //     evaluationTitle: "Final Evaluation",
+  //     totalWeightage: 100,
+  //     fields: [
+  //       { name: "Field 1", weightage: 30 },
+  //       { name: "Field 2", weightage: 70 },
+  //       { name: "Field 1", weightage: 30 },
+  //       { name: "Field 2", weightage: 70 },
+  //       { name: "Field 1", weightage: 30 },
+  //       { name: "Field 2", weightage: 70 },
+  //     ],
+  //   },
     
-  ];
+  // ];
   
 
   return (
@@ -108,7 +108,7 @@ function App() {
           <Route
             path="/eval/view"
             element={
-              <DynamicEvaluationForm evaluationForms={evaluationForms} />
+              <DynamicEvaluationForm  />
             }
           />
           <Route path="/grid" element={<Grid />} />

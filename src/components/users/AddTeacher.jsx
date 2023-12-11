@@ -92,6 +92,7 @@ export const AddTeacher = () => {
                 <td className="p-3 text-center">
                   <button className="text-red-500 mr-2" onClick={() => handleDeleteTeacher(panel.employeeId)}>
                     <FontAwesomeIcon icon={faTrash} /> Delete
+                    
                    
                   </button>
                   <button className="text-green-500">

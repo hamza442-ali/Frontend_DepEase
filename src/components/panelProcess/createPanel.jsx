@@ -14,58 +14,39 @@ export const PanelCreation = () => {
   // const [createdPanel, setCreatedPanel] = useState(null);
   const [isCreatePanelClicked, setIsCreatePanelClicked] = useState(false);
   const [selectedPanelHead, setSelectedPanelHead] = useState(false);
+  const [teacherData, setTeacherData] = useState([])
 
-  const simulatedTeacherList = [
-    {
-      id: 1,
-      name: "Syed Muhammad Ali",
-      department: " Software",
-      education: " PhD in SE",
+  // const simulatedTeacherList = [
+  //   {
+  //     id: "20i1881",
+  //     name: "Syed Muhammad Ali",
+  //     department: " Software",
+  //     education: " PhD in SE",
       
-    },
-    {
-      id: 2,
-      name: "Zaheer Sani",
-      department: " Computer Science",
-      education: " PhD in CS",
-  
-    },
-    {
-      id: 3,
-      name: "Hammad Abbas",
-      department: " Software",
-      education: " PhD in SE",
-      
-    },
-    {
-      id: 4,
-      name: "Hammad Abbas",
-      department: " AI",
-      education: " PhD in AI",
-      
-    },
-    {
-      id: 5,
-      name: "Hussam Ather",
-      department: " Software",
-      education: " MS in SE",
-      
-    },
-    {
-      id: 6,
-      name: "Atif Iqbal",
-      department: " Software",
-      education: " MS in SE",
-      
-    },
-  ];
+  //   }
+  // ];
+
   useEffect(() => {
-    setTeacherList(simulatedTeacherList);
+    // Fetch data from the backend when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/teacher/getAll'); 
+        setTeacherData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
+  
+  // useEffect(() => {
+  //   setTeacherList(simulatedTeacherList);
+  // }, []);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    const filteredTeachers = simulatedTeacherList.filter(
+    const filteredTeachers = teacherData.filter(
       (teacher) =>
         teacher.name.toLowerCase().includes(query.toLowerCase()) ||
         teacher.id.toString().includes(query)
@@ -74,9 +55,9 @@ export const PanelCreation = () => {
   };
 
   const handleTeacherSelection = (teacher) => {
-    if (selectedTeachers.some((selected) => selected.id === teacher.id)) {
+    if (selectedTeachers.some((selected) => selected.employeeId === teacher.employeeId)) {
       setSelectedTeachers(
-        selectedTeachers.filter((selected) => selected.id !== teacher.id)
+        selectedTeachers.filter((selected) => selected.employeeId !== teacher.employeeId)
       );
     } else {
       setSelectedTeachers([...selectedTeachers, teacher]);
@@ -85,7 +66,7 @@ export const PanelCreation = () => {
     // If the selected teacher is a panel head, update the state
     if (teacher.panelHead) {
       setSelectedPanelHead(true);
-    } else if (selectedPanelHead?.id === teacher.id) {
+    } else if (selectedPanelHead?.employeeId === teacher.employeeId) {
       // If the deselected teacher was the panel head, clear the selection
       setSelectedPanelHead(false);
     }
@@ -117,7 +98,7 @@ export const PanelCreation = () => {
       id: `${semesterSeason}-${semesterNumber}-${panelId}`,
       teachers: selectedTeachers.map((teacher) => ({
         ...teacher,
-        panelHead: teacher.id === selectedPanelHead.id,
+        panelHead: teacher.employeeId === selectedPanelHead.employeeId,
       })),
     };
 
@@ -233,10 +214,10 @@ export const PanelCreation = () => {
               </tr>
             </thead>
             <tbody>
-              {teacherList.map((teacher) => (
-                <tr key={teacher.id} className="hover:bg-gray-100">
+              {teacherData.map((teacher) => (
+                <tr key={teacher.employeeId} className="hover:bg-gray-100">
                   <td className="border-b  border-solid border-neutral- text-center p-4">
-                    {teacher.id}
+                    {teacher.employeeId}
                   </td>
                   <td className="border-b border-solid border-neutral-300 text-center p-4">
                     {teacher.name}
@@ -253,7 +234,7 @@ export const PanelCreation = () => {
                       type="checkbox"
                       onChange={() => handleTeacherSelection(teacher)}
                       checked={selectedTeachers.some(
-                        (selected) => selected.id === teacher.id
+                        (selected) => selected.employeeId === teacher.employeeId
                       )}
                       className="mx-auto"
                     />
@@ -303,7 +284,7 @@ export const PanelCreation = () => {
                           type="radio"
                           name="panelHead"
                           onChange={() => setSelectedPanelHead(teacher)}
-                          checked={selectedPanelHead?.id === teacher.id}
+                          checked={selectedPanelHead?.employeeId === teacher.employeeId}
                           className="mx-auto"
                         />
                       </td>
