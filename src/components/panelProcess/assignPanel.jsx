@@ -15,8 +15,9 @@ export const AssignPanel = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/student/getAllStudents")
+      .get("http://localhost:3001/group/getall")
       .then((response) => {
+        console.log(response, " Group Details")
         setGroups(response.data);
       })
       .catch((error) => {
@@ -26,6 +27,7 @@ export const AssignPanel = () => {
     axios
       .get("http://localhost:3001/panel/getAllPanels")
       .then((response) => {
+      
         setPanels(response.data);
         setLoading(false);
       })
@@ -79,8 +81,8 @@ export const AssignPanel = () => {
 
   const filteredStudents = groups.filter(
     (group) =>
-      group.student_name &&
-      group.student_name.toLowerCase().includes(studentSearch.toLowerCase())
+      group.teamLeadId &&
+      group.teamLeadId.toLowerCase().includes(studentSearch.toLowerCase())
   );
 
   const filteredPanels = panels.filter(
@@ -141,30 +143,16 @@ export const AssignPanel = () => {
               </thead>
               <tbody>
                 {filteredStudents.map((group) => (
-                  <tr key={group.id} className="border-t hover:bg-gray-100">
+                  <tr key={group._id} className="border-t hover:bg-gray-100">
                     <td className="border-b border-solid border-neutral-300 px-4 py-2 text-center">
-                      {group.student_name}
+                      {group.teamLeadId}
                     </td>
-                    {/* <td className="border border-solid border-neutral-300 px-4 py-2">
-                     
-                      <button
-                        onClick={() => handleSelectGroup(group.email_address)}
-                        className={
-                          isGroupSelected(group.email_address)
-                            ? "bg-red-500 text-white px-4 py-2 rounded"
-                            : "bg-blue-500 text-white px-4 py-2 rounded"
-                        }
-                      >
-                        {isGroupSelected(group.id) ? "Unselect" : "Select"}
-                      </button>
-                      
-                    </td> */}
-                    {/* flex justify-center items-center */}
+                  
                     <td className="border-b border-solid border-neutral-300 px-4 py-2 ">
                       <input
                         type="checkbox"
-                        onChange={() => handleSelectGroup(group.email_address)}
-                        checked={isGroupSelected(group.email_address)}
+                        onChange={() => handleSelectGroup(group._id)}
+                        checked={isGroupSelected(group._id)}
                         className="mx-auto"
                       />
                     </td>
