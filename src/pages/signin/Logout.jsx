@@ -2,13 +2,23 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetStudentData } from '../../redux/slices/student/studentSlice';
+import { resetProjectData } from '../../redux/slices/project/projectSlice';
+import { resetGroupData } from '../../redux/slices/group/groupSlice';
 
 const LogoutPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     // Perform logout actions, such as removing the token from localStorage
     localStorage.removeItem('token');
+    // localStorage.removeItem('persist:root')
+
+    dispatch(resetStudentData());
+    dispatch(resetProjectData());
+    dispatch(resetGroupData());
 
     // Navigate to the login page
     navigate('/');

@@ -1,22 +1,25 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Module from '../modules/Module';
 import AddDeliverableModal from './AddDeliverableModal'; 
+import { toast } from 'react-toastify';
 
 const Deliverable = ({ deliverable, modules, onModuleDrop, onModuleRemove,ondeleteDelieverable,onupdateDelieverable }) => {
+
   const handleModuleDrop = (e) => {
     e.preventDefault();
     const moduleId = e.dataTransfer.getData('moduleId');
-    const moduleToAdd = modules.find((module) => module._id === moduleId);
+   
+    
+    const moduleToAdd = modules.find((module2) => module2._id === moduleId);
 
-
-// there is issue here that you need to fix later on 
-
-if (deliverable.modules && deliverable.modules.some(module => module._id.toString() === moduleId.toString())) {
+if (deliverable.modules && deliverable.modules.find(module => module._id.toString() === moduleId.toString())) {
   // Module is already in this deliverable, show alert
-  alert('Module is already added to this deliverable.');
+  toast.error(`${moduleToAdd.name} Module is already added to this deliverable`);
+
 } else {  
-  onModuleDrop(moduleId, deliverable._id);
-  console.log("not again");
+  // deliverable.modules.push(moduleToAdd);
+    onModuleDrop(moduleId, deliverable._id);
+  toast.success(`Successfully added ${moduleToAdd.name} to  ${deliverable.name}`);
 }
   };
 
@@ -49,18 +52,18 @@ if (deliverable.modules && deliverable.modules.some(module => module._id.toStrin
         onDrop={handleModuleDrop}
       >
       
-        {deliverable.modules?.map((module) => (
+        {deliverable.modules?.map((module1) => (
           <div
-            key={module}
+            key={module1._id}
             className="relative"
             draggable
             onDragStart={(e) => {
-              e.dataTransfer.setData('moduleId', module);
+              e.dataTransfer.setData('moduleId', module1._id);
             }}
-            onDragEnd={() => handleModuleRemove(module)}
+            onDragEnd={() => handleModuleRemove(module1._id)}
             
           >
-            <Module module={module} />
+            <Module module={module1} />
           </div>
         ))}
         {(!deliverable.modules || deliverable.modules.length === 0) && (

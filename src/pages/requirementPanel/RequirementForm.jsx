@@ -70,23 +70,21 @@ const Form = () => {
     try {
       
      
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('priority', priority);
-      formData.append('assignedTo', JSON.stringify(assignedTo));
-      formData.append('status', status);
-      formData.append('description', description);
-      formData.append('deadline', deadline);
-      // formData.append('attachments', attachments); 
-      if(comments.length !== 0){ 
-         const commentObj = { content: comments, createdBy: studentData.student_name };
-         formData.append('comments', JSON.stringify([commentObj]));
-     }
-     
-      formData.append('writtenby', studentData.student_name); 
-      formData.append('projectid', projectid);
-     
-     
+      const formData = {
+        title,
+        priority,
+        assignedTo: JSON.stringify(assignedTo),
+        status,
+        description,
+        deadline,
+        writtenby: studentData.student_name,
+        projectid: projectData.ProjectId,
+      };
+      
+      if (comments.length !== 0) {
+        const commentObj = { content: comments, createdBy: studentData.student_name };
+        formData.comments = JSON.stringify([commentObj]);
+      }
      
 
       await axios.post('http://localhost:3001/requirements/createRequirement', formData);
@@ -105,74 +103,74 @@ const Form = () => {
   // };
 
   return (
-    <div className='h-full ml-28 '>
-     
+    <div className='h-full ml-4 md:ml-28 '>
 
-      <div className="container py-8 mx-auto">
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto ">
+  <div className="container py-8 mx-auto">
+    <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
 
-       
+      <SelectInput
+        label="Assigned To"
+        value={assignedTo}
+        onChange={(e) => setAssignedTo(Array.from(e.target.selectedOptions, (option) => option.value))}
+        options={Object.values(groupData).filter(obj => obj.student_name).map(student => student.student_name)}
+        multiple
+      />
 
-          <SelectInput
-            label="Assigned To"
-            value={assignedTo}
-            onChange={(e) => setAssignedTo(Array.from(e.target.selectedOptions, (option) => option.value))}
-            options={Object.values(groupData).filter(obj => obj.student_name).map(student => student.student_name)}
-            multiple
-          />
-
-          <TextInput label="Title *" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <SelectInput
-            label="Priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            options={['Low', 'Medium', 'High']}
-          />
-          <div className="mb-4">
-            <label htmlFor="deadline" className="block mb-2 font-semibold">
-              Deadline *
-            </label>
-            <input
-              type="date"
-              id="deadline"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-          </div>
-          <SelectInput
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            options={['Pending', 'In Progress', 'Completed']}
-          />
-          <TextAreaInput label="Comment" value={comments} onChange={(e) => setComment(e.target.value)} />
-          <TextAreaInput
-            label="Requirement Details *"
-            value={description}
-            height="32"
-            onChange={(e) => setRequirement(e.target.value)}
-          />
-
-          {/* <FileInput label="Attachment" onChange={handleFileChange} /> */}
-
-          <button
-            type="reset"
-            onClick={handleReset}
-            className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            Reset
-          </button>
-
-          <button
-            type="submit"
-            className="px-4 py-2 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            Submit
-          </button>
-        </form>
+      <TextInput label="Title *" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <SelectInput
+        label="Priority"
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+        options={['Low', 'Medium', 'High']}
+      />
+      <div className="mb-4">
+        <label htmlFor="deadline" className="block mb-2 font-semibold">
+          Deadline *
+        </label>
+        <input
+          type="date"
+          id="deadline"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
       </div>
-    </div>
+      <SelectInput
+        label="Status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        options={['Pending', 'In Progress', 'Completed']}
+      />
+      <TextAreaInput label="Comment" value={comments} onChange={(e) => setComment(e.target.value)} />
+      <TextAreaInput
+        label="Requirement Details *"
+        value={description}
+        height="32"
+        onChange={(e) => setRequirement(e.target.value)}
+      />
+
+      {/* <FileInput label="Attachment" onChange={handleFileChange} /> */}
+
+      <div className="flex flex-col justify-between md:flex-row">
+        <button
+          type="reset"
+          onClick={handleReset}
+          className="w-full px-4 py-2 mt-2 text-white bg-blue-500 rounded md:w-1/3 md:mt-0 hover:bg-blue-600"
+        >
+          Reset
+        </button>
+
+        <button
+          type="submit"
+          className="w-full px-4 py-2 mt-2 text-white bg-blue-500 rounded md:w-1/3 md:ml-2 hover:bg-blue-600"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
   );
 };
 

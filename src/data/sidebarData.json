@@ -33,18 +33,7 @@
       }
     ]
   },
-  {
-    "label": "Resource Request",
-    "icon": "people-group",
-    "path": "/members",
-    "submenus": [
-      {
-        "label": "Add",
-        "path": "/request/approval",
-        "icon": "user-plus"
-      }
-    ]
-  },
+ 
 
   {
     "label": "Resoucre Allocation",
@@ -65,7 +54,7 @@
   },
 
   {
-    "label": "Proposal",
+    "label": "Proposal Creation",
     "icon": "file-import",
     "path": "/",
     "submenus": [
@@ -73,7 +62,13 @@
         "label": "Add",
         "path": "/proposal",
         "icon": "user-plus"
+      },
+      {
+        "label": "Project Ideas",
+        "path": "/projectIdeas",
+        "icon": "user-plus"
       }
+
     ]
   },
 
@@ -96,7 +91,7 @@
     ]
   },
   {
-    "label": "Task Board",
+    "label": " Task Board",
     "icon": "square-check",
     "path": "/",
     "submenus": [
@@ -105,11 +100,24 @@
         "path": "/board",
         "icon": "user-plus"
       }
+
+    ]
+  },
+  {
+    "label": "Announcements",
+    "icon": "bell",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "Announcements",
+        "path": "/announce",
+        "icon": "right-from-bracket"
+      }
     ]
   },
 
   {
-    "label": "Settings",
+    "label": "Logout",
     "icon": "right-from-bracket",
     "path": "/",
     "submenus": [

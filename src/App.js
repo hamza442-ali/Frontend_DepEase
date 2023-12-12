@@ -4,10 +4,8 @@ import {
   Routes,
   Route,     //npm install react-router-dom
 } from "react-router-dom";
-import Home from './pages/home/Home';
 import MainLayout from './pages/mainLayout/MainLayout ';
 import Navbar from './components/Navbar/Navbar';
-import RequestApprovalPage from "./pages/membermanage/RequestApprovalPage.jsx"
 import RequirementForm from "./pages/requirementPanel/RequirementForm.jsx"
 import ManageRequirements from './pages/managerequirements/ManageRequirements';
 import { ToastContainer } from 'react-toastify';
@@ -26,6 +24,8 @@ import Login from './pages/signin/Login';
 import ProjectDetails from './pages/projectDetails/ProjectDetails.jsx';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx';
 import LogoutPage from './pages/signin/Logout.jsx';
+import ProjectIdeasPage from './pages/ProjectIdeas/ProjectIdeas.jsx';
+import AnnouncementsPage from './pages/Announcement/AnnouncementPage.jsx';
 
 
 
@@ -40,8 +40,9 @@ function App() {
     <PageInfo/>
     <Routes>
     <Route path="/" element={<Login/>} />
+    <Route path="/announce" element={<AnnouncementsPage/>} />
+    <Route path="/projectIdeas" element={<ProjectIdeasPage/>} />
     <Route path="/logout" element={<PrivateRoute Component={LogoutPage}/>} />
-    <Route path="/announce" element={<PrivateRoute Component={Home}/>} />
     <Route path="/detail" element={<PrivateRoute Component={ProjectDetails}/>} />
     <Route path="/evaluation" element={<PrivateRoute Component={ViewFYPEvaluationPage}/>} />
     <Route path="/email" element={<PrivateRoute Component={EmailPage}/>} />
@@ -49,7 +50,6 @@ function App() {
     <Route path="/board" element={<PrivateRoute Component={Board}/>} />
     <Route path="/resourceForm" element={<PrivateRoute Component={StudentResourceRequest}/>} />
     <Route path="/doc" element={<PrivateRoute Component={DocumentPreview}/>} />
-    <Route path="/request/approval" element={<PrivateRoute Component={RequestApprovalPage}/>} />
     <Route path="/requirement/display" element={<PrivateRoute Component={ManageRequirements } />}/>
     <Route path="/requirement/add" element={<PrivateRoute Component={RequirementForm} />}/>
     <Route path="/proposal" element={<PrivateRoute Component={ProposalForm}/>} />

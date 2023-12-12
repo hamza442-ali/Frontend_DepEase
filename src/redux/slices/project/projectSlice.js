@@ -17,8 +17,11 @@ const projectSlice = createSlice({
       // Merge the action payload with the current state to update the project data
       return { ...state, ...action.payload };
     },
+    resetProjectData: () => {
+      return initialState;
+    }
   },
 });
 
-export const { setProjectData } = projectSlice.actions;
+export const { setProjectData,resetProjectData } = projectSlice.actions;
 export default projectSlice.reducer;

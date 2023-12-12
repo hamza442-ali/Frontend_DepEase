@@ -20,6 +20,7 @@ const Step1 = ({ onNext }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/teacher/getall`);
+      console.log(response.data.data);
       setSupervisors(response.data.data);
     } catch (error) {
       console.error('Error fetching  teachers:', error);
@@ -85,8 +86,8 @@ const Step1 = ({ onNext }) => {
         >
           <option value="">Select a supervisor</option>
           {supervisors.map((supervisor) => (
-            <option key={supervisor._id} value={supervisor.registration_number}>
-              {supervisor.teacher_name}
+            <option key={supervisor._id} value={supervisor.employeeId}>
+              {supervisor.name}
             </option>
           ))}
         </select>

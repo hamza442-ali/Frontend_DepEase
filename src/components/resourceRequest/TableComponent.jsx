@@ -73,38 +73,48 @@ const TableComponent = () => {
 
  
   return (
-    <div className="container mx-auto p-8">
+    <div className="container p-8 mx-auto">
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-lg">
+        <table className="min-w-full overflow-hidden bg-white rounded-lg shadow-lg">
           <thead className="bg-gray-100 border-b">
             <tr>
-              <th className="py-2 px-4 text-left">Request Type</th>
-              <th className="py-2 px-4 text-left">Start Date</th>
-              <th className="py-2 px-4 text-left">End Date</th>
-              <th className="py-2 px-4 text-left">Request Date</th>
-              <th className="py-2 px-4 text-left">Admin Status</th>
-              <th className="py-2 px-4 text-left">Supervisor Status</th>
-              {isAdmin && <th className="py-2 px-4 text-left">Actions</th>}
+              <th className="px-4 py-2 text-left">Request Type</th>
+              <th className="px-4 py-2 text-left">Start Date</th>
+              <th className="px-4 py-2 text-left">End Date</th>
+              <th className="px-4 py-2 text-left">Request Date</th>
+              <th className="px-4 py-2 text-left">Admin Status</th>
+              <th className="px-4 py-2 text-left">Supervisor Status</th>
+              {isAdmin && <th className="px-4 py-2 text-left">Actions</th>}
             </tr>
           </thead>
           <tbody>
             {data.map((item, index) => (
               <tr key={item._id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                <td className="py-3 px-4">{item.requestType}</td>
-                <td className="py-3 px-4 " >{formatISODateToReadable(item.startDate)}</td>
-                <td className="py-3 px-4">{formatISODateToReadable(item.endDate)}</td>
-                <td className="py-3 px-4">{formatISODateToReadable(item.requestDate)}</td>
-                <td className={`py-3 px-4 ${item.adminStatus === 'InProgress' ? 'text-blue-500' : 'text-green-500'}`}>
-                  {item.adminStatus}
-                </td>
-                <td className={`py-3 px-4 ${item.supervisorStatus === 'Pending' ? 'text-yellow-500' : 'text-green-500'}`}>
-                  {item.supervisorStatus}
-                </td>
+                <td className="px-4 py-3">{item.requestType}</td>
+                <td className="px-4 py-3 " >{formatISODateToReadable(item.startDate)}</td>
+                <td className="px-4 py-3">{formatISODateToReadable(item.endDate)}</td>
+                <td className="px-4 py-3">{formatISODateToReadable(item.requestDate)}</td>
+                <td className={`py-3 px-4 ${
+  item.adminStatus === 'Pending' ? 'text-yellow-500' :
+  item.adminStatus === 'InProgress' ? 'text-blue-500' :
+  item.adminStatus === 'Rejected' ? 'text-red-500' :
+  'text-green-500'
+}`}>
+  {item.adminStatus}
+</td>
+                <td className={`py-3 px-4 ${
+  item.supervisorStatus === 'Pending' ? 'text-yellow-500' :
+  item.supervisorStatus === 'InProgress' ? 'text-blue-500' :
+  item.supervisorStatus === 'Rejected' ? 'text-red-500' :
+  'text-green-500'
+}`}>
+  {item.supervisorStatus}
+</td>
                 {isAdmin && (
-                  <td className="py-3 px-4">
+                  <td className="px-4 py-3">
                     {item.adminStatus !== 'InProgress' ? (
                       <button
-                        className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out disabled:opacity-50"
+                        className="px-4 py-2 text-white transition duration-300 ease-in-out bg-red-500 rounded hover:bg-red-700 disabled:opacity-50"
                         onClick={() => handleDelete(item._id, item.adminStatus)
                        
                         }

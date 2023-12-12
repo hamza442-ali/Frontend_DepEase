@@ -20,10 +20,15 @@ const studentSlice = createSlice({
       // Merge the action payload with the current state to update the student data
       return { ...state, ...action.payload };
 
-    //   state.studentData = action.payload;
+     
     },
+
+    resetStudentData: () => {
+      return initialState;
+    }
+
   },
 });
 
-export const { setStudentData } = studentSlice.actions;
+export const { setStudentData, resetStudentData } = studentSlice.actions;
 export default studentSlice.reducer;

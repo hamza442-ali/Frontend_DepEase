@@ -2,13 +2,16 @@ import React, { useState,useEffect } from 'react';
 import { FiPlus, FiTrash } from 'react-icons/fi'; // Assuming you have these icons installed
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import { useSelector } from 'react-redux';
 
 const StudentResourceRequest = () => {
   const [resourceRequests, setResourceRequests] = useState([]);
+  const projectData = useSelector(state => state.project);
+  const studentData = useSelector((state) => state.student);
   const [formData, setFormData] = useState({
-    studentId: '',
+    studentId: studentData.registration_number,
     projectId: '',
+    TeacherId:projectData.teacher,
     projectTitle: '',
     phoneNumber: '',
     email: '',
@@ -42,13 +45,6 @@ const StudentResourceRequest = () => {
       axios.interceptors.request.eject(requestInterceptor);
     };
   }, []);
-
-
-
-
-
-
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -96,16 +92,7 @@ const StudentResourceRequest = () => {
 
       {/* Horizontal Form */}
       <form className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Student ID</label>
-          <input
-            type="text"
-            name="studentId"
-            value={formData.studentId}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+       
         <div>
           <label className="block text-sm font-medium text-gray-700">Project ID</label>
           <input

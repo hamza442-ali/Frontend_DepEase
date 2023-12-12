@@ -89,9 +89,13 @@ if(response.status===200){
   }, []); 
   
 
-  if (!projectData) {
-    return <div className=' ml-96'>Loading...</div>; // or handle the loading state in your desired way
-  }
+  if(!projectData || projectData.ProjectId==null || projectData===undefined ){
+    toast.info("Please give proposal first");
+    return (<div>
+    
+      <h2 className="p-2 mb-4 ml-28 font-serif text-xl  text-gray-800 font-semiboldp-2"> Please Add a proposal First</h2>
+    </div>
+  )}
 
 // mechanism for  circle progres chart component
   const totalInProgress = getRequirements.filter(

@@ -61,11 +61,15 @@ const ProjectDetails = () => {
     fetchData();
   }, []); // The empty dependency array ensures that the effect runs only once, similar to componentDidMount
 
-  if (!project) {
-    // Render loading state or handle error here
-    return <div>Loading...</div>;
-  }
 
+
+  if(!projectData || projectData.ProjectId==null || projectData===undefined ){
+    toast.info("Please give proposal first");
+    return (<div>
+    
+      <h2 className="p-2 mb-4 ml-28 font-serif text-xl  text-gray-800 font-semiboldp-2"> Please Add a proposal First</h2>
+    </div>
+  )}
  
 
   return (

@@ -20,6 +20,8 @@ function ManageDeliverables() {
   const [deliverables, setDeliverables] = useState([]);
 
 
+  
+
   useEffect(() => {
     // Add an interceptor for every outgoing request
     const requestInterceptor = axios.interceptors.request.use(
@@ -44,19 +46,7 @@ function ManageDeliverables() {
   }, []);
 
 
-
-
-
-
   const fetchData = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/modules/getmine/${projectData.ProjectId}`);
-      setModules(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Error fetching requests:', error);
-    }
-
     try {
       const response = await axios.get(`http://localhost:3001/deliverables/getmine/${projectData.ProjectId}`);
       setDeliverables(response.data);
@@ -65,11 +55,26 @@ function ManageDeliverables() {
       console.error('Error fetching data:', error);
       toast.error('Error fetching requests:', error);
     }
+  };
+
+
+  const fetchData1 = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/modules/getmine/${projectData.ProjectId}`);
+      setModules(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching requests:', error);
+    }
+
+    
 
 
   };
+
   useEffect(() => {
     fetchData();
+    fetchData1();
   }, []); 
 
 
@@ -117,18 +122,10 @@ function ManageDeliverables() {
         moduleId: moduleId,
         deliverableId: deliverableId,
       });
+
+      fetchData();
      
-      const updatedDeliverables = deliverables.map((deliverable) => {
-        if (deliverable._id === deliverableId) {
-          return {
-            ...deliverable,
-            modules: [...deliverable.modules, response.data], // Assuming the API returns the updated deliverable
-          };
-        }
-        return deliverable;
-      });
-  
-      setDeliverables(updatedDeliverables);
+     
     } catch (error) {
       console.error('Error adding module to deliverable:', error);
     }
@@ -143,7 +140,7 @@ function ManageDeliverables() {
         if (deliverable._id === deliverableId) {
           return {
             ...deliverable,
-            modules: deliverable.modules.filter((module) => module !== moduleId),
+            modules: deliverable.modules.filter((module) => module._id !== moduleId),
           };
         }
         return deliverable;
@@ -188,9 +185,9 @@ const addModule = async (newModule) => {
 };
   
 
-const ondeleteModule = async (module) => {
+const ondeleteModule = async (moduleID) => {
   try {
-    let id = module._id;
+    let id = moduleID;
     const response = await axios.delete(`http://localhost:3001/modules/delete/${id}`);
     setModules((prevModules) => prevModules.filter((m) => m._id !== id));
     toast.success('Successfully deleted module');
@@ -308,68 +305,77 @@ const onupdateModule = async (updatedModule) => {
   }
 };
 
+
+if(!projectData || projectData.ProjectId==null || projectData===undefined ){
+  toast.info("Please give proposal first");
+  return (<div>
+  
+    <h2 className="p-2 mb-4 ml-28 font-serif text-xl  text-gray-800 font-semiboldp-2"> Please Add a proposal First</h2>
+  </div>
+)}
+
   return (
     <div className="container mx-auto mt-10">
-       <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Delieverables </h1>
+  <h1 className="mb-6 text-3xl font-semibold text-center text-gray-800">Manage Deliverables </h1>
 
-      <div className="grid grid-cols-3 ml-28 gap-4">
-        <div className="top-0 col-span-1">
-          <h1 className="mb-4 text-xl">Modules</h1>
-          {modules.map((module) => (
-            <Module
-              key={module._id}
-              module={module}
-              onDetailsClick={() => handleModuleDetailsClick(module)}
-              ondeleteModule={() => ondeleteModule(module)}
-              onupdateModule={()=> onupdateModule(module)}
-            />
-          ))}
-          <button
-          className="px-3 py-2 mt-4 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
-          onClick={openAddModuleModal}
-        >
-          <FontAwesomeIcon icon={['fas', 'plus']} className="mr-2" />
-          Add Module
-        </button>
-        </div>
-        <div className="col-span-2">
-        <div className='flex flex-row justify-between mb-2'>
-          <h1 className="mb-4 text-xl">Canvas</h1>
-          <button
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:ml-4">
+    <div className="md:col-span-1">
+      <h1 className="mb-4 text-xl">Modules</h1>
+      {modules.map((module) => (
+        <Module
+          key={module._id}
+          module={module}
+          onDetailsClick={() => handleModuleDetailsClick(module)}
+          ondeleteModule={() => ondeleteModule(module)}
+          onupdateModule={() => onupdateModule(module)}
+        />
+      ))}
+      <button
+        className="px-3 py-2 mt-4 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
+        onClick={openAddModuleModal}
+      >
+        <FontAwesomeIcon icon={['fas', 'plus']} className="mr-2" />
+        Add Module
+      </button>
+    </div>
+    <div className="md:col-span-2">
+      <div className="flex flex-row justify-between mb-2">
+        <h1 className="mb-4 text-xl">Canvas</h1>
+        <button
           className="px-3 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
           onClick={openAddDeliverableModal}
         >
           <FontAwesomeIcon icon={['fas', 'plus']} className="mr-2" />
           Add Deliverable
         </button>
-          </div>
-          {deliverables.map((deliverable) => (
-            <Deliverable
-              key={deliverable._id}
-              deliverable={deliverable}
-              modules={modules}
-              onModuleDrop={handleModuleDrop}
-              onModuleRemove={handleModuleRemove}
-              ondeleteDelieverable={() => ondeleteDelieverable(deliverable)}
-              onupdateDelieverable={()=> onupdateDelieverable(deliverable)}
-            />
-          ))}
-        </div>
       </div>
-
-      {isAddDeliverableModalOpen && (
-        <AddDeliverableModal onAddDeliverable={addDeliverable} onClose={closeAddDeliverableModal} />
-      )}
-
-      {/* Render the AddModuleModal component when isAddModuleModalOpen is true */}
-      {isAddModuleModalOpen && (
-        <AddModuleModal onAddModule={addModule} onClose={closeAddModuleModal} />
-      )}
-
-      {isModuleDetailsModalOpen && (
-        <ModuleDetailsModal module={selectedModule} onClose={closeModal} />
-      )}
+      {deliverables.map((deliverable) => (
+        <Deliverable
+          key={deliverable._id}
+          deliverable={deliverable}
+          modules={modules}
+          onModuleDrop={handleModuleDrop}
+          onModuleRemove={handleModuleRemove}
+          ondeleteDelieverable={() => ondeleteDelieverable(deliverable)}
+          onupdateDelieverable={() => onupdateDelieverable(deliverable)}
+        />
+      ))}
     </div>
+  </div>
+
+  {isAddDeliverableModalOpen && (
+    <AddDeliverableModal onAddDeliverable={addDeliverable} onClose={closeAddDeliverableModal} />
+  )}
+
+  {isAddModuleModalOpen && (
+    <AddModuleModal onAddModule={addModule} onClose={closeAddModuleModal} />
+  )}
+
+  {isModuleDetailsModalOpen && (
+    <ModuleDetailsModal module={selectedModule} onClose={closeModal} />
+  )}
+</div>
+
   );
 }
 

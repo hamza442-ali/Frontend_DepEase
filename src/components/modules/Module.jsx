@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 
 const Module = ({ module, onDetailsClick,ondeleteModule,onupdateModule }) => {
+  
   return (
     <div
       draggable

@@ -20,12 +20,14 @@ const ModuleDetailsModal = ({ module, onClose }) => {
           <div className="mb-2">
             <span className="font-semibold text-gray-700">Title:</span> {module.name}
           </div>
+
+          <div className="mb-2">
+            <span className="font-semibold text-gray-700">ID:</span> {module._id}
+          </div>
           <div className="mb-2">
             <span className="font-semibold text-gray-700">Status:</span> {module.status}
           </div>
-          <div className="mb-2">
-            <span className="font-semibold text-gray-700">Type:</span> {module.type}
-          </div>
+        
           <div className="mb-2">
             <span className="font-semibold text-gray-700">Details:</span> {module.details}
           </div>

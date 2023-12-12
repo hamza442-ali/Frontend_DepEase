@@ -96,6 +96,15 @@ const DocumentList = () => {
     }
   };
 
+
+  if(!projectData || projectData.ProjectId==null || projectData===undefined ){
+    toast.info("Please give proposal first");
+    return (<div>
+    
+      <h2 className="p-2 mb-4 ml-28 font-serif text-xl  text-gray-800 font-semiboldp-2"> Please Add a proposal First</h2>
+    </div>
+  )}
+
   return (
     <div className="container mx-auto mt-8 -z-10">
 

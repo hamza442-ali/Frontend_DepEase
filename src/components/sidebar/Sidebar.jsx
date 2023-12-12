@@ -27,11 +27,11 @@ const Sidebar = ({ data}) => {
   };
 
   return (
-    <nav
+    <nav  
       className={`${
         isExtended
-          ? 'w-64 transition-width duration-300 ease-in-out'
-          : 'w-16 transition-width duration-300 ease-in-out'
+          ? 'w-64 z-50 transition-width duration-300 ease-in-out'
+          : 'w-16 z-50 transition-width duration-300 ease-in-out'
       } h-screen bg-gray-800 text-white fixed top-0 left-0 `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

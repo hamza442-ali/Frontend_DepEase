@@ -21,8 +21,12 @@ const groupSlice = createSlice({
       // Merge the action payload with the current state to update the student data
       return { ...state, ...action.payload };
     },
+    resetGroupData: () => {
+      return initialState;
+    }
+
   },
 });
 
-export const { setGroupData } = groupSlice.actions;
+export const { setGroupData,resetGroupData } = groupSlice.actions;
 export default groupSlice.reducer;
