@@ -29,6 +29,28 @@ export const PanelList = () => {
     setIsModalOpen(true);
   };
 
+  const handleDelete = (panelId) => {
+    // Confirm if the user really wants to delete the panel
+    if (window.confirm("Are you sure you want to delete this panel?")) {
+      // Make an Axios request to delete the panel
+      axios
+        .delete(`http://localhost:3001/panel/deletePanelbyID/${panelId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            setPanels((prevPanels) =>
+              prevPanels.filter((panel) => panel.id !== panelId)
+            );
+          } else {
+            console.error("Failed to delete panel.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting panel:", error);
+        });
+    }
+  };
+
+
   useEffect(() => {
     // Fetch panel data from the backend using Axios.
     axios
@@ -42,7 +64,9 @@ export const PanelList = () => {
         console.error("Error fetching panels:", error);
         setLoading(false);
       });
-  }, []);
+  }, [handleDelete]);
+
+
 
 
 
@@ -80,26 +104,7 @@ export const PanelList = () => {
     }
   };
 
-  const handleDelete = (panelId) => {
-    // Confirm if the user really wants to delete the panel
-    if (window.confirm("Are you sure you want to delete this panel?")) {
-      // Make an Axios request to delete the panel
-      axios
-        .delete(`http://localhost:3001/panel/deletePanelbyID/${panelId}`)
-        .then((response) => {
-          if (response.status === 200) {
-            setPanels((prevPanels) =>
-              prevPanels.filter((panel) => panel.id !== panelId)
-            );
-          } else {
-            console.error("Failed to delete panel.");
-          }
-        })
-        .catch((error) => {
-          console.error("Error deleting panel:", error);
-        });
-    }
-  };
+  
 
   const filteredPanels = panels.filter((panel) => {
     const searchTermLower = searchTerm.toLowerCase();
@@ -108,7 +113,7 @@ export const PanelList = () => {
       panel.teachers.some(
         (teacher) =>
           teacher.name.toLowerCase().includes(searchTermLower) ||
-          teacher.id.toString().includes(searchTermLower)
+          teacher.employeeId.toString().includes(searchTermLower)
       )
     );
   });
@@ -189,6 +194,7 @@ export const PanelList = () => {
               </button>
               <button
                 onClick={() => handleDelete(panel.id)}
+                
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
                 <FontAwesomeIcon icon={faTrash} />
@@ -201,75 +207,6 @@ export const PanelList = () => {
   );
   
   
-  // const renderTable = () => (
-  //   <table className="w-full bg-white border-collapse border border-solid border-neutral-300 rounded-lg shadow-lg">
-  //     <thead className="bg-table-blue text-white">
-  //       <tr>
-  //         <th className="border border-solid border-neutral-300 px-4 py-2">
-  //           ID
-  //         </th>
-  //         <th className="border border-solid border-neutral-300 px-4 py-2">
-  //           Teachers
-  //         </th>
-  //         <th className="border border-solid border-neutral-300 px-4 py-2">
-  //           Actions
-  //         </th>
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  //       {filteredPanels.map((panel) => (
-  //         <tr key={panel.id} className="border-t hover:bg-gray-100">
-  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-  //             {panel.id}
-  //           </td>
-  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-  //             <table className="w-full">
-  //               <thead>
-  //                 <tr>
-  //                   <th className="border border-solid border-neutral-300 px-4 py-2">
-  //                     Name
-  //                   </th>
-  //                   <th className="border border-solid border-neutral-300 px-4 py-2">
-  //                     ID
-  //                   </th>
-  //                 </tr>
-  //               </thead>
-  //               <tbody>
-  //                 {panel.teachers.map((teacher, index) => (
-  //                   <tr key={index}>
-  //                     <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-  //                       {teacher.name}
-                        
-  //                     </td>
-  //                     <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-  //                       {teacher.employeeId}
-  //                     </td>
-  //                   </tr>
-  //                 ))}
-  //               </tbody>
-  //             </table>
-  //           </td>
-  //           <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-  //             <button
-  //               onClick={() => handleEdit(panel.id)}
-  //               className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-  //             >
-  //               <FontAwesomeIcon icon={faEdit} />
-                
-  //             </button>
-  //             <button
-  //               onClick={() => handleDelete(panel.id)}
-  //               className="bg-red-500 text-white px-4 py-2 rounded"
-  //             >
-  //               <FontAwesomeIcon icon={faTrash}/>
-                
-  //             </button>
-  //           </td>
-  //         </tr>
-  //       ))}
-  //     </tbody>
-  //   </table>
-  // );
 
   const displayPanelHead = (panel) => {
     const panelHeadTeacher = panel.teachers.find((teacher) => teacher.panelHead === true);
@@ -286,7 +223,28 @@ export const PanelList = () => {
     }
     return null;
   };
+
+  const fetchTeacherFilteredData = async (panel) => {
+    try {
+      const response = axios.put(`http://localhost:3001/teacher/updateFalse`, panel); 
+      console.log(response.data)
+     
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+};
   
+  const handleMultipleActions = (panel) => {
+
+
+    // Call the first function
+    handleDelete(panel.id);
+
+  
+    // Call the second function
+    fetchTeacherFilteredData(panel);
+  };
+
   const renderCard = () => (
     <div className="grid grid-cols-3 gap-4">
       {filteredPanels.map((panel) => (
@@ -314,7 +272,7 @@ export const PanelList = () => {
                 </button>
 
                 <button
-                onClick={() => handleDelete(panel.id)}
+                onClick={() => handleMultipleActions(panel)}
                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700 ms-3"
               >
                 Delete

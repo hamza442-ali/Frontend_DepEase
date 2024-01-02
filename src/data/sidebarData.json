@@ -63,14 +63,17 @@
         "path": "/eval/view",
         "icon": "file-lines"
       }
+      ,
+      {
+        "label": "Evaluate Group",
+        "path": "/eval/calculate",
+        "icon": "fa-pen-to-square"
+      }
 
     ]
 
   }
-  
   ,
-
-  
   {
     "label": "Scheduling",
     "icon": "list-check",
@@ -137,7 +140,7 @@
 
       {
         "label": "Display",
-        "path": "/Resource Management/display",
+        "path": "/resource/requestApproval",
         "icon": "file-lines"
       }
 

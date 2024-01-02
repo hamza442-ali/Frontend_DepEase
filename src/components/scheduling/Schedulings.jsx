@@ -21,8 +21,8 @@ const SelectInput = ({ options, value, onChange }) => (
     {options.map((option) => (
       <option key={option.value} value={option.value}>
         {option.ProjectId}
-        {"-"}
-        {option.group}
+        {/* {"-"}
+        {option.group} */}
       </option>
     ))}
   </select>
@@ -83,7 +83,7 @@ export const Calendar = () => {
       start: slotStartTime,
       end: slotEndTime,
       content: newSlot,
-      type: type,
+      type: 'Pending',
       day: day,
     };
 
@@ -164,13 +164,7 @@ export const Calendar = () => {
             value={newSlot}
             onChange={setNewSlot}
           />
-          <input
-            type="text"
-            placeholder="Type"
-            className="w-1/4 px-4 py-2 border rounded-l focus:outline-none"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          />
+        
           <input
             type="number"
             placeholder="Span (mins)"
@@ -221,7 +215,7 @@ export const Calendar = () => {
                 <th className="px-4 py-2">Start Time</th>
                 <th className="px-4 py-2">End Time</th>
                 <th className="px-4 py-2">Type</th>
-                <th className="px-4 py-2">Content</th>
+                <th className="px-4 py-2">Group</th>
                 <th className="px-4 py-2">
                   <input type="checkbox" onChange={() => selectAll()} />
                 </th>
@@ -229,14 +223,14 @@ export const Calendar = () => {
             </thead>
             <tbody>
               {slots.map((slot, index) => (
-                <tr key={index} className={slot.selected ? "bg-gray-100" : ""}>
-                   <td className="px-4 py-2">{slot.day}</td>
-              <td className="px-4 py-2">{getFormattedDate(slot.start)}</td>
-              <td className="px-4 py-2">{getFormattedDate(slot.start, true)}</td>
-              <td className="px-4 py-2">{getFormattedDate(slot.end, true)}</td>
-              <td className="px-4 py-2">{slot.type}</td>
-              <td className="px-4 py-2">{slot.content}</td>
-                  <td className="px-4 py-2">
+                <tr key={index} className={slot.selected ? "bg-gray-100 " : ""}>
+                   <td className="px-4 py-2 text-center">{slot.day}</td>
+              <td className="px-4 py-2 text-center">{getFormattedDate(slot.start)}</td>
+              <td className="px-4 py-2 text-center">{getFormattedDate(slot.start, true)}</td>
+              <td className="px-4 py-2 text-center">{getFormattedDate(slot.end, true)}</td>
+              <td className="px-4 py-2 text-center">{slot.type}</td>
+              <td className="px-4 py-2 text-center">{slot.content}</td>
+                  <td className="px-4 py-2 text-center">
                     <input
                       type="checkbox"
                       onChange={() => toggleSelect(slot._id)}

@@ -16,40 +16,36 @@ export const PanelCreation = () => {
   const [selectedPanelHead, setSelectedPanelHead] = useState(false);
   const [teacherData, setTeacherData] = useState([])
 
-  // const simulatedTeacherList = [
-  //   {
-  //     id: "20i1881",
-  //     name: "Syed Muhammad Ali",
-  //     department: " Software",
-  //     education: " PhD in SE",
-      
-  //   }
-  // ];
+ 
+  const fetchData = async () => {
+    try {
+        const response = await axios.get('http://localhost:3001/teacher/getAll');
+        console.log(response.data);
+
+        // Filter teachers with isSelected as false
+        const filteredTeachers = response.data.filter((teacher) => !teacher.isSelected);
+
+        // Set the filtered data in the state
+        setTeacherData(filteredTeachers);
+        setTeacherList(filteredTeachers);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
 
   useEffect(() => {
-    // Fetch data from the backend when the component mounts
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/teacher/getAll'); 
-        setTeacherData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
+    
     fetchData();
-  }, []);
-  
-  // useEffect(() => {
-  //   setTeacherList(simulatedTeacherList);
-  // }, []);
+    
+}, []);
 
+ 
   const handleSearch = (query) => {
     setSearchQuery(query);
     const filteredTeachers = teacherData.filter(
       (teacher) =>
         teacher.name.toLowerCase().includes(query.toLowerCase()) ||
-        teacher.id.toString().includes(query)
+        teacher.employeeId.toString().includes(query)
     );
     setTeacherList(filteredTeachers);
   };
@@ -88,6 +84,19 @@ export const PanelCreation = () => {
     setIsPopUpOpen(false);
   };
 
+
+  const fetchTeacherFilteredData = async () => {
+    try {
+      const response = axios.put(`http://localhost:3001/teacher/update`, selectedTeachers); 
+      console.log(response.data)
+     
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+};
+
+
+
   const confirmPanelCreation = () => {
     if (!selectedPanelHead) {
       alert("Please select a panel head.");
@@ -110,6 +119,11 @@ export const PanelCreation = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+      fetchTeacherFilteredData()
+      
+      
+
 
     // Update the panel ID for the next panel
     setPanelId((prevPanelId) => prevPanelId + 1);
@@ -154,7 +168,7 @@ export const PanelCreation = () => {
                 </select>
                 <input
                   type="number"
-                  placeholder="Semester Number"
+                  placeholder="Batch"
                   value={semesterNumber}
                   onChange={handleSemesterNumberChange}
                   className="w-1/2 ml-2 p-2 border rounded"
@@ -208,13 +222,13 @@ export const PanelCreation = () => {
               <tr>
                 <th className="text-center px-4 py-2">ID</th>
                 <th className="text-center px-4 py-2">Name</th>
-                <th className="text-center px-4 py-2">Department</th>
-                <th className="text-center px-4 py-2">Education</th>
+                <th className="text-center px-4 py-2">Email</th>
+                <th className="text-center px-4 py-2">Designation</th>
                 <th className="text-center px-4 py-2">Select </th>
               </tr>
             </thead>
             <tbody>
-              {teacherData.map((teacher) => (
+              {teacherList.map((teacher) => (
                 <tr key={teacher.employeeId} className="hover:bg-gray-100">
                   <td className="border-b  border-solid border-neutral- text-center p-4">
                     {teacher.employeeId}
@@ -223,10 +237,10 @@ export const PanelCreation = () => {
                     {teacher.name}
                   </td>
                   <td className="border-b border-solid border-neutral-300 text-center p-4">
-                    {teacher.department}
+                    {teacher.email}
                   </td>
                   <td className="border-b border-solid border-neutral-300 text-center p-4">
-                    {teacher.education}
+                    {teacher.Designation}
                   </td>
 
                   <td className="border-b border-solid border-neutral-300 text-center p-4">

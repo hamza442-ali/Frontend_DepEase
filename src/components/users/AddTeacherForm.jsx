@@ -8,12 +8,12 @@ export const AddTeacherForm = ({ onClose, onSubmit }) => {
   const [newTeacher, setNewTeacher] = useState({
     name: '',
     employeeId: '',
-    education: '',
     email: '',
     mobile: '',
-    gender: '',
+    Designation: '',
     profilePicture: null,
-    password: ''
+    password: '',
+    isSelected: false
   });
 
   useEffect(() => {
@@ -55,8 +55,8 @@ export const AddTeacherForm = ({ onClose, onSubmit }) => {
     if (!newTeacher.employeeId) {
       newErrors.employeeId = 'Employee ID is required';
     }
-    if (!newTeacher.education) {
-      newErrors.education = 'Education is required';
+    if (!newTeacher.Designation) {
+      newErrors.Designation = ' Designation is required';
     }
     if (!newTeacher.email) {
       newErrors.email = 'Email is required';
@@ -64,9 +64,7 @@ export const AddTeacherForm = ({ onClose, onSubmit }) => {
     if (!newTeacher.mobile) {
       newErrors.mobile = 'Mobile is required';
     }
-    if (!newTeacher.gender) {
-      newErrors.gender = 'Gender is required';
-    }
+   
     if (!newTeacher.profilePicture) {
       newErrors.profilePicture = 'Profile Picture is required';
     }
@@ -135,16 +133,16 @@ export const AddTeacherForm = ({ onClose, onSubmit }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Education</label>
+          <label className="block text-sm font-medium text-gray-700">Designation</label>
           <input
             type="text"
-            name="education"
-            value={newTeacher.education}
+            name="Designation"
+            value={newTeacher.Designation}
             onChange={handleChange}
             className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
           />
           {/* Display error message for education */}
-          {errors.education && <p className="text-sm text-red-500">{errors.education}</p>}
+          {errors.Designation && <p className="text-sm text-red-500">{errors.Designation}</p>}
         </div>
 
         <div>
@@ -192,21 +190,7 @@ export const AddTeacherForm = ({ onClose, onSubmit }) => {
           {errors.profilePicture && <p className="text-sm text-red-500">{errors.profilePicture}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-600">Gender</label>
-          <select
-            name="gender"
-            value={newTeacher.gender}
-            onChange={handleChange}
-            className="mt-1 p-2 border rounded w-full bg-slate-800 text-white"
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          {/* Display error message for gender */}
-          {errors.gender && <p className="text-sm text-red-500">{errors.gender}</p>}
-        </div>
+   
 
         <div className="flex justify-end space-x-2">
           <button

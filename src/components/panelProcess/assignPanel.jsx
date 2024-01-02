@@ -13,6 +13,8 @@ export const AssignPanel = () => {
   const [studentSearch, setStudentSearch] = useState("");
   const [panelSearch, setPanelSearch] = useState("");
 
+  const [ProjectData , SetProjectsData] = useState([]);
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/group/getall")
@@ -34,6 +36,19 @@ export const AssignPanel = () => {
       .catch((error) => {
         console.error("Error fetching panels:", error);
         setLoading(false);
+      });
+  }, []);
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/project/getall")
+      .then((response) => {
+        console.log(response.data, " response data in scheduling");
+        SetProjectsData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching project data:", error);
       });
   }, []);
 
@@ -79,10 +94,10 @@ export const AssignPanel = () => {
     setSelectedPanel(selectedPanel === panelId ? null : panelId);
   };
 
-  const filteredStudents = groups.filter(
+  const filteredStudents = ProjectData.filter(
     (group) =>
-      group.teamLeadId &&
-      group.teamLeadId.toLowerCase().includes(studentSearch.toLowerCase())
+      group.ProjectId &&
+      group.ProjectId.toLowerCase().includes(studentSearch.toLowerCase())
   );
 
   const filteredPanels = panels.filter(
@@ -145,14 +160,14 @@ export const AssignPanel = () => {
                 {filteredStudents.map((group) => (
                   <tr key={group._id} className="border-t hover:bg-gray-100">
                     <td className="border-b border-solid border-neutral-300 px-4 py-2 text-center">
-                      {group.teamLeadId}
+                      {group.ProjectId}
                     </td>
                   
                     <td className="border-b border-solid border-neutral-300 px-4 py-2 ">
                       <input
                         type="checkbox"
-                        onChange={() => handleSelectGroup(group._id)}
-                        checked={isGroupSelected(group._id)}
+                        onChange={() => handleSelectGroup(group.ProjectId)}
+                        checked={isGroupSelected(group.ProjectId)}
                         className="mx-auto"
                       />
                     </td>
@@ -214,7 +229,7 @@ export const AssignPanel = () => {
                                 {teacher.name}
                               </td>
                               <td className="border border-solid border-neutral-300 px-4 py-2 text-center">
-                                {teacher.id}
+                                {teacher.employeeId}
                               </td>
                             </tr>
                           ))}

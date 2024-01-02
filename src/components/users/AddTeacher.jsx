@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import imageP from '../../assets/images/myPicReduced.JPG';
+import imageP from '../../assets/images/avatar.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -69,10 +69,10 @@ export const AddTeacher = () => {
             <tr>
               <th className="p-3 text-center">Name</th>
               <th className="p-3 text-center">Employee Id</th>
-              <th className="p-3 text-center">Education</th>
+              <th className="p-3 text-center">Designation</th>
               <th className="p-3 text-center">Mobile</th>
               <th className="p-3 text-center">Email</th>
-              <th className="p-3 text-center">Gender</th>
+             
               <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -85,10 +85,10 @@ export const AddTeacher = () => {
                             </td>
              
                 <td className="p-3 text-center">{panel.employeeId}</td>
-                <td className="p-3 text-center">{panel.education}</td>
+                <td className="p-3 text-center">{panel.Designation}</td>
                 <td className="p-3 text-center">{panel.mobile}</td>
                 <td className="p-3 text-center">{panel.email}</td>
-                <td className="p-3 text-center">{panel.gender}</td>
+                
                 <td className="p-3 text-center">
                   <button className="text-red-500 mr-2" onClick={() => handleDeleteTeacher(panel.employeeId)}>
                     <FontAwesomeIcon icon={faTrash} /> Delete

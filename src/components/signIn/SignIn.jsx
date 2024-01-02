@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const SigninPage = () => {
+  const navigate = useNavigate();
+  const handleSignIn = () => {
+    // Your sign-in logic here
+
+    // Navigate to the '/home' route after successful sign-in
+    navigate('/home');
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
@@ -131,8 +140,11 @@ export const SigninPage = () => {
                     </div>
                   </div>
                   <div className="mb-6">
-                    <button className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp">
+                    <button 
+                    onClick={handleSignIn}
+                    className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp">
                       Sign in
+                      
                     </button>
                   </div>
                 </form>

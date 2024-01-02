@@ -7,14 +7,17 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 
 export const AddStudentForm = ({ onClose, onSubmit }) => {
   const [newStudent, setNewStudent] = useState({
-
-    name: '',
-    registration_number: '',
-    degree: '',
-    section: '',
-    gender: '',
-    email_address: '',
-
+ 
+    student_name: '', // done
+    email_address : '', // done
+    phone_number:'', // done
+    batch:0,
+    semester:0,
+    registration_number: '', // done
+    isTeamLead: false,
+    password: '',
+    department: '', // done
+    isSelected:false, 
     
     
   });
@@ -75,15 +78,15 @@ export const AddStudentForm = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <animated.div style={formAnimation} className="fixed top-0 right-0 h-full w-1/3 bg-white shadow-lg p-8">
-      <h2 className="text-2xl font-bold mb-4 text-black">Add Student</h2>
+    <animated.div style={formAnimation} className="fixed top-0 right-0 h-full w-1/3 bg-white shadow-lg p-8 overflow-y-auto">
+    <h2 className="text-2xl font-bold mb-4 text-black">Add Student</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
-            name="name"
-            value={newStudent.name}
+            name="student_name"
+            value={newStudent.student_name}
             onChange={handleChange}
             className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
           />
@@ -114,44 +117,75 @@ export const AddStudentForm = ({ onClose, onSubmit }) => {
 
 
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Degree</label>
+
+        <div className='flex'>
+          <div>
+          <label className="block text-sm font-medium text-gray-700">Batch</label>
           <input
-            type="text"
-            name="degree"
-            value={newStudent.degree}
+            type="number"
+            name='batch'
+            value={newStudent.batch}
             onChange={handleChange}
             className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
           />
+          </div>
+
+          <div>
+
+          <label className="block text-sm font-medium text-gray-700 ml-4">Semester</label>
+          <input
+            type="number"
+            name='semester'
+            value={newStudent.semester}
+            onChange={handleChange}
+            className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500 ml-4"
+          />
+
+          </div>   
         </div>
+
+
+
+
         <div>
-          <label className="block text-sm font-medium text-gray-700">Section</label>
+          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
             type="text"
-            name="section"
-            value={newStudent.section}
+            name="phone_number"
+            value={newStudent.phone_number}
             onChange={handleChange}
             className="mt-1 p-2 border rounded w-full focus:outline-none focus:ring focus:border-blue-500"
           />
         </div>
 
+
+
+     
+
         <div>
-                <label className="  block text-sm font-medium text-gray-600">Gender</label>
+                <label className="  block text-sm font-medium text-gray-600">Department</label>
                 <select
-                    name="gender"
-                    value={newStudent.gender}
+                    name="department"
+                    value={newStudent.department}
                     onChange={handleChange}
                     className="mt-1 p-2 border rounded w-full bg-slate-800 text-white "
                 >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="">Select Departmetn</option>
+                    <option value="CS">CS</option>
+                    <option value="SE">SE</option>
+                    <option value="AI">AI</option>
+                    <option value="DS">DS</option>
+                    <option value="EE">EE</option>
+                    <option value="Robotics">Robotics</option>
+
+
+
                 </select>
             </div>
 
             
         {/* Profile Picture */}
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">Profile Picture</label>
           <div className="flex items-center space-x-2">
             <input
@@ -165,9 +199,7 @@ export const AddStudentForm = ({ onClose, onSubmit }) => {
               <FontAwesomeIcon icon={faImage} className="text-blue-500" />
             </label>
           </div>
-          {/* Display error message for profilePicture */}
-          {/* {errors.profilePicture && <p className="text-sm text-red-500">{errors.profilePicture}</p>} */}
-        </div>
+                  </div> */}
 
         <div className="flex justify-end space-x-2">
           <button

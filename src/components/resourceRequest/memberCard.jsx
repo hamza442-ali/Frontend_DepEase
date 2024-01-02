@@ -59,7 +59,8 @@ export const MemberCard = ({ request, onViewDetails, updateRequest,rejectRequest
   const statusInfo = getStatusColor(request.supervisorStatus);
 
   return (
-    <div className="p-6 mx-2 bg-white rounded-lg shadow-lg" key={request._id}>
+
+    <div className="p-6 mx-2 bg-white rounded-lg shadow-lg mt-8" key={request._id}>
       <div className="flex items-center">
         <img
           className="w-12 h-12 rounded-full"
@@ -73,7 +74,7 @@ export const MemberCard = ({ request, onViewDetails, updateRequest,rejectRequest
          
           <p className={` ml-36 text-sm ${statusInfo.color}`}>
               <FontAwesomeIcon icon={statusInfo.icon} className="mr-2" />
-              {request.supervisorStatus}
+              {request.adminStatus}
             </p>
           </div>
           <p className="mr-4 text-sm text-gray-500">{request.email}</p>
@@ -133,7 +134,6 @@ export const MemberCard = ({ request, onViewDetails, updateRequest,rejectRequest
         <RejectionModal onClose={closeModal} onSubmit={handleRejectRequest} />
       )}
     </div>
+    
   );
 };
-
-// export default MemberCard;

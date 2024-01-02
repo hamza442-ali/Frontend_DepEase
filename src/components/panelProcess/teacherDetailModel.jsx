@@ -21,7 +21,7 @@ export const TeacherDetailsModal = ({ isOpen, onClose, panel }) => {
             {panel.teachers.map((teacher, index) => (
               <tr key={index} className="text-gray-700">
                 <td>{teacher.name}</td>
-                <td>{teacher.id}</td>
+                <td>{teacher.employeeId}</td>
               </tr>
             ))}
           </tbody>

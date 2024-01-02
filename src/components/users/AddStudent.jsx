@@ -11,18 +11,18 @@ export const AddStudent = ({onClose, onSubmit}) => {
   const [Student, setStudent] = useState([
     {
       
-      name: 'Hamza Azam',
-      registration_number: '20I-1881',
-      degree: 'BSSE',
-      gender: 'Male',
-      section: 'BSE-203P',
+      student_name: 'Hamza Azam',
       email_address : "hamza@gmail.com",
-      password: "hamza"
-      
+      phone_number:"031877345235",
+      batch:0,
+      semester:0,
+      registration_number: '20I-1881',
+      isTeamLead: false,
+      password: "hamza",
+      department: "Computer Science",
+      isSelected:false,  
 
     },
-    
-    // Add more initial data as needed
   ]);
 
 
@@ -129,9 +129,10 @@ export const AddStudent = ({onClose, onSubmit}) => {
               <th className="p-3 text-center">Name</th>
               <th className="p-3 text-center">Roll Number</th>
               <th className="p-3 text-center">Email</th>
-              <th className="p-3 text-center">Degree</th>
-              <th className="p-3 text-center">Section</th>
-              <th className="p-3 text-center">Gender</th>
+              <th className="p-3 text-center">Department</th>
+              <th className="p-3 text-center">Batch</th>
+              <th className="p-3 text-center">Semester</th>
+              <th className="p-3 text-center">Phone Number</th>
               <th className="p-3 text-center">Password</th>
               <th className="p-3 text-center">Action</th>
             </tr>
@@ -139,12 +140,13 @@ export const AddStudent = ({onClose, onSubmit}) => {
           <tbody>
             {Student.map((student) => (
               <tr key={student.id} className="border-t hover:bg-gray-100">
-                <td className="p-3 text-center">{student.name}</td>
+                <td className="p-3 text-center">{student.student_name}</td>
                 <td className="p-3 text-center">{student.registration_number}</td>
                 <td className="p-3 text-center">{student.email_address  }</td>
-                <td className="p-3 text-center">{student.degree}</td>
-                <td className="p-3 text-center">{student.section}</td>
-                <td className="p-3 text-center">{student.gender}</td>
+                <td className="p-3 text-center">{student.department}</td>
+                <td className="p-3 text-center">{student.batch}</td>
+                <td className="p-3 text-center">{student.semester}</td>
+                <td className="p-3 text-center">{student.phone_number}</td>
                 <td className="p-3 text-center">{student.password}</td>
                 <td className="p-3 text-center">
                 <button className="text-red-500 mr-2" onClick={() => handleDeleteStudent(student.registration_number)}>

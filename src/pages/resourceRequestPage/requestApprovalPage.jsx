@@ -43,6 +43,7 @@ export const RequestApprovalPage = () => {
 
 
     const fetchData = async () => {
+      
       try {
         const response = await axios.get(`http://localhost:3001/resource/getall`);
         setRequest(response.data);
@@ -59,8 +60,8 @@ export const RequestApprovalPage = () => {
       
       let newStatus='Rejected';
        // Update the status in the updatedData
-    request.supervisorStatus = newStatus;
-    request.rejectionReason_T=reason;
+    request.adminStatus = newStatus;
+    request.rejectionReason_S=reason;
     const id = request._id;
     
     // Assuming your server expects a PUT request for updating
@@ -86,7 +87,7 @@ export const RequestApprovalPage = () => {
       try {
     
     // Check the current status of the deliverable and update it accordingly
-    const currentStatus = request.supervisorStatus;
+    const currentStatus = request.adminStatus;
     let newStatus;
     
 
@@ -105,12 +106,13 @@ export const RequestApprovalPage = () => {
     }
     
     // Update the status in the updatedData
-    request.supervisorStatus = newStatus;
+    request.adminStatus = newStatus;
     
     const id = request._id;
     
+    
     // Assuming your server expects a PUT request for updating
-    const response = await axios.put(`http://localhost:3001/resource/update/${id}, request`);
+    const response = await axios.put(`http://localhost:3001/resource/update/${id}`, request);
 
     // Assuming the server responds with the updated resource request
     const updatedData = response.data;
@@ -196,59 +198,77 @@ export const RequestApprovalPage = () => {
             </button>
           </div>
           <MemberList requests={requestSearch || requests} onViewDetails={handleViewDetails}  updateRequest={updateRequest} rejectRequest={rejectRequest} />
+         
+         
+         
           {selectedRequest && (
-            <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="max-w-md p-6 mx-auto bg-white rounded-lg">
-                <div className="flex items-center mb-4">
-                  <img
-                    className="w-12 h-12 mr-4 rounded-full"
-                    src={selectedRequest.avatar}
-                    alt="Member Avatar"
-                  />
-                  <h2 className="text-2xl font-semibold text-gray-800">{selectedRequest.projectTitle} Project Title</h2>
-                </div>
-                <p className="text-gray-800">
-                  <span className="font-medium">Project ID:</span> {selectedRequest.projectId}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">Student ID:</span> {selectedRequest.studentId}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">Phone Number:</span> {selectedRequest.phoneNumber}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">Email</span> {selectedRequest.email}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">RequestType:</span> {selectedRequest.requestType}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">RequestReason:</span> {selectedRequest.requestReason}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium">Start Date:</span> {selectedRequest.startDate}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium"> End Date:</span> {selectedRequest.endDate}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium"> Request Date:</span> {selectedRequest.requestDate}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium"> Admin Status:</span> {selectedRequest.adminStatus}
-                </p>
-                <p className="text-gray-800">
-                  <span className="font-medium"> Supervisor Status:</span> {selectedRequest.supervisorStatus}
-                </p>
-                <button
-                  className="px-4 py-2 mt-4 font-medium text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none"
-                  onClick={() => setSelectedRequest(null)}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
+  <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="max-w-md p-6 mx-auto bg-white rounded-lg shadow-lg">
+      <div className="flex items-center mb-4">
+        <h2 className="text-3xl font-semibold text-blue-500">{selectedRequest.projectTitle} Project Title</h2>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Project ID:</span> {selectedRequest.projectId}
+        </div>
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Student ID:</span> {selectedRequest.studentId}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Phone Number:</span> {selectedRequest.phoneNumber}
+        </div>
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Email:</span> {selectedRequest.email}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Request Type:</span> {selectedRequest.requestType}
+        </div>
+        
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Start Date:</span> {new Date(selectedRequest.startDate).toLocaleDateString()}
+        </div>
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">End Date:</span> {new Date(selectedRequest.endDate).toLocaleDateString()}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Request Date:</span> {new Date(selectedRequest.requestDate).toLocaleDateString()}
+        </div>
+        <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Admin Status:</span> {selectedRequest.adminStatus}
+        </div>
+      </div>
+      <div className="mb-4">
+        <span className="font-medium  text-blue-500">Supervisor Status:</span> {selectedRequest.supervisorStatus}
+      </div>
+
+      <div className="text-gray-600">
+          <span className="font-medium text-blue-500">Request Reason:</span> {selectedRequest.requestReason}
+      </div>
+
+      <button
+        className="px-4 py-2 mt-4 font-medium text-white bg-indigo-700 rounded hover:bg-indigo-800 focus:outline-none"
+        onClick={() => setSelectedRequest(null)}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
+
+
+
+
+
+
         </div>
       </div>
     );

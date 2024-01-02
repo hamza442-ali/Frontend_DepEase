@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
+import { useNavigate } from 'react-router-dom';
 
 export const HeroLand = () => {
+
+  const navigate = useNavigate();
+  const handleSignIn = () => {
+    // Your sign-in logic here
+
+    // Navigate to the '/home' route after successful sign-in
+    navigate('/home');
+  };
   return (
     <>
 
@@ -25,12 +33,18 @@ export const HeroLand = () => {
                 Our project streamlines the management of Final Year Projects (FYPs) for students and educators. It incorporates a Continuous Integration/Continuous Deployment (CI/CD) pipeline for automatic website deployment.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  <Link
+                  <button
+
+                  onClick={handleSignIn}
                     href="link here"
                     className="rounded-md bg-black py-2 px-8 text-base  text-white  text-4xl hover:bg-primary"
                   >
                    Start 
-                  </Link>
+
+                  </button>
+                 
+                  
+                
                  
                 </div>
               </div>

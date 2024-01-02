@@ -107,6 +107,7 @@ export const EvaluationForm = () => {
               onChange={(e) => setEvaluationType(e.target.value)}
               className="border rounded p-2 bg-blue-500 text-white "
             >
+              <option value="">Evaluation Type</option>
               <option value="Proposal Evaluation">Proposal Evaluation</option>
               <option value="Mid Evaluation">Mid Evaluation</option>
               <option value="Final Evaluation">Final Evaluation</option>
