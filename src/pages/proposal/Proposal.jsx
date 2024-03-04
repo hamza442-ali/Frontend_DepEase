@@ -17,7 +17,7 @@ const StepForm = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState('');
   const studentData = useSelector((state) => state.student);
-
+  const projectData = useSelector(state => state.project);
 
   useEffect(() => {
     // Add an interceptor for every outgoing request
@@ -99,6 +99,18 @@ const StepForm = () => {
     { label: 'Step 3: Timeline and Technology Used', component: <Step3 onNext={handleNext} onPrevious={handlePrevious} /> },
     { label: 'Step 4: Modules', component: <Step4 data={formData} onPrevious={handlePrevious} onSubmit={handleSubmit} /> },
   ];
+
+  if( projectData.projectProposal !=null  ){
+    toast.info("Proposal Already Submitted");
+    return (
+      <div className="flex justify-center items-center mt-36">
+        <div className="bg-gray-200 p-8 rounded shadow-lg">
+          <h2 className="text-2xl text-gray-800 font-semibold mb-4">
+            Proposal Already Submitted
+          </h2>
+        </div>
+      </div>
+    );}
 
   return (
     <div>

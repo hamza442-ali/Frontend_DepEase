@@ -26,6 +26,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx';
 import LogoutPage from './pages/signin/Logout.jsx';
 import ProjectIdeasPage from './pages/ProjectIdeas/ProjectIdeas.jsx';
 import AnnouncementsPage from './pages/Announcement/AnnouncementPage.jsx';
+import PipelineCreate from './pages/pipeline/PipelineCreate.jsx';
 
 
 
@@ -40,8 +41,9 @@ function App() {
     <PageInfo/>
     <Routes>
     <Route path="/" element={<Login/>} />
-    <Route path="/announce" element={<AnnouncementsPage/>} />
-    <Route path="/projectIdeas" element={<ProjectIdeasPage/>} />
+    <Route path="/announce" element={<PrivateRoute Component={AnnouncementsPage}/>} />
+    <Route path="/createPipeline" element={<PrivateRoute Component={PipelineCreate}/>} />
+    <Route path="/projectIdeas" element={<PrivateRoute Component={ProjectIdeasPage}/>} />
     <Route path="/logout" element={<PrivateRoute Component={LogoutPage}/>} />
     <Route path="/detail" element={<PrivateRoute Component={ProjectDetails}/>} />
     <Route path="/evaluation" element={<PrivateRoute Component={ViewFYPEvaluationPage}/>} />

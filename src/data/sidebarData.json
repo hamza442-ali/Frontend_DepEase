@@ -115,6 +115,18 @@
       }
     ]
   },
+  {
+    "label": "Deployments",
+    "icon": "cloud",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "CreatePipeline",
+        "path": "/createPipeline",
+        "icon": "cloud"
+      }
+    ]
+  },
 
   {
     "label": "Logout",

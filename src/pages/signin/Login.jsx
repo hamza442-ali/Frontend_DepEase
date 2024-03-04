@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { setStudentData } from "../../redux/slices/student/studentSlice";
 import { useNavigate } from "react-router-dom";
 import { setProjectData } from "../../redux/slices/project/projectSlice";
+import logo from "../../assets/images/logo.jpeg"
+
+
 const Login = () => {
   const navigate = useNavigate(); // hook to navigate programmatically
 
@@ -86,9 +89,13 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="p-8 bg-white rounded-lg shadow-md w-96">
-        <h2 className="mb-6 text-2xl font-bold text-center">
-          FYP Management System
-        </h2>
+      <div className="flex flex-row mx-2 mb-6 ml-16">
+
+<img src={logo} alt="DepEase" className="w-8 h-8 ml-2 mr-2 rounded-full sm:w-10 sm:h-10 sm:ml-4 sm:mr-4" />
+  <h2 className="mb-6 text-2xl font-bold text-center">
+   DepEase
+  </h2>
+</div>
         <input
           type="text"
           placeholder="email_address"

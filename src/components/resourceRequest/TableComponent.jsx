@@ -84,6 +84,8 @@ const TableComponent = () => {
               <th className="px-4 py-2 text-left">Request Date</th>
               <th className="px-4 py-2 text-left">Admin Status</th>
               <th className="px-4 py-2 text-left">Supervisor Status</th>
+              <th className="px-4 py-2 text-left">Supervisor Rejection Reason</th>
+              <th className="px-4 py-2 text-left">Admin Rejection Reason</th>
               {isAdmin && <th className="px-4 py-2 text-left">Actions</th>}
             </tr>
           </thead>
@@ -110,6 +112,8 @@ const TableComponent = () => {
 }`}>
   {item.supervisorStatus}
 </td>
+<td className="px-4 py-3">{item.rejectionReason_T}</td>
+<td className="px-4 py-3">{item.rejectionReason_S}</td>
                 {isAdmin && (
                   <td className="px-4 py-3">
                     {item.adminStatus !== 'InProgress' ? (

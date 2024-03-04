@@ -8,6 +8,33 @@ import { useSelector } from 'react-redux';
 
 
 const AnnouncementsPage = () => {
+
+  
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+  
     const [supervisorAnnouncements, setSupervisorAnnouncements] = useState([]);
     const [administrationAnnouncements, setAdministrationAnnouncements] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +46,8 @@ const AnnouncementsPage = () => {
     
 
     const fetchAnnouncements = async () => {
+
+      
       try {
         const response = await axios.get('http://localhost:3001/announcementA/getall');
         if (response.data.length === 0) {
@@ -38,8 +67,8 @@ const AnnouncementsPage = () => {
         if (response.data.length === 0) {
           toast.info('No Supervisor announcements found!');
         } else {
-          setSupervisorAnnouncements(response.data);
-          console.log(response.data);
+          setSupervisorAnnouncements(response.message);
+          console.log(response.message);
         }
       } catch (error) {
         toast.error('Error fetching  supervisors announcements: ' + error.message);
