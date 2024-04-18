@@ -27,7 +27,8 @@ import LogoutPage from './pages/signin/Logout.jsx';
 import ProjectIdeasPage from './pages/ProjectIdeas/ProjectIdeas.jsx';
 import AnnouncementsPage from './pages/Announcement/AnnouncementPage.jsx';
 import PipelineCreate from './pages/pipeline/PipelineCreate.jsx';
-
+import FrontendPipeline from './pages/pipeline/FrontendPipeline.jsx';
+import { LandingPage } from './pages/landingPage/LandingPage.jsx';
 
 
 function App() {
@@ -40,9 +41,12 @@ function App() {
     <MainLayout />
     <PageInfo/>
     <Routes>
-    <Route path="/" element={<Login/>} />
+    
+    <Route path="/" element={<LandingPage/>} />
+    <Route path="/signin" element={<Login/>} />
     <Route path="/announce" element={<PrivateRoute Component={AnnouncementsPage}/>} />
-    <Route path="/createPipeline" element={<PrivateRoute Component={PipelineCreate}/>} />
+    <Route path="/createFrontendPipeline" element={<PrivateRoute Component={FrontendPipeline}/>} />
+    <Route path="/createBackendPipeline" element={<PrivateRoute Component={PipelineCreate}/>} />
     <Route path="/projectIdeas" element={<PrivateRoute Component={ProjectIdeasPage}/>} />
     <Route path="/logout" element={<PrivateRoute Component={LogoutPage}/>} />
     <Route path="/detail" element={<PrivateRoute Component={ProjectDetails}/>} />

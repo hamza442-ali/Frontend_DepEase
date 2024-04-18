@@ -2,12 +2,17 @@ import React, { useState,useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
+import ReactDocker from "../../assets/files/React/Dockerfile.txt"
+import ReactJenkins from "../../assets/files/React/Jenkinsfile.txt"
+import FlaskDocker from "../../assets/files/Flask/Dockerfile.txt"
+import FlaskJenkins from "../../assets/files/Flask/Jenkinsfile.txt"
+import NodeDocker from "../../assets/files/ExpressJs/Dockerfile.txt"
+import NodeJenkins from "../../assets/files/ExpressJs/Jenkinsfile.txt"
 
 const App = () => {
   const [githubLink, setGithubLink] = useState('');
   const [selectedTool, setSelectedTool] = useState('');
-  const [jobname, setJobName] = useState('');
+  let jobname='';
   const [deploymentLink, setDeploymentLink] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,6 +20,8 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 const[deployedData,setDeployedData] = useState([]);
+const[consoleOutput,setConsole_output] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +32,7 @@ const[deployedData,setDeployedData] = useState([]);
         if(response.status===200){
           setDeployedData(response.data);
           setDeploymentLink(response.data.deploymentLink);
+          
         }
        
       } catch (error) {
@@ -47,42 +55,53 @@ const[deployedData,setDeployedData] = useState([]);
       setIsSubmitting(false); // Enable submit button
       return;
     }
-
+    jobname=githubLink.split('/').pop().replace('.git', '');
+    
+     
+     
     // Simulate deployment process (replace with actual deployment logic)
-    const deploymentResponse = simulateDeployment(githubLink, selectedTool,jobname,projectData.ProjectId);
+    const deploymentResponse = simulateDeployment(githubLink, selectedTool,projectData.ProjectId);
 
     setIsSubmitting(false); // Enable submit button
   };
 
-  const simulateDeployment = async (githubLink, selectedTool,jobname,ProjectId) => {
+  const simulateDeployment = async (githubLink, selectedTool,ProjectId) => {
 
+    
     try {
       const response = await axios.post('http://localhost:3001/jenkins/createPipelineJob', {
         githubLink,
         selectedTool,
-        jobname,
+        jobname : githubLink.split('/').pop().replace('.git', ''),
         ProjectId: ProjectId,
         Type:"Backend"
       });
  
+
+      console.log(response.data.deploymentLink);
+        setDeploymentLink(response.data.deploymentLink);
+        
       // Check if the request was successful
     if (response.status === 200) {
-      handleBuildAgain(); // will be called after successful deployment
+      
       // Deployment successful
       console.log(response.data.deploymentLink);
-      setDeploymentLink(response.data.deploymentLink);
+        setDeploymentLink(response.data.deploymentLink);
+
+        handleBuildAgain(); // will be called after successful creation of pipeline
+        
       setErrorMessage('');
       toast.success('Deployment successful!');
     } 
     else {
       // Deployment failed
       setDeploymentLink('');
-      setErrorMessage(response.data.message); // Display error message received from backend
+      setErrorMessage(response.data.message); // Display error message received from Backend
       toast.error('Deployment failed: ' + response.data.message);
     }
   } catch (error) {
     // Handle network errors or other exceptions
-    console.log("Error" + error.response.data.message); // Display error message received from backend
+    console.log("Error" + error.response.data.message); // Display error message received from Backend
     setErrorMessage(error.response.data.message);
     toast.error('Error: ' + error.response.data.message);
   }
@@ -91,28 +110,41 @@ const[deployedData,setDeployedData] = useState([]);
 
   const handleBuildAgain = async () => {
     try {
+      setConsole_output('');
       setLoading(true);
       setMessage('Building pipeline...');
+      setErrorMessage('');
       const response = await axios.post('http://localhost:3001/jenkins/buildPipline', {
         ProjectId: projectData.ProjectId,
-        job_name: deployedData.job_name,
+        job_name:  deployedData.job_name || jobname ,
       });
   
+      console.log(response.data.console_output);
+       setConsole_output(response.data.console_output); 
+
       if(response.status === 200){
         toast.info(response.data.message);
+        console.log(response.data.deploymentLink);
+        setDeploymentLink(response.data.deploymentLink);
         setLoading(false);
         setMessage('');
       } // Log the response data if needed
   
-      return response.data; // Return response data if needed
+      return response.data.message; // Return response data if needed
     } catch (error) {
       console.error('Error building pipeline:', error);
+      setLoading(false);
+      setMessage('');
+      setErrorMessage('Error building pipeline',error.message);
       toast.error('Error building pipeline',error.message);
     }
   };
 
   const handleDelete = async () => {
     try {
+      setLoading(true);
+      setMessage('Stopping pipeline...');
+      setErrorMessage('');
       const response = await axios.delete('http://localhost:3001/jenkins/deletePipline', {
         params: {
           ProjectId: projectData.ProjectId,
@@ -121,20 +153,25 @@ const[deployedData,setDeployedData] = useState([]);
       });
       
       if(response.status === 200){
-toast.success('Pipeline deleted successfully');
+        setLoading(false);
+        setMessage('');
+        setDeploymentLink('')
+toast.success('Pipeline stopped successfully');
       }else{
-        toast.error('Error deleting pipeline');
+        toast.error('Error Stopping pipeline');
       }
 
-
+      setLoading(false);
+      setMessage('');
       setDeploymentLink('');
       setErrorMessage('');
       setGithubLink('');
       setSelectedTool('');
-      setJobName('');
     } catch (error) {
-      setErrorMessage('An error occurred while deleting. Please try again later.');
-      toast.error('Error deleting pipeline');
+      setLoading(false);
+      setMessage('');
+      setErrorMessage('An error occurred while Stopping . Please try again later.');
+      toast.error('Error stopping pipeline');
     }
   };
 
@@ -156,7 +193,7 @@ toast.success('Pipeline deleted successfully');
         )}
       <div className="max-w-4xl mx-auto">
         <div className="mt-6">
-          <h2 className="text-3xl font-extrabold text-center text-gray-900">Deployment Manager</h2>
+          <h2 className="text-3xl font-extrabold text-center text-gray-900">Backend Deployment Manager</h2>
           <div className="mt-8 space-y-6">
             <div className="-space-y-px rounded-md shadow-sm">
               <div>
@@ -175,22 +212,7 @@ toast.success('Pipeline deleted successfully');
                   onChange={(e) => setGithubLink(e.target.value)}
                 />
               </div>
-              <div>
-                <label htmlFor="jobname" className="sr-only">
-                 Job Name
-                </label>
-                <input
-                  id="jobname"
-                  name="jobname"
-                  type="text"
-                  autoComplete="off"
-                  required
-                  className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Enter unique job name"
-                  value={jobname}
-                  onChange={(e) => setJobName(e.target.value)}
-                />
-              </div>
+             
               <div>
                 <label htmlFor="selectedTool" className="sr-only">
                   Select Tool
@@ -205,9 +227,9 @@ toast.success('Pipeline deleted successfully');
                   onChange={(e) => setSelectedTool(e.target.value)}
                 >
                   <option value="">Select FrameWork </option>
-                  <option value="node/express">Node/Express</option>
+                  <option value="Node/Express js">Node/Express js</option>
                   <option value="Flask">Flask</option>
-                  <option value="springboot">Spring Boot</option>
+                  
                 </select>
               </div>
               
@@ -239,7 +261,7 @@ toast.success('Pipeline deleted successfully');
                   <p className="text-sm text-green-700">{`Deployment link: ${deploymentLink}`}</p>
                   <div className="flex items-center justify-between mt-2">
                     <button
-                      className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                      className="px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
                       onClick={handleBuildAgain}
                     >
                       Build Again
@@ -248,13 +270,13 @@ toast.success('Pipeline deleted successfully');
                       className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
                       onClick={handleDelete}
                     >
-                      Delete Pipeline
+                      Stop Pipeline
                     </button>
                   </div>
                 </div>
               </div>
-              <div className="mt-6"> Note : Update request like this ('http://localhost:3001/announcement/getall')
-              with server Ip from deployment Link </div>
+              <div className="mt-6"> Note : Update request like this ('http://localhost:3001/')
+              in Backend with server Ip from deployment Link </div>
             </div>
           )}
           {errorMessage && (
@@ -284,21 +306,34 @@ toast.success('Pipeline deleted successfully');
     <li>2. These files must be present in the root area of your GitHub repository.</li>
     <li>3. Download only the relevant files that match the tool, you are using.</li>
     <li>4. The GitHub repository should be public and branch name should be main.</li>
+    <li>5. The GitHub repository should be separate for Frontend and Backend.</li>
   </ul>
         </div>
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-900">Downloadable Files</h3>
           <div className="mt-2 space-y-2">
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for React.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for React.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for Node/Express.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for Node/Express.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for Flask</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for Flask</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for Spring Boot</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for Spring Boot</a>
+          
+          <a href={ReactDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for React.js  </button> </a>
+           <a href={ReactJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for React.js  </button> </a>
+
+           <a href={FlaskDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for Flask  </button> </a>
+           <a href={FlaskJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for Flask  </button> </a>
+
+           <a href={NodeDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for Node/Express  </button> </a>
+           <a href={NodeJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for Node/Express  </button> </a>
+            
           </div>
         </div>
+        <div className="p-4 mt-4 bg-gray-100 border rounded-lg shadow-md">
+      <h2 className="mb-2 text-xl font-semibold">Console Output:</h2>
+      <pre className="overflow-auto max-h-96">{consoleOutput}</pre>
+    </div>
       </div>
     </div>
   );

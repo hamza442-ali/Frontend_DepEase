@@ -2,9 +2,22 @@ import React, { useEffect } from 'react';
 import person from '../../assets/images/person2.jpeg';
 import logo from '../../assets/images/logo.jpeg';
 import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
+  
   const studentData = useSelector((state) => state.student);
+
+
+  const location = useLocation();
+
+  // Check if the current route is '/' or '/signin'
+  const hideNavbar = location.pathname === '/' || location.pathname === '/signin' || location.pathname === '/logout';
+
+  // If the current route is '/' or '/signin', don't render the Navbar
+  if (hideNavbar) {
+    return null;
+  }
 
   if (!studentData) {
     return <div className='ml-96'>Loading...</div>; // or handle the loading state in your desired way

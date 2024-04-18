@@ -67,8 +67,8 @@ const AnnouncementsPage = () => {
         if (response.data.length === 0) {
           toast.info('No Supervisor announcements found!');
         } else {
-          setSupervisorAnnouncements(response.message);
-          console.log(response.message);
+          setSupervisorAnnouncements(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         toast.error('Error fetching  supervisors announcements: ' + error.message);

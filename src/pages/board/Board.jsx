@@ -101,7 +101,7 @@ const Board = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/getmine/${"F20-126-D"}`);//hardcoded for now as login is not implemented
+      const response = await axios.get(`${API_BASE_URL}/getmine/${projectData.ProjectId}`);
       setTasks(response.data);
       
     } catch (error) {

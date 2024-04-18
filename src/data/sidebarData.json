@@ -121,8 +121,13 @@
     "path": "/",
     "submenus": [
       {
-        "label": "CreatePipeline",
-        "path": "/createPipeline",
+        "label": "FrontendPipeline",
+        "path": "/createFrontendPipeline",
+        "icon": "cloud"
+      },
+      {
+        "label": "BackendPipeline",
+        "path": "/createBackendPipeline",
         "icon": "cloud"
       }
     ]
