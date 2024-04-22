@@ -2,13 +2,17 @@ import React, { useState,useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
-
+import ReactDocker from "../../assets/files/React/Dockerfile.txt"
+import ReactJenkins from "../../assets/files/React/Jenkinsfile.txt"
+import FlaskDocker from "../../assets/files/Flask/Dockerfile.txt"
+import FlaskJenkins from "../../assets/files/Flask/Jenkinsfile.txt"
+import NodeDocker from "../../assets/files/ExpressJs/Dockerfile.txt"
+import NodeJenkins from "../../assets/files/ExpressJs/Jenkinsfile.txt"
 
 const App = () => {
   const [githubLink, setGithubLink] = useState('');
   const [selectedTool, setSelectedTool] = useState('');
-  let jobName;
+  let jobname='';
   const [deploymentLink, setDeploymentLink] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,8 +55,8 @@ const[consoleOutput,setConsole_output] = useState('');
       setIsSubmitting(false); // Enable submit button
       return;
     }
+    jobname=githubLink.split('/').pop().replace('.git', '');
     
-    jobName= githubLink.split('/').pop().replace('.git', '');
      
      
     // Simulate deployment process (replace with actual deployment logic)
@@ -73,6 +77,10 @@ const[consoleOutput,setConsole_output] = useState('');
         Type:"Frontend"
       });
  
+
+      console.log(response.data.deploymentLink);
+        setDeploymentLink(response.data.deploymentLink);
+        
       // Check if the request was successful
     if (response.status === 200) {
       
@@ -101,25 +109,23 @@ const[consoleOutput,setConsole_output] = useState('');
   };
 
   const handleBuildAgain = async () => {
-   
     try {
-      
-      
+      setConsole_output('');
       setLoading(true);
       setMessage('Building pipeline...');
       setErrorMessage('');
       const response = await axios.post('http://localhost:3001/jenkins/buildPipline', {
         ProjectId: projectData.ProjectId,
-        job_name:  deployedData.job_name || githubLink.split('/').pop().replace('.git', '') || jobName,
+        job_name:  deployedData.job_name || jobname ,
       });
-     // setConsole_output(response.data.console_output);
-      
+  
+      console.log(response.data.console_output);
+       setConsole_output(response.data.console_output); 
+
       if(response.status === 200){
         toast.info(response.data.message);
         console.log(response.data.deploymentLink);
         setDeploymentLink(response.data.deploymentLink);
-      //     console.log(response.data.console_output);
-      // setErrorMessage(response.data.console_output);
         setLoading(false);
         setMessage('');
       } // Log the response data if needed
@@ -142,7 +148,7 @@ const[consoleOutput,setConsole_output] = useState('');
       const response = await axios.delete('http://localhost:3001/jenkins/deletePipline', {
         params: {
           ProjectId: projectData.ProjectId,
-          job_name: deployedData.job_name || githubLink.split('/').pop().replace('.git', ''),
+          job_name: deployedData.job_name || jobname,
         }
       });
       
@@ -221,7 +227,8 @@ toast.success('Pipeline stopped successfully');
                   onChange={(e) => setSelectedTool(e.target.value)}
                 >
                   <option value="">Select FrameWork </option>
-                  <option value="ReactJs">React js</option>
+                  
+                  <option value="ReactJs">ReactJs</option>
                   
                 </select>
               </div>
@@ -269,7 +276,7 @@ toast.success('Pipeline stopped successfully');
                 </div>
               </div>
               <div className="mt-6"> Note : Update request like this ('http://localhost:3001/')
-              in Frontend with server Ip from deployment Link </div>
+              in Backend with server Ip from deployment Link </div>
             </div>
           )}
           {errorMessage && (
@@ -306,18 +313,26 @@ toast.success('Pipeline stopped successfully');
           <h3 className="text-lg font-semibold text-gray-900">Downloadable Files</h3>
           <div className="mt-2 space-y-2">
           
-          <a href="./../../assets/files/React/Dockerfile.txt" download="Dockerfile.txt" className="block text-sm text-blue-600 hover:underline">Download Dockerfile for React.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for React.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for Node/Express.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for Node/Express.js</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Dockerfile for Flask</a>
-            <a href="#" className="block text-sm text-blue-600 hover:underline">Jenkinsfile for Flask</a>
+          <a href={ReactDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for React.js  </button> </a>
+           <a href={ReactJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for React.js  </button> </a>
+
+           <a href={FlaskDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for Flask  </button> </a>
+           <a href={FlaskJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for Flask  </button> </a>
+
+           <a href={NodeDocker}   download="Dockerfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Dockerfile for Node/Express  </button> </a>
+           <a href={NodeJenkins}   download="Jenkinsfile.txt" > <button className="block text-sm text-blue-600 hover:underline">
+           Download Jenkinsfile for Node/Express  </button> </a>
             
           </div>
         </div>
-        <div className="p-4 bg-gray-100 border rounded-lg shadow-md">
+        <div className="p-4 mt-4 bg-gray-100 border rounded-lg shadow-md">
       <h2 className="mb-2 text-xl font-semibold">Console Output:</h2>
-      <pre className="overflow-auto max-h-60">{consoleOutput}</pre>
+      <pre className="overflow-auto max-h-96">{consoleOutput}</pre>
     </div>
       </div>
     </div>
