@@ -100,12 +100,12 @@ const StepForm = () => {
     { label: 'Step 4: Modules', component: <Step4 data={formData} onPrevious={handlePrevious} onSubmit={handleSubmit} /> },
   ];
 
-  if( projectData.projectProposal !=null  ){
+  if( projectData.projectProposal == null  ){
     toast.info("Proposal Already Submitted");
     return (
-      <div className="flex justify-center items-center mt-36">
-        <div className="bg-gray-200 p-8 rounded shadow-lg">
-          <h2 className="text-2xl text-gray-800 font-semibold mb-4">
+      <div className="flex items-center justify-center mt-36">
+        <div className="p-8 bg-gray-200 rounded shadow-lg">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
             Proposal Already Submitted
           </h2>
         </div>

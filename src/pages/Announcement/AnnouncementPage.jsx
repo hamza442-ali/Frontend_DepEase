@@ -5,9 +5,10 @@ import AnnouncementAdministration from '../../components/announcement/Announceme
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
+let  apiUrl = process.env.REACT_APP_API_URL;
 
 const AnnouncementsPage = () => {
+
 
   
   useEffect(() => {
@@ -47,9 +48,8 @@ const AnnouncementsPage = () => {
 
     const fetchAnnouncements = async () => {
 
-      
       try {
-        const response = await axios.get('http://localhost:3001/announcementA/getall');
+        const response = await axios.get(`${apiUrl}/announcementA/getall`);
         if (response.data.length === 0) {
           toast.info('No Administrator announcements found!');
         } else {
@@ -63,7 +63,7 @@ const AnnouncementsPage = () => {
 
 
       try {
-        const response = await axios.get(`http://localhost:3001/announcementS/getmine/${projectData.ProjectId}`);
+        const response = await axios.get(`${apiUrl}/announcementS/getmine/${projectData.ProjectId}`);
         if (response.data.length === 0) {
           toast.info('No Supervisor announcements found!');
         } else {

@@ -1,14 +1,29 @@
-FROM node:16
-#  wrokdirectroy specify if any
+# Stage 1: Build stage
+FROM node:14 AS builder
+
+# Set working directory
 WORKDIR /app
-COPY package*.json .
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# first dot means all files from source secnod means to destination
-COPY . .  
+# Copy the rest of the application
+COPY . .
 
-ENV PORT=3000
+# Build the application
+RUN npm run build
 
-EXPOSE  3000
+# Stage 2: Production stage
+FROM nginx:alpine
 
-CMD ["npm", "start"]
+# Copy the built files from the previous stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Command to run the nginx server
+CMD ["nginx", "-g", "daemon off;"]
