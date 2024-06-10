@@ -1,55 +1,70 @@
 // src/pages/AnnouncementsPage.js
 import React, { useEffect, useState } from 'react';
 import AnnouncementAdministration from '../../components/announcement/AnnouncementAdministration';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
-const dummyAdministrationAnnouncements = [
-    {
-        _id: '1',
-        title: 'Administration Announcement 1',
-        message: 'This is the message of Administration Announcement 1.',
-        date: new Date('2023-02-10'), // February 10, 2023
-      },
-      {
-        _id: '2',
-        title: 'Administration Announcement 2',
-        message: 'op os kdfekj k.',
-        date: new Date('2023-06-25'), // June 25, 2023
-      },
-    {
-      _id: '3',
-      title: 'Administration Announcement 3',
-      message: 'This is the message of Administration Announcement 1.',
-      date: new Date('2023-02-10'), // February 10, 2023
-    },
-    {
-      _id: '4',
-      title: 'Administration Announcement 4',
-      message: 'This is the message of Administration Announcement 2.',
-      date: new Date('2023-06-25'), // June 25, 2023
-    },
-];
 
 const AnnouncementsPage = () => {
-    // const [supervisorAnnouncements, setSupervisorAnnouncements] = useState([]);
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+  
     const [administrationAnnouncements, setAdministrationAnnouncements] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDate, setFilterDate] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [announcementsPerPage] = useState(6); // Adjust as needed
     const [sortOrder, setSortOrder] = useState('desc');
+
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/announcementA/getall');
+        if (response.data.length === 0) {
+          toast.error('No announcements found!');
+        } else {
+          setAdministrationAnnouncements(response.data);
+          console.log(response.data);
+        }
+      } catch (error) {
+        toast.error('Error fetching announcements: ' + error.message);
+        console.error('Error fetching announcements:', error);
+      }
+    };
+    
   
     useEffect(() => {
-      
-  
-      // Simulate fetching administration announcements
-      setAdministrationAnnouncements(dummyAdministrationAnnouncements);
+      // Call the fetchAnnouncements function
+      fetchAnnouncements();
     }, []);
   
   
     const filteredAdministrationAnnouncements = administrationAnnouncements.filter((announcement) =>
-      announcement.message.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+   announcement.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    announcement.richText?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   
    
       const filteredAndDatedAdministrationAnnouncements = filteredAdministrationAnnouncements.filter(
@@ -75,6 +90,7 @@ const AnnouncementsPage = () => {
       indexOfLastAdministration
     );
   
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
     const resetFilters = () => {
@@ -125,7 +141,7 @@ const AnnouncementsPage = () => {
           <AnnouncementAdministration key={announcement._id} announcement={announcement} />
         ))}
   
-        Pagination
+        {/* Pagination */}
         <div className="mt-4">
           <ul className="flex list-none">
             {Array.from({ length: Math.ceil(sortedAdministrationAnnouncements.length / announcementsPerPage) }).map(

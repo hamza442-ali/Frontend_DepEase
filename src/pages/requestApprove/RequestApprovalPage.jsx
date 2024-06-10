@@ -8,43 +8,44 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 const RequestApprovalPage = () => {
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+
+  
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [requestSearch, setRequestSearch] = useState(null);
-    const projectData = useSelector(state => state.project);
+    const teacherData = useSelector(state => state.teacher);
     const [requests, setRequest] = useState([]);
    
-    
-  
-  
-
-    useEffect(() => {
-      // Add an interceptor for every outgoing request
-      const requestInterceptor = axios.interceptors.request.use(
-        (config) => {
-          // Get the token from localStorage
-          const token = localStorage.getItem('token');
-          // If the token exists, add it to the Authorization header
-          if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-          }
-          return config;
-        },
-        (error) => {
-          // Do something with the request error
-          return Promise.reject(error);
-        }
-      );
-      // Clean up the interceptor when the component is unmounted
-      return () => {
-        axios.interceptors.request.eject(requestInterceptor);
-      };
-    }, []);
-
-
+   
     const fetchData = async () => {
+     
       try {
-        const response = await axios.get(`http://localhost:3001/resource/getmine/${projectData.ProjectId}`);
+        const response = await axios.get(`http://localhost:3001/resource/getbyteacherId/${teacherData.employeeId}`);
+        console.log(response.data);
         setRequest(response.data);
       } catch (error) {
         console.error('Error fetching  resource  requests:', error);
@@ -54,9 +55,17 @@ const RequestApprovalPage = () => {
     useEffect(() => {
       fetchData();
     }, []); 
+
+    
     const rejectRequest =  async (reason,request) => {
+      if(request.supervisorStatus==='Rejected'){
+        toast.error('Request is already rejected');
+         }
+         else{
+
+
       try {
-      
+
       let newStatus='Rejected';
        // Update the status in the updatedData
     request.supervisorStatus = newStatus;
@@ -80,6 +89,7 @@ const RequestApprovalPage = () => {
     console.error('Error updating resoruce request:', error);
     toast.error('Error updating resoruce request:', error);
     }
+  }
 
     }
     const updateRequest =  async (request) => {

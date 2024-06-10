@@ -5,20 +5,46 @@ import AnnouncementModal from "../../components/announcement/AnnouncementModal";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import NoDataFound from "../../components/handlers/NoDataFound";
-
-
+import { useSelector } from 'react-redux';
   
   const ProjectPage = () => {
+
+
+    useEffect(() => {
+      // Add an interceptor for every outgoing request
+      const requestInterceptor = axios.interceptors.request.use(
+        (config) => {
+          // Get the token from localStorage
+          const token = localStorage.getItem('token');
+          // If the token exists, add it to the Authorization header
+          if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+          }
+          return config;
+        },
+        (error) => {
+          // Do something with the request error
+          return Promise.reject(error);
+        }
+      );
+      // Clean up the interceptor when the component is unmounted
+      return () => {
+        axios.interceptors.request.eject(requestInterceptor);
+      };
+    }, []);
+
+
+    
     const navigate = useNavigate();
     const [selectedProject, setSelectedProject] = useState(null);
     const [isAnnouncementModalOpen, setAnnouncementModalOpen] = useState(false);
    const [projectsData,setprojectsData]=useState([]);
-  
+   const teacherData = useSelector(state => state.teacher);
 
     const fetchData = async () => {
-      let teacher='TCH54321'
+   
       try {
-        const response = await axios.get(`http://localhost:3001/projects/getallmine/${teacher}`);
+        const response = await axios.get(`http://localhost:3001/projects/getallmine/${teacherData.employeeId}`);
         setprojectsData(response.data);
       } catch (error) {
         console.error('Error fetching  Projects:', error);
@@ -31,7 +57,11 @@ import NoDataFound from "../../components/handlers/NoDataFound";
   
     
 
+const handleGiveEvaluation = (project) => {
+  setSelectedProject(project);
+  navigate(`/addEvaluation/${project._id}`, { state: { projectsData } });
 
+};
 
     const handleViewDetails = (project) => {
       setSelectedProject(project);
@@ -52,6 +82,8 @@ import NoDataFound from "../../components/handlers/NoDataFound";
       setSelectedProject(project);
       navigate(`/progress/${project._id}`, { state: { projectsData } });
     };
+
+    
   
     // New function for handling deliverables button click
     const handleShowDeliverables = (project) => {
@@ -59,6 +91,10 @@ import NoDataFound from "../../components/handlers/NoDataFound";
       navigate(`/deliverables/${project._id}`, { state: { projectsData } });
     };
   
+    const handleShowPipeline = (project) => {
+      setSelectedProject(project);
+      navigate(`/pipeline/${project._id}`, { state: { projectsData } });
+    };
     
     if (!projectsData) {
       return <NoDataFound/>;  
@@ -74,6 +110,8 @@ import NoDataFound from "../../components/handlers/NoDataFound";
           onAnnouncementClick={handleAnnouncementClick}
           onShowDeliverables={handleShowDeliverables}
           onShowProgress={handleShowProgress}
+          onGiveEvaluation={handleGiveEvaluation}
+          onShowPipeline={handleShowPipeline}
         />
   
         {selectedProject && (
