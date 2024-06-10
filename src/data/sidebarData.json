@@ -2,64 +2,48 @@
   {
     "label": "Home",
     "icon": "home",
-    "path": "/home",
-    "submenus": []
+    "path": "/"
+   
   },
   {
-    "label": "Projects",
+    "label": "Projects Manage",
     "icon": "list-check",
-    "path": "/",
-    "submenus": [
-      {
-        "label": "Manage",
-        "path": "/",
-        "icon": "info-circle"
-      }
+    "path": "/projectsManage"
      
-    ]
+  },
+  {
+    "label": "Resoure Approve",
+    "icon": "screwdriver-wrench",
+    "path": "/resourceApprove"
+     
   },
   
   {
     "label": "Scheduler",
     "icon": "info-circle",
-    "path": "/",
-    "submenus": [
-      {
-        "label": "Scheduler Manage",
-        "path": "/scheduler",
-        "icon": "user-plus"
-      }
-    ]
+    "path": "/scheduler"
   },
   {
     "label": "Prject Ideas",
-    "icon": "info-circle",
-    "path": "/",
-    "submenus": [
-      {
-        "label": "Ideas Manage",
-        "path": "/ProjectIdeas",
-        "icon": "user-plus"
-      },
-      {
-        "label": "Resoure Request",
-        "path": "/resourceApprove",
-        "icon": "user-plus"
-      }
-      
-    ]
+    "icon": "lightbulb",
+    "path": "/ProjectIdeas"
+   
   },
+  {
+    "label": "FYP Panels",
+    "icon": "people-group",
+    "path": "/fypPanels"
+  },
+  
 
   {
     "label": "Announcements",
     "icon": "bell",
-    "path": "/",
-    "submenus": [
-      {
-        "label": "Announcement",
-        "path": "/announce",
-        "icon": "user-plus"
-      }
-    ]
+    "path": "/announce"
+  },
+  {
+    "label": "Logout",
+    "path": "/logout",
+    "icon": "right-from-bracket"
   }
 ]

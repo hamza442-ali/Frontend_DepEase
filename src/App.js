@@ -22,10 +22,12 @@ import DeliverablesPage from './pages/deliverables/DeliverablesPage';
 import  ProgressPage from './pages/progress/ProgressPage';
 import AnnouncementsPage from './pages/Announcement/AnnouncementPage';
 import RequestApprovalPage from './pages/requestApprove/RequestApprovalPage';
-import FypPanelsTable from './pages/fypPanel/FypPanelsTable ';
-
-
-
+import Panel from './pages/fypPanel/FypPanel';
+import { DynamicEvaluationForm } from './pages/evaluation/EvaluationForm';
+import Login from './pages/signin/Login';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import LogoutPage from './pages/signin/Logout.jsx';
+import ComponentSwitcher from './components/pipeline/PipelineSelect.jsx';
 
 function App() {
   return (
@@ -35,17 +37,23 @@ function App() {
     <MainLayout />
     <PageInfo/>
     <Routes>
-    <Route path="/announce" element={<AnnouncementsPage/>} />
-    <Route path="/fyppanel" element={<FypPanelsTable/>} />
-    <Route path="/resourceApprove" element={<RequestApprovalPage/>} />
-    <Route path="/" element={<ProjectPage />} />
-    <Route path="/project/:projectId" element={<ProjectDetails/>} />
-    <Route path="/deliverables/:projectId" element={<DeliverablesPage />} />
-    <Route path="/progress/:projectId" element={< ProgressPage  />} />
-    <Route path="/evaluation/:projectId" element={<Evaluation/>} />
-    <Route path="/email" element={<EmailPage/>} />
-    <Route path="/scheduler" element={<CalendarPage/>} />
-    <Route path="/ProjectIdeas" element={<ProjectIdeasPage/>} />
+    
+   
+    <Route path="/Login" element={<Login/>} />
+    <Route path="/logout" element={<PrivateRoute Component={LogoutPage}/>} />
+    <Route path="/addEvaluation/:projectId" element={<PrivateRoute Component={DynamicEvaluationForm}/>} />
+    <Route path="/announce" element={<PrivateRoute Component={AnnouncementsPage}/>} />
+    <Route path="/fyppanels" element={<PrivateRoute Component={Panel}/>} />
+    <Route path="/resourceApprove" element={<PrivateRoute Component={RequestApprovalPage}/>} />
+    <Route path="/projectsManage" element={<PrivateRoute Component={ProjectPage }/>} />
+    <Route path="/project/:projectId" element={<PrivateRoute Component={ProjectDetails}/>} />
+    <Route path="/pipeline/:projectId" element={<PrivateRoute Component={ComponentSwitcher} />} />
+    <Route path="/deliverables/:projectId" element={<PrivateRoute Component={DeliverablesPage} />} />
+    <Route path="/progress/:projectId" element={<PrivateRoute Component={ ProgressPage } />} />
+    <Route path="/evaluation/:projectId" element={<PrivateRoute Component={Evaluation}/>} />
+    <Route path="/email" element={<PrivateRoute Component={EmailPage}/>} />
+    <Route path="/scheduler" element={<PrivateRoute Component={CalendarPage}/>} />
+    <Route path="/ProjectIdeas" element={<PrivateRoute Component={ProjectIdeasPage}/>} />
       </Routes>
     </BrowserRouter>
   );
