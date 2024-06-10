@@ -1,38 +1,40 @@
 import React from 'react';
 import person from "../../assets/images/person2.jpeg"
 import logo from "../../assets/images/logo.jpeg"
-const Navbar = () => {
-  return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
-      <div className="flex items-center">
-      <img src={logo} alt="DepEase" className="w-8 h-8 ml-24 mr-2 rounded-full" />
+import { useSelector } from 'react-redux';
 
-        <h1 className="font-bold ">DepEase</h1>
+const Navbar = () => {
+  const teacherData = useSelector(state => state.teacher);
+
+  return (
+    <nav className="flex items-center justify-between px-4 py-2 bg-white shadow-md sm:px-6 lg:px-8 sm:py-4">
+      <div className="flex items-center">
+        <img src={logo} alt="DepEase" className="w-8 h-8 ml-2 mr-2 rounded-full sm:w-10 sm:h-10 sm:ml-4 sm:mr-4" />
+        <h1 className="text-lg font-bold sm:text-xl">DepEase</h1>
       </div>
-      <div className="flex items-center px-7">
-        <ul className="flex space-x-4">
+      <div className="flex items-center px-2 space-x-4 sm:space-x-6 sm:px-4">
+        <ul className="hidden space-x-4 sm:flex">
           <li>
-            <a href="#" className="font-bold hover:text-gray-300">Dashboard</a>
+            <a href="/" className="font-bold hover:text-gray-300">Home</a>
           </li>
           <li>
-            <a href="#" className="font-bold hover:text-gray-300">Projects</a>
+            <a href="/projectsManage" className="font-bold hover:text-gray-300">Projects</a>
           </li>
           <li>
-            <a href="#" className="font-bold hover:text-gray-300">Documentation</a>
+            <a href="/fyppanels" className="font-bold hover:text-gray-300">FypPanels</a>
           </li>
           <li>
-            <a href="#" className="font-bold hover:text-gray-300">Tasks</a>
+            <a href="/scheduler" className="font-bold hover:text-gray-300">Scheduler</a>
           </li>
           <li>
-            <a href="#" className="mr-10 font-bold hover:text-gray-300">Team</a>
+            <a href="/announce" className="font-bold hover:text-gray-300">Announcement</a>
           </li>
         </ul>
-        <img src={person} alt="User Profile" className="w-10 h-10 ml-4 text-center rounded-full" />
+        <img src={person} alt="User Profile" className="w-8 h-8 ml-2 text-center rounded-full sm:w-10 sm:h-10 sm:ml-4" />
         <div className='flex flex-col'>
-        <span className="ml-2 font-semibold text-gray-600">Anne Adame</span>
-        <span className="ml-2 text-gray-500 from-neutral-100 to-slate-400">Member</span>
+          <span className="ml-2 font-semibold text-gray-600">{teacherData.name}</span>
+          <span className="ml-2 text-sm text-gray-500">{teacherData.email}</span>
         </div>
-        
       </div>
     </nav>
   );

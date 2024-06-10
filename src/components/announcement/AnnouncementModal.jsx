@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,31 @@ import { toast } from 'react-toastify';
 Modal.setAppElement("#root");
 
 const AnnouncementModal = ({ isOpen, onRequestClose, project }) => {
+
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+
+  
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementText, setAnnouncementText] = useState("");
 
@@ -29,7 +54,7 @@ const AnnouncementModal = ({ isOpen, onRequestClose, project }) => {
     };
 
     // Send the announcement to the backend using Axios
-    axios.post("http://localhost:3001/announcement/add", announcementData)
+    axios.post("http://localhost:3001/announcementS/add", announcementData)
       .then((response) => {
         toast.success('Announcement submitted successfully!');
       })
@@ -51,7 +76,7 @@ const AnnouncementModal = ({ isOpen, onRequestClose, project }) => {
           <FontAwesomeIcon icon={faTimes} className="text-lg" />
         </button>
       </div>
-      <p className="mb-6 text-gray-600">Project ID: {project._id}</p>
+      <p className="mb-6 text-gray-600">Project ID: {project.ProjectId}</p>
      
      
       <input

@@ -5,7 +5,9 @@ import {
   faCheckSquare,
   faBullhorn,
   faFileAlt, // New icon for deliverables
-  faChartLine, // New icon for progress
+  faChartLine,
+  faStar,
+  faArrowsSplitUpAndLeft // New icon for progress
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -29,14 +31,37 @@ const getRandomPattern = () => {
 
 
 
-const ProjectCard = ({ project, onViewDetails, onViewEvaluation, onAnnouncementClick, onShowDeliverables, onShowProgress }) => {
+const ProjectCard = ({ project, onViewDetails, onViewEvaluation, onAnnouncementClick, onShowDeliverables, onShowProgress,onGiveEvaluation,onShowPipeline }) => {
+  
+  useEffect(() => {
+    // Add an interceptor for every outgoing request
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        // If the token exists, add it to the Authorization header
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Do something with the request error
+        return Promise.reject(error);
+      }
+    );
+    // Clean up the interceptor when the component is unmounted
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, []);
+  
+  
+  
+  
   const randomPattern = getRandomPattern();
   const [groupData,setGroupData]=useState([]);
 
-
-
-
-  
   const fetchData1 = async () => {
     try {
       const id =project.group;
@@ -125,6 +150,14 @@ if(response.status===200){
           >
             <FontAwesomeIcon icon={faBullhorn} className="text-xl" />
           </button>
+          
+           {/* New button for adding evaluaition */}
+           <button
+            className="text-gray-600 transition duration-300 transform hover:text-gray-800 focus:outline-none hover:scale-110"
+            onClick={() => onGiveEvaluation(project)}
+          >
+            <FontAwesomeIcon icon={faStar} className="text-xl" />
+          </button>
 
           {/* New button for showing deliverables */}
           <button
@@ -141,6 +174,13 @@ if(response.status===200){
           >
             <FontAwesomeIcon icon={faChartLine} className="text-xl" />
           </button>
+          <button
+            className="text-gray-600 transition duration-300 transform hover:text-gray-800 focus:outline-none hover:scale-110"
+            onClick={() => onShowPipeline(project)}
+          >
+            <FontAwesomeIcon icon={faArrowsSplitUpAndLeft} className="text-xl" />
+          </button>
+
         </div>
       </div>
     </div>

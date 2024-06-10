@@ -36,7 +36,7 @@ const AnnouncementAdministration = ({ announcement }) => {
       </div>
       {expanded && (
         <div>
-          <p className="mb-2 text-white ">{announcement.message}</p>
+          <p className="mb-2 text-white ">{announcement.richText}</p>
           <p className="text-sm text-white">Date: {new Date(announcement.date).toLocaleString()}</p>
         </div>
       )}

@@ -1,12 +1,8 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCheckSquare, faBullhorn } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 
-
-const ProjectList = ({ projects, onViewDetails, onViewEvaluation, onAnnouncementClick, onShowDeliverables, onShowProgress }) => {
+const ProjectList = ({ projects, onViewDetails, onViewEvaluation, onAnnouncementClick, onShowDeliverables, onShowProgress,onGiveEvaluation,onShowPipeline }) => {
   return (
     <div className="container px-4 py-10 mx-auto sm:px-6 lg:px-8">
       <h2 className="mb-8 text-4xl font-bold text-center text-gray-900">Explore Projects</h2>
@@ -20,6 +16,8 @@ const ProjectList = ({ projects, onViewDetails, onViewEvaluation, onAnnouncement
             onAnnouncementClick={onAnnouncementClick}
             onShowDeliverables={onShowDeliverables} // Pass the function for showing deliverables
             onShowProgress={onShowProgress} // Pass the function for showing progress
+            onGiveEvaluation={onGiveEvaluation}
+            onShowPipeline={onShowPipeline}
           />
         ))}
       </div>

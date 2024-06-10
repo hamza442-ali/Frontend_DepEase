@@ -59,7 +59,7 @@ const MemberCard = ({ request, onViewDetails, updateRequest,rejectRequest }) => 
   const statusInfo = getStatusColor(request.supervisorStatus);
 
   return (
-    <div className="p-6 mx-2 bg-white rounded-lg shadow-lg" key={request._id}>
+    <div className="p-6 mx-2 mb-6 bg-white rounded-lg shadow-lg" key={request._id}>
       <div className="flex items-center">
         <img
           className="w-12 h-12 rounded-full"

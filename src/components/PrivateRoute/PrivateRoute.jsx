@@ -8,7 +8,7 @@ function PrivateRoute(props) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/');
+      navigate('/Login');
     }
   }, []); // Empty dependency array to ensure the effect runs only once
 

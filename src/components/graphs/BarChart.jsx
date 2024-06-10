@@ -24,8 +24,6 @@ const data = Array.from({ length: 12 }, (_, index) => {
   };
 });
 
-
-
   return (
     <ResponsiveContainer width="100%" height={200}>
       <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
