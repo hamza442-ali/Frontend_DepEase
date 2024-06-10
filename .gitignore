@@ -8,7 +8,7 @@
 # testing
 /coverage
 
-# production
+# production (exclude the build environment )
 /build
 
 # misc
