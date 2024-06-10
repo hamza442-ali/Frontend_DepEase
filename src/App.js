@@ -31,6 +31,8 @@ import { RequestApprovalPage } from "./pages/resourceRequestPage/requestApproval
 import {LandingPage} from './pages/landingPage/LandingPage'
 import { EvaluationDetails } from "./components/evaluation/evaluateGroup";
 
+import {ContainerManager} from './components/dockerContainer/manageContainer'
+
 
 
 function App() {
@@ -63,6 +65,7 @@ function App() {
           <Route path="/users/addStudent" element={<AddStudent />} />
           <Route path="/fypProject/add" element={<ProjectCard />} />
           <Route path="/eval/calculate" element={<EvaluationDetails />} />
+          <Route path="/manageContainers" element={<ContainerManager />} />
           
           <Route path="/eval/add" element={<EvaluationForm />} />
           <Route path="/eval/view" element={<DynamicEvaluationForm />} />

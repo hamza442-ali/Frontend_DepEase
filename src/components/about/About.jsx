@@ -27,7 +27,7 @@ export const AboutSectionOne = () => {
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
                 title="Empowering DevOps: Automation and Collaboration."
-                paragraph="Our DevOps platform is designed to streamline software development, testing, and deployment. It ensures automated testing, building, and deployment, reducing the reliance on local environments. Developers can collaborate seamlessly and access cloud-hosted project instances for efficient assessment."
+                paragraph="Our DevOps platform is designed to streamline software development, testing, and deployment. It ensures automated testing, building, and deployment, reducing the reliance on local environments. Developers can collaborate seamlessly and access cloud-hosted project instances for efficient assessment.."
                 mb="44px"
               />
 

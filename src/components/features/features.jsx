@@ -12,7 +12,7 @@ export const Features = () => {
         <div className="container">
           <SectionTitle
             title="Main Features"
-            paragraph="Innovative FYP Management System with Automated Deployment."
+            paragraph="Innovative FYP Management System with Automated (CI\CD) Deployment."
             center
           />
 

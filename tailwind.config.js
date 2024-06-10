@@ -38,7 +38,8 @@ module.exports = {
         "body-color": "#959CB1",
         "custom-blue": '#40C4FF',
         "just-blue" : "#60a5fa",
-        "table-blue" : "#202444"
+        "table-blue" : "#202444",
+        "atonomy": "#2024455"
       },
       screens: {
         xs: "450px",
