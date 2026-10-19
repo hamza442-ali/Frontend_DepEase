@@ -39,6 +39,9 @@ export function WorkspaceProvider({ children }) {
       item._id === (requested || selectedId) || item.ProjectId === (requested || selectedId),
   );
   const project = requested ? matched || null : matched || projects[0] || null;
+  const canManageProject = Boolean(
+    project && (role !== 'teacher' || project.teacher === account.employeeId),
+  );
 
   function selectProject(id) {
     setSelectedId(id);
@@ -61,7 +64,9 @@ export function WorkspaceProvider({ children }) {
     }
   }, [projectId, storageKey]);
   return (
-    <WorkspaceContext.Provider value={{ projects, project, selectProject, query }}>
+    <WorkspaceContext.Provider
+      value={{ projects, project, canManageProject, selectProject, query }}
+    >
       {children}
     </WorkspaceContext.Provider>
   );

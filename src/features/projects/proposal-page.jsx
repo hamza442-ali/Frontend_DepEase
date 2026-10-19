@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronLeft, ChevronRight, Send } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../app/auth';
 import { useWorkspace } from '../../app/workspace';
@@ -26,6 +26,7 @@ export default function ProposalPage() {
   const { account } = useAuth();
   const { projects, query } = useWorkspace();
   const client = useQueryClient();
+  const navigate = useNavigate();
   const teachers = useData('/teacher/getall');
   const draftKey = `depease.proposal.${account._id}`;
   const [draft] = useState(() => {
@@ -53,8 +54,8 @@ export default function ProposalPage() {
     semester: account.semester || 7,
     ...draft.values,
   }));
-  const [completed, setCompleted] = useState(draft.completed || {});
-  const [step, setStep] = useState(draft.completed?.proposalId ? 2 : 0);
+  const [requestId] = useState(() => draft.requestId || crypto.randomUUID());
+  const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
@@ -63,11 +64,7 @@ export default function ProposalPage() {
   function update(key, value) {
     const next = { ...values, [key]: value };
     setValues(next);
-    sessionStorage.setItem(draftKey, JSON.stringify({ values: next, completed }));
-  }
-  function remember(next) {
-    setCompleted(next);
-    sessionStorage.setItem(draftKey, JSON.stringify({ values, completed: next }));
+    sessionStorage.setItem(draftKey, JSON.stringify({ values: next, requestId }));
   }
   async function submit(event) {
     event.preventDefault();
@@ -103,12 +100,17 @@ export default function ProposalPage() {
     setBusy(true);
     request.current = new AbortController();
     const config = { signal: request.current.signal };
-    let progress = { ...completed };
     try {
-      if (!progress.proposalId) {
-        const { data } = await api.post(
-          '/proposals/add',
-          {
+      sessionStorage.setItem(draftKey, JSON.stringify({ values, requestId }));
+      await api.post(
+        '/projects/submit-proposal',
+        {
+          requestId,
+          ProjectId: values.ProjectId.trim(),
+          batch: Number(values.batch),
+          semester: Number(values.semester),
+          group: { teamLeadId: members[0], teammate1Id: members[1], teammate2Id: members[2] },
+          proposal: {
             title: values.title.trim(),
             ProjectType: values.ProjectType,
             supervisor: values.supervisor,
@@ -119,39 +121,13 @@ export default function ProposalPage() {
             technologyUsed: values.technologyUsed.trim(),
             modules: lines(values.modules),
           },
-          config,
-        );
-        progress.proposalId = data._id;
-        remember({ ...progress });
-      }
-      if (!progress.groupId) {
-        const { data } = await api.post(
-          '/group/add',
-          {
-            teamLeadId: members[0],
-            teammate1Id: members[1],
-            teammate2Id: members[2],
-          },
-          config,
-        );
-        progress.groupId = data._id;
-        remember({ ...progress });
-      }
-      await api.post(
-        '/projects/add',
-        {
-          ProjectId: values.ProjectId.trim(),
-          batch: Number(values.batch),
-          semester: Number(values.semester),
-          teacher: values.supervisor,
-          group: progress.groupId,
-          projectProposal: progress.proposalId,
         },
         config,
       );
       sessionStorage.removeItem(draftKey);
       setDone(true);
       await client.invalidateQueries();
+      navigate('/projects', { replace: true });
     } catch (failure) {
       setError(failure);
     } finally {
@@ -166,12 +142,7 @@ export default function ProposalPage() {
         value={values[key]}
         onChange={(event) => update(key, event.target.value)}
         required
-        disabled={
-          busy ||
-          (['teamLeadId', 'teammate1Id', 'teammate2Id'].includes(key)
-            ? Boolean(completed.groupId)
-            : Boolean(completed.proposalId) && !['ProjectId', 'batch', 'semester'].includes(key))
-        }
+        disabled={busy}
         maxLength={10000}
         {...options}
       />
@@ -228,12 +199,6 @@ export default function ProposalPage() {
                 </li>
               ))}
             </ol>
-            {completed.proposalId && (
-              <div className="info-notice">
-                Your proposal has been saved. Continue to finish creating the project; completed
-                steps will be reused.
-              </div>
-            )}
             <form onSubmit={submit}>
               <div className="proposal-form">
                 <h2>{STEPS[step]}</h2>
@@ -244,7 +209,7 @@ export default function ProposalPage() {
                       <SelectField
                         label="Project type"
                         value={values.ProjectType}
-                        disabled={busy || Boolean(completed.proposalId)}
+                        disabled={busy}
                         required
                         onChange={(event) => update('ProjectType', event.target.value)}
                         options={['Development', 'Research', 'Research & Development']}
@@ -254,7 +219,7 @@ export default function ProposalPage() {
                           label="Supervisor"
                           value={values.supervisor}
                           required
-                          disabled={busy || Boolean(completed.proposalId)}
+                          disabled={busy}
                           onChange={(event) => update('supervisor', event.target.value)}
                           options={list(teachers.data?.data).map((teacher) => ({
                             value: teacher.employeeId,
@@ -304,11 +269,7 @@ export default function ProposalPage() {
                 <ErrorNotice error={error} />
                 <div className="form-actions">
                   {step > 0 && (
-                    <Button
-                      variant="secondary"
-                      disabled={busy || Boolean(completed.proposalId)}
-                      onClick={() => setStep(step - 1)}
-                    >
+                    <Button variant="secondary" disabled={busy} onClick={() => setStep(step - 1)}>
                       <ChevronLeft size={16} />
                       Back
                     </Button>

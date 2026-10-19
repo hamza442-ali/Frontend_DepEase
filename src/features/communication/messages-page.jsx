@@ -41,7 +41,7 @@ export default function MessagesPage() {
           </Button>
         }
       />
-      {sent && <SuccessNotice>Your message was sent.</SuccessNotice>}
+      {sent && <SuccessNotice>{sent}</SuccessNotice>}
       <section className="panel mail-layout">
         <aside className="mail-sidebar">
           <button className={tab === 'received' ? 'active' : ''} onClick={() => setTab('received')}>
@@ -93,8 +93,8 @@ export default function MessagesPage() {
           ]}
           onClose={() => setComposing(false)}
           onSave={async (data) => {
-            await api.post('/email/send', data, { timeout: 60000 });
-            setSent(true);
+            const response = await api.post('/email/send', data, { timeout: 60000 });
+            setSent(response.data.message);
           }}
           submitLabel="Send message"
         />

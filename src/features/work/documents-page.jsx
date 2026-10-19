@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ExternalLink, FileText, Trash2, Upload } from 'lucide-react';
+import { Download, ExternalLink, FileText, Trash2, Upload } from 'lucide-react';
 import { useWorkspace } from '../../app/workspace';
 import { ProjectGate } from '../../components/project-gate';
 import {
@@ -24,10 +24,39 @@ export default function DocumentsPage() {
 }
 
 function Documents() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const query = useData(`/documents/getmine/${encode(project.ProjectId)}`);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(null);
+  const [downloading, setDownloading] = useState(null);
+  const [downloadError, setDownloadError] = useState(null);
+  async function download(file) {
+    setDownloading(file._id);
+    setDownloadError(null);
+    try {
+      const response = await api.get(`/documents/download/${encode(file._id)}`, {
+        responseType: 'blob',
+      });
+      const url = URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.filename;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      setDownloadError(
+        new Error(
+          error.response?.status === 404
+            ? 'This file is no longer available.'
+            : 'The file could not be downloaded. Please try again.',
+        ),
+      );
+    } finally {
+      setDownloading(null);
+    }
+  }
   const remove = useAction((record) => api.delete(`/documents/delete/${encode(record._id)}`));
   return (
     <>
@@ -36,12 +65,13 @@ function Documents() {
         title="Documents"
         description="A shared home for reports, references, and project files."
         action={
-          <Button onClick={() => setUploading(true)}>
+          <Button disabled={!canManageProject} onClick={() => setUploading(true)}>
             <Upload size={17} />
             Upload document
           </Button>
         }
       />
+      <ErrorNotice error={downloadError} />
       <QueryState query={query}>
         {list(query.data?.files).length ? (
           <div className="card-grid">
@@ -53,7 +83,15 @@ function Documents() {
                 <h3>{file.filename}</h3>
                 <p className="muted">Project document</p>
                 <footer>
-                  {safeUrl(file.secure_url) ? (
+                  {file.provider === 'local' ? (
+                    <Button
+                      variant="secondary"
+                      busy={downloading === file._id}
+                      onClick={() => download(file)}
+                    >
+                      Download <Download size={15} />
+                    </Button>
+                  ) : safeUrl(file.secure_url) ? (
                     <a
                       className="button button-secondary"
                       href={safeUrl(file.secure_url)}
@@ -67,6 +105,7 @@ function Documents() {
                     <span className="muted">Link unavailable</span>
                   )}
                   <button
+                    disabled={!canManageProject}
                     className="icon-button text-danger"
                     aria-label={`Delete ${file.filename}`}
                     onClick={() => {

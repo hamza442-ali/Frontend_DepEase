@@ -2907,3 +2907,67 @@ tr:hover td {
   line-height: 1.6;
   color: var(--muted);
 }
+/* Jenkins connection and persisted build history. */
+.jenkins-connection {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.jenkins-connection-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.jenkins-connection-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.jenkins-connection-heading p {
+  margin: 5px 0 0;
+}
+.jenkins-connection > .muted {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.jenkins-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.build-history {
+  margin-top: 24px;
+}
+.build-runs {
+  list-style: none;
+  padding: 0 24px 8px;
+  margin: 0;
+}
+.build-runs > li {
+  padding: 20px 0;
+  border-top: 1px solid #edf0f6;
+}
+.build-run-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: space-between;
+}
+.build-runs p {
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .jenkins-connection-heading {
+    flex-wrap: wrap;
+  }
+  .jenkins-connection-heading > div {
+    flex-basis: calc(100% - 65px);
+  }
+  .jenkins-actions {
+    justify-content: flex-start;
+  }
+}

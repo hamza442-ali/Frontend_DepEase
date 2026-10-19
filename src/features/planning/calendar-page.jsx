@@ -16,7 +16,7 @@ import { api, encode, list, useAction, useData } from '../../lib/api';
 import { dateLabel } from '../../lib/format';
 
 export default function CalendarPage() {
-  const { role } = useAuth();
+  const { role, account } = useAuth();
   const { projects } = useWorkspace();
   const [tab, setTab] = useState('department');
   const [editor, setEditor] = useState(null);
@@ -47,7 +47,9 @@ export default function CalendarPage() {
             key: 'Project',
             label: 'Project',
             type: 'select',
-            options: projects.map((project) => ({ value: project._id, label: project.ProjectId })),
+            options: projects
+              .filter((project) => role === 'admin' || project.teacher === account.employeeId)
+              .map((project) => ({ value: project._id, label: project.ProjectId })),
           },
           { key: 'type', label: 'Event type', default: 'Project review' },
         ]),
@@ -99,29 +101,36 @@ export default function CalendarPage() {
                   </p>
                 </div>
                 <Badge>{item.type}</Badge>
-                {role !== 'student' && (
-                  <div className="row-actions">
-                    <button
-                      className="icon-button"
-                      aria-label="Edit event"
-                      onClick={() =>
-                        setEditor({ ...item, Project: item.Project?._id || item.Project })
-                      }
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button
-                      className="icon-button text-danger"
-                      aria-label="Delete event"
-                      onClick={() => {
-                        remove.reset();
-                        setDeleting(item);
-                      }}
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                )}
+                {role !== 'student' &&
+                  (department ||
+                    role === 'admin' ||
+                    projects.some(
+                      (project) =>
+                        project._id === (item.Project?._id || item.Project) &&
+                        project.teacher === account.employeeId,
+                    )) && (
+                    <div className="row-actions">
+                      <button
+                        className="icon-button"
+                        aria-label="Edit event"
+                        onClick={() =>
+                          setEditor({ ...item, Project: item.Project?._id || item.Project })
+                        }
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        className="icon-button text-danger"
+                        aria-label="Delete event"
+                        onClick={() => {
+                          remove.reset();
+                          setDeleting(item);
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  )}
               </article>
             ))
           ) : (
