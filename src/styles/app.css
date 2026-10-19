@@ -2896,3 +2896,14 @@ tr:hover td {
     padding: 20px;
   }
 }
+
+.task-card h3 {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 7px;
+}
+.task-card > p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}

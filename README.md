@@ -12,7 +12,7 @@ Copy-Item .env.example .env.local
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Configure `VITE_API_URL` in `.env.local` to point at the consolidated backend; the development default is `http://localhost:3001`. The backend must allow the frontend origin in its CORS configuration. Variables prefixed with `VITE_` become public build output: never put credentials in them.
+Open `http://localhost:5173`. Configure `VITE_API_URL` in `.env.local` to point at the consolidated backend; the development default is `http://localhost:3001`. The backend must allow the frontend origin in its CORS configuration. Variables prefixed with `VITE_` become public build output: never put credentials in them.
 
 Sign in with an existing department account. Student and staff sign-in use their respective backend endpoints; the server determines the administrator role. Provision initial accounts through the backend's documented administrator setup.
 

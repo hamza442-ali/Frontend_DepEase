@@ -45,7 +45,7 @@ export function textValue(value) {
     return value
       .map((item) =>
         typeof item === 'object'
-          ? item.name || item.student_name || item.content || 'Assigned member'
+          ? item?.name || item?.student_name || item?.content || 'Assigned member'
           : item,
       )
       .join(', ');

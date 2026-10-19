@@ -8,7 +8,11 @@ export const encode = (value) => encodeURIComponent(String(value));
 
 api.interceptors.request.use((config) => {
   const session = readSession();
-  if (session && !['/login', '/loginT'].includes(config.url)) {
+  if (!['/login', '/loginT'].includes(config.url)) {
+    if (!session) {
+      window.dispatchEvent(new Event('depease:session-expired'));
+      return Promise.reject(new axios.CanceledError('Your session has expired.'));
+    }
     config.headers.Authorization = `Bearer ${session.token}`;
   }
   return config;

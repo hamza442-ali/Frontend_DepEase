@@ -7,10 +7,10 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "start": "vite --host 127.0.0.1",
+    "dev": "vite --host localhost",
+    "start": "vite --host localhost",
     "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1",
+    "preview": "vite preview --host localhost",
     "check": "npm run lint && node scripts/check.mjs",
     "format": "prettier --write src scripts index.html *.config.js package.json",
     "format:check": "prettier --check src scripts index.html *.config.js package.json",

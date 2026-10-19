@@ -91,7 +91,7 @@ export default function LoginPage() {
           <span className="eyebrow">WELCOME TO DEPEASE</span>
           <h2>Your workspace awaits.</h2>
           <p>Sign in to pick up where your team left off.</p>
-          <div className="login-role-tabs" role="tablist" aria-label="Account type">
+          <div className="login-role-tabs" role="group" aria-label="Account type">
             {[
               { value: 'student', label: 'Student' },
               { value: 'teacher', label: 'Supervisor / Admin' },
@@ -99,8 +99,7 @@ export default function LoginPage() {
               <button
                 key={item.value}
                 type="button"
-                role="tab"
-                aria-selected={kind === item.value}
+                aria-pressed={kind === item.value}
                 className={kind === item.value ? 'active' : ''}
                 disabled={busy}
                 onClick={() => {

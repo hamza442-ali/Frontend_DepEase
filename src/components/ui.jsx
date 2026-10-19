@@ -95,15 +95,18 @@ export function ErrorNotice({ error, retry }) {
 }
 
 export function QueryState({ query, children }) {
-  if (query.isPending)
-    return (
-      <div className="loading-state" role="status">
-        <LoaderCircle className="spin" size={22} />
-        <span>Loading your workspace…</span>
-      </div>
-    );
+  if (query.isPending) return <LoadingState />;
   if (query.error) return <ErrorNotice error={query.error} retry={query.refetch} />;
   return children;
+}
+
+export function LoadingState() {
+  return (
+    <div className="loading-state" role="status">
+      <LoaderCircle className="spin" size={22} />
+      <span>Loading your workspace…</span>
+    </div>
+  );
 }
 
 export function Field({ label, hint, children, className = '', ...props }) {
@@ -117,11 +120,11 @@ export function Field({ label, hint, children, className = '', ...props }) {
       {children ? (
         children(id)
       ) : props.type === 'textarea' ? (
-        <textarea id={id} rows={4} {...props} />
+        <textarea id={id} rows={4} aria-describedby={hint ? `${id}-hint` : undefined} {...props} />
       ) : (
-        <input id={id} {...props} />
+        <input id={id} aria-describedby={hint ? `${id}-hint` : undefined} {...props} />
       )}
-      {hint && <small>{hint}</small>}
+      {hint && <small id={`${id}-hint`}>{hint}</small>}
     </div>
   );
 }
@@ -243,15 +246,15 @@ export function ConfirmDialog({ title, description, busy, error, onConfirm, onCl
   );
 }
 
-export function Tabs({ items, value, onChange }) {
+export function Tabs({ items, value, onChange, disabled }) {
   return (
-    <div className="tabs" role="tablist">
+    <div className="tabs" role="group" aria-label="View">
       {items.map((item) => (
         <button
           type="button"
           key={item.value}
-          role="tab"
-          aria-selected={item.value === value}
+          disabled={disabled}
+          aria-pressed={item.value === value}
           className={value === item.value ? 'active' : ''}
           onClick={() => onChange(item.value)}
         >

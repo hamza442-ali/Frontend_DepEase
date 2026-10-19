@@ -103,6 +103,7 @@ function Deployments() {
       />
       <Tabs
         value={type}
+        disabled={build.isPending}
         onChange={(value) => {
           setType(value);
           setNotice('');

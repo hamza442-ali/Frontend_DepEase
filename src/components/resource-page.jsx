@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import { api, encode, list, useAction, useData } from '../lib/api';
-import { textValue } from '../lib/format';
+import { dateLabel, textValue } from '../lib/format';
 import {
   Button,
   ConfirmDialog,
@@ -139,7 +139,11 @@ export function RecordDetails({ title, record, fields, onClose }) {
         {fields.map((field) => (
           <div key={field.key}>
             <dt>{field.label}</dt>
-            <dd>{textValue(record[field.key])}</dd>
+            <dd>
+              {field.type === 'date'
+                ? dateLabel(record[field.key], { year: 'numeric' })
+                : textValue(record[field.key])}
+            </dd>
           </div>
         ))}
       </dl>
@@ -153,6 +157,7 @@ export function ResourcePage({
   eyebrow = 'Workspace',
   url,
   fields,
+  detailFields = fields,
   columns,
   createUrl,
   updateUrl,
@@ -298,7 +303,7 @@ export function ResourcePage({
       {details && (
         <RecordDetails
           title={`${title} details`}
-          fields={fields.filter((field) => field.type !== 'password')}
+          fields={detailFields.filter((field) => field.type !== 'password')}
           record={details}
           onClose={() => setDetails(null)}
         />

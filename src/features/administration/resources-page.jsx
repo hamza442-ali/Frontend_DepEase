@@ -60,19 +60,14 @@ function Resources() {
               ? '/resource/getall'
               : `/resource/getbyteacherId/${encode(account.employeeId)}`
         }
-        fields={[
+        fields={fields}
+        detailFields={[
           ...fields,
           { key: 'adminStatus', label: 'Admin decision', required: false },
           { key: 'supervisorStatus', label: 'Supervisor decision', required: false },
           { key: 'rejectionReason_T', label: 'Supervisor feedback', required: false },
           { key: 'rejectionReason_S', label: 'Admin feedback', required: false },
-        ].filter(
-          (field) =>
-            !student ||
-            !['adminStatus', 'supervisorStatus', 'rejectionReason_T', 'rejectionReason_S'].includes(
-              field.key,
-            ),
-        )}
+        ]}
         columns={[
           { key: 'projectTitle', label: 'Project' },
           { key: 'requestType', label: 'Request' },

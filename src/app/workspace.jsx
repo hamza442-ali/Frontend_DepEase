@@ -34,13 +34,11 @@ export function WorkspaceProvider({ children }) {
   });
   const projects = query.data || [];
   const requested = params.get('project');
-  const project =
-    projects.find(
-      (item) =>
-        item._id === (requested || selectedId) || item.ProjectId === (requested || selectedId),
-    ) ||
-    projects[0] ||
-    null;
+  const matched = projects.find(
+    (item) =>
+      item._id === (requested || selectedId) || item.ProjectId === (requested || selectedId),
+  );
+  const project = requested ? matched || null : matched || projects[0] || null;
 
   function selectProject(id) {
     setSelectedId(id);

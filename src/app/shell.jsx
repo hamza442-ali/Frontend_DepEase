@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from './auth';
@@ -27,6 +27,8 @@ export function AppShell() {
   const { projects, project, selectProject } = useWorkspace();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 760px)').matches);
+  const sidebar = useRef(null);
   const visible = navigation.filter((item) => !item.roles || item.roles.includes(role));
   const current = visible.find((item) => location.pathname.startsWith(item.path));
   const name = account.student_name || account.name || 'Your account';
@@ -35,12 +37,46 @@ export function AppShell() {
     document.title = `${current?.label || 'Workspace'} · DepEase`;
   }, [location.pathname, current?.label]);
   useEffect(() => {
-    const close = (event) => {
-      if (event.key === 'Escape') setOpen(false);
+    const desktop = window.matchMedia('(min-width: 761px)');
+    const resize = () => {
+      setMobile(!desktop.matches);
+      if (desktop.matches) setOpen(false);
     };
-    document.addEventListener('keydown', close);
-    return () => document.removeEventListener('keydown', close);
+    desktop.addEventListener('change', resize);
+    return () => desktop.removeEventListener('change', resize);
   }, []);
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.activeElement;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    sidebar.current.querySelector('a, button')?.focus();
+    const keyboard = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const targets = [...sidebar.current.querySelectorAll('a, button')].filter(
+        (element) => element.getClientRects().length,
+      );
+      const first = targets[0];
+      const last = targets[targets.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', keyboard);
+    return () => {
+      document.body.style.overflow = overflow;
+      document.removeEventListener('keydown', keyboard);
+      previous?.focus();
+    };
+  }, [open]);
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main-content">
@@ -53,7 +89,13 @@ export function AppShell() {
           onClick={() => setOpen(false)}
         />
       )}
-      <aside id="workspace-navigation" className={`sidebar ${open ? 'is-open' : ''}`}>
+      <aside
+        ref={sidebar}
+        id="workspace-navigation"
+        className={`sidebar ${open ? 'is-open' : ''}`}
+        inert={mobile && !open ? '' : undefined}
+        aria-hidden={(mobile && !open) || undefined}
+      >
         <div className="sidebar-brand">
           <Brand />
           <button
@@ -113,7 +155,7 @@ export function AppShell() {
           </div>
         </div>
       </aside>
-      <div className="main-shell">
+      <div className="main-shell" inert={open ? '' : undefined}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
@@ -150,7 +192,11 @@ export function AppShell() {
               value={project?._id || ''}
               onChange={(event) => selectProject(event.target.value)}
             >
-              {!projects.length && <option value="">No project assigned</option>}
+              {!project && (
+                <option value="">
+                  {projects.length ? 'Choose a project' : 'No project assigned'}
+                </option>
+              )}
               {projects.map((item) => (
                 <option key={item._id} value={item._id}>
                   {item.ProjectId}

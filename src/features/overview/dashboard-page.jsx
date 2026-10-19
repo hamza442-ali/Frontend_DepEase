@@ -18,6 +18,7 @@ import {
   Badge,
   EmptyState,
   ErrorNotice,
+  LoadingState,
   PageHeader,
   QueryState,
   TextLink,
@@ -134,7 +135,7 @@ export default function DashboardPage() {
             <div className="pulse-main">
               <div className="progress-ring" style={{ '--progress': `${progress}%` }}>
                 <span>
-                  {project && !tasks.error ? `${progress}%` : '—'}
+                  {project ? (missing(tasks) ?? `${progress}%`) : '—'}
                   <small>complete</small>
                 </span>
               </div>
@@ -142,7 +143,11 @@ export default function DashboardPage() {
                 <strong>{project ? project.ProjectId : 'No project selected'}</strong>
                 <p>
                   {project
-                    ? `${done} of ${taskRows.length} tasks completed`
+                    ? tasks.isPending
+                      ? 'Loading task progress...'
+                      : tasks.error
+                        ? 'Task progress unavailable'
+                        : `${done} of ${taskRows.length} tasks completed`
                     : 'Your project progress appears here.'}
                 </p>
               </div>
@@ -156,7 +161,13 @@ export default function DashboardPage() {
         <section className="metrics-grid">
           <Metric
             icon={FolderKanban}
-            label={role === 'student' ? 'Your projects' : 'Active projects'}
+            label={
+              role === 'student'
+                ? 'Your projects'
+                : role === 'admin'
+                  ? 'Department projects'
+                  : 'Assigned projects'
+            }
             value={projects.length}
             detail="In your workspace"
           />
@@ -191,7 +202,9 @@ export default function DashboardPage() {
               </div>
               <TextLink to="/tasks">View tasks</TextLink>
             </div>
-            {tasks.error ? (
+            {project && tasks.isPending ? (
+              <LoadingState />
+            ) : tasks.error ? (
               <ErrorNotice error={tasks.error} retry={tasks.refetch} />
             ) : !project || !open.length ? (
               <EmptyState
@@ -233,8 +246,16 @@ export default function DashboardPage() {
               </div>
               <CalendarDays size={18} className="muted" />
             </div>
-            {schedule.error ? (
-              <ErrorNotice error={schedule.error} retry={schedule.refetch} />
+            {schedule.isPending || (project && deliverables.isPending) ? (
+              <LoadingState />
+            ) : schedule.error || deliverables.error ? (
+              <ErrorNotice
+                error={schedule.error || deliverables.error}
+                retry={() => {
+                  schedule.refetch();
+                  if (project) deliverables.refetch();
+                }}
+              />
             ) : !upcoming.length && !due.length ? (
               <EmptyState
                 icon={CalendarDays}
@@ -281,7 +302,9 @@ export default function DashboardPage() {
               </div>
               <TextLink to="/announcements">All announcements</TextLink>
             </div>
-            {announcements.error ? (
+            {announcements.isPending ? (
+              <LoadingState />
+            ) : announcements.error ? (
               <ErrorNotice error={announcements.error} retry={announcements.refetch} />
             ) : !list(announcements.data).length ? (
               <EmptyState

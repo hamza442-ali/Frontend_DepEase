@@ -72,6 +72,23 @@ export default function ProposalPage() {
   async function submit(event) {
     event.preventDefault();
     setError(null);
+    const required =
+      step === 0
+        ? [
+            'title',
+            'ProjectType',
+            'supervisor',
+            'problemStatement',
+            'problemSolution',
+            'technologyUsed',
+          ]
+        : step === 1
+          ? ['scope', 'timeline', 'modules']
+          : ['teamLeadId', 'teammate1Id', 'teammate2Id', 'ProjectId'];
+    if (required.some((key) => !String(values[key] || '').trim())) {
+      setError(new Error('Complete all required fields before continuing.'));
+      return;
+    }
     if (step < 2) {
       setStep(step + 1);
       return;
@@ -79,7 +96,7 @@ export default function ProposalPage() {
     const members = [values.teamLeadId, values.teammate1Id, values.teammate2Id].map((value) =>
       value.trim(),
     );
-    if (new Set(members).size !== 3) {
+    if (members.some((member) => !member) || new Set(members).size !== 3) {
       setError(new Error('Enter three different registration numbers.'));
       return;
     }
@@ -151,7 +168,9 @@ export default function ProposalPage() {
         required
         disabled={
           busy ||
-          (Boolean(completed.proposalId) && !['ProjectId', 'batch', 'semester'].includes(key))
+          (['teamLeadId', 'teammate1Id', 'teammate2Id'].includes(key)
+            ? Boolean(completed.groupId)
+            : Boolean(completed.proposalId) && !['ProjectId', 'batch', 'semester'].includes(key))
         }
         maxLength={10000}
         {...options}
@@ -225,7 +244,7 @@ export default function ProposalPage() {
                       <SelectField
                         label="Project type"
                         value={values.ProjectType}
-                        disabled={Boolean(completed.proposalId)}
+                        disabled={busy || Boolean(completed.proposalId)}
                         required
                         onChange={(event) => update('ProjectType', event.target.value)}
                         options={['Development', 'Research', 'Research & Development']}
@@ -235,7 +254,7 @@ export default function ProposalPage() {
                           label="Supervisor"
                           value={values.supervisor}
                           required
-                          disabled={Boolean(completed.proposalId)}
+                          disabled={busy || Boolean(completed.proposalId)}
                           onChange={(event) => update('supervisor', event.target.value)}
                           options={list(teachers.data?.data).map((teacher) => ({
                             value: teacher.employeeId,

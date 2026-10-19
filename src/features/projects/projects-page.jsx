@@ -9,6 +9,7 @@ import {
   Button,
   ConfirmDialog,
   EmptyState,
+  ErrorNotice,
   PageHeader,
   QueryState,
   SearchBox,
@@ -24,6 +25,7 @@ export default function ProjectsPage() {
   const teachers = useData('/teacher/getall');
   const groups = useData(role === 'admin' ? '/group/getall' : null);
   const proposals = useData(role === 'admin' ? '/proposals/getall' : null);
+  const dependenciesReady = teachers.isSuccess && groups.isSuccess && proposals.isSuccess;
   const remove = useAction((record) => api.delete(`/projects/delete/${encode(record._id)}`));
   const fields = [
     { key: 'ProjectId', label: 'Project identifier' },
@@ -68,7 +70,7 @@ export default function ProjectsPage() {
         description="The people, plans, and progress behind your department’s projects."
         action={
           role === 'admin' ? (
-            <Button onClick={() => setEditor({})}>
+            <Button onClick={() => setEditor({})} disabled={!dependenciesReady}>
               <Plus size={17} />
               Add project
             </Button>
@@ -78,6 +80,16 @@ export default function ProjectsPage() {
             </Link>
           ) : undefined
         }
+      />
+      <ErrorNotice
+        error={teachers.error || groups.error || proposals.error}
+        retry={() => {
+          teachers.refetch();
+          if (role === 'admin') {
+            groups.refetch();
+            proposals.refetch();
+          }
+        }}
       />
       <div className="section-toolbar">
         <span className="muted">
@@ -125,6 +137,7 @@ export default function ProjectsPage() {
                         className="icon-button"
                         aria-label={`Edit ${item.ProjectId}`}
                         onClick={() => setEditor(item)}
+                        disabled={!dependenciesReady}
                       >
                         <Pencil size={16} />
                       </button>
@@ -201,7 +214,6 @@ function ProjectDetails({ project }) {
   const fields = [
     { key: 'title', label: 'Title' },
     { key: 'ProjectType', label: 'Project type' },
-    { key: 'supervisor', label: 'Supervisor employee ID' },
     { key: 'technologyUsed', label: 'Technology stack' },
     { key: 'problemStatement', label: 'Problem statement', type: 'textarea' },
     { key: 'problemSolution', label: 'Proposed solution', type: 'textarea' },
