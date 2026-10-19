@@ -38,6 +38,12 @@ Feature routes load separately to keep the first page light. Common legacy branc
 
 Documents default to protected local storage and authenticated downloads. Internal messages between registered users work without SMTP; external email requires SMTP configuration. Pipelines require a configured Jenkins bridge, and the deployment page explains when it has not been connected.
 
+For local Jenkins in Docker, run `scripts/start-local.ps1 -WithJenkins` from the backend. Jenkins opens at **http://localhost:8082**; its operator credentials stay in the backend's ignored `.local/jenkins-credentials.local.json`. Subsequent starts include Jenkins automatically.
+
+Deployments shows connection health, generated job names, repository branch/Jenkinsfile settings, and the last 20 builds. Runs return immediately and refresh automatically; reopening the page resumes saved progress. Supervisors and administrators can cancel active builds, while panel members can inspect history. Downloadable starter Jenkinsfiles cover React, Node and Flask. Both application repositories also include a root Jenkinsfile; select `fix/usable-product` until the PRs merge, then `main`.
+
+A successful build does not imply a published application. Add a publishing stage for your host and archive `depease-deployment.json` with its actual `url` to display the application link. See the backend's [Jenkins operations guide](https://github.com/hamza442-ali/backend_DepEase/blob/fix/usable-product/docs/JENKINS.md).
+
 Proposal submission uses a transactional backend operation and stable request key. Draft fields and the request key survive page refreshes in this tab's session storage; retries do not duplicate a completed project. Evaluations can be corrected through their record IDs while preserving the evaluator and historical criteria. Panel members can review assigned workspaces and grade them, while management controls are limited to the supervisor. Project archival closes its workspace and reserves the identifier to protect retained data.
 
 Linked deliverable modules remain snapshots. Relink a module to refresh it after changes.
