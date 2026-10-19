@@ -28,7 +28,7 @@ export default function ProjectsPage() {
   const dependenciesReady = teachers.isSuccess && groups.isSuccess && proposals.isSuccess;
   const remove = useAction((record) => api.delete(`/projects/delete/${encode(record._id)}`));
   const fields = [
-    { key: 'ProjectId', label: 'Project identifier' },
+    { key: 'ProjectId', label: 'Project identifier', readOnly: Boolean(editor?._id) },
     { key: 'batch', label: 'Batch', type: 'number', min: 2000, max: 2100 },
     { key: 'semester', label: 'Semester', type: 'number', min: 1, max: 16 },
     {
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
                       </button>
                       <button
                         className="icon-button text-danger"
-                        aria-label={`Delete ${item.ProjectId}`}
+                        aria-label={`Archive ${item.ProjectId}`}
                         onClick={() => {
                           remove.reset();
                           setDeleting(item);
@@ -186,8 +186,9 @@ export default function ProjectsPage() {
       )}
       {deleting && (
         <ConfirmDialog
-          title="Delete this project?"
-          description={`Remove ${deleting.ProjectId}. Related project records are not automatically removed.`}
+          title="Archive this project?"
+          confirmLabel="Archive project"
+          description={`Archive ${deleting.ProjectId}. Its workspace will close, panel assignments will be removed, and its identifier will stay reserved to protect retained records.`}
           busy={remove.isPending}
           error={remove.error}
           onClose={() => {
@@ -208,6 +209,7 @@ export default function ProjectsPage() {
 }
 
 function ProjectDetails({ project }) {
+  const { canManageProject } = useWorkspace();
   const [editing, setEditing] = useState(false);
   const proposal = useData(`/proposals/getmine/${encode(project.projectProposal)}`);
   const group = useData(`/group/getmine/${encode(project.group)}`);
@@ -228,7 +230,11 @@ function ProjectDetails({ project }) {
           <p className="eyebrow">Current project</p>
           <h2>Project overview</h2>
         </div>
-        <Button variant="ghost" onClick={() => setEditing(true)} disabled={!proposal.data}>
+        <Button
+          variant="ghost"
+          onClick={() => setEditing(true)}
+          disabled={!proposal.data || !canManageProject}
+        >
           <Pencil size={15} />
           Edit proposal
         </Button>

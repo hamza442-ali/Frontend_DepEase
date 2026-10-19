@@ -14,7 +14,7 @@ export default function TeamPage() {
   );
 }
 function Team() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const group = useData(`/group/getmine/${encode(project.group)}`);
   const [roleEditor, setRoleEditor] = useState(null);
   const [assignment, setAssignment] = useState(null);
@@ -58,7 +58,8 @@ function Team() {
           },
         ]}
         createUrl="/teamMember/addMember"
-        canCreate={Boolean(group.data)}
+        canCreate={canManageProject && Boolean(group.data)}
+        canDelete={canManageProject}
         canEdit={false}
         deleteUrl={(row) =>
           `/teamMember/deleteMember/${encode(project.ProjectId)}/${encode(row.student_id)}`
@@ -69,24 +70,28 @@ function Team() {
           projectid: project.ProjectId,
           requirements: [],
         })}
-        extraActions={(row) => (
-          <>
-            <button
-              className="icon-button"
-              aria-label={`Change role for ${row.student_name}`}
-              onClick={() => setRoleEditor(row)}
-            >
-              <UserCog size={16} />
-            </button>
-            <button
-              className="icon-button"
-              aria-label={`Assign requirements to ${row.student_name}`}
-              onClick={() => setAssignment(row)}
-            >
-              <ClipboardList size={16} />
-            </button>
-          </>
-        )}
+        extraActions={
+          canManageProject
+            ? (row) => (
+                <>
+                  <button
+                    className="icon-button"
+                    aria-label={`Change role for ${row.student_name}`}
+                    onClick={() => setRoleEditor(row)}
+                  >
+                    <UserCog size={16} />
+                  </button>
+                  <button
+                    className="icon-button"
+                    aria-label={`Assign requirements to ${row.student_name}`}
+                    onClick={() => setAssignment(row)}
+                  >
+                    <ClipboardList size={16} />
+                  </button>
+                </>
+              )
+            : undefined
+        }
       />
       {roleEditor && (
         <EntityForm

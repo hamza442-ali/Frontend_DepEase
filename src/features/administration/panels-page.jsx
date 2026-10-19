@@ -146,7 +146,7 @@ export default function PanelsPage() {
       {deleting && (
         <ConfirmDialog
           title="Delete this panel?"
-          description={`Remove panel ${deleting.id}. Its existing assignment records are retained by the backend.`}
+          description={`Remove panel ${deleting.id}. Its project assignments will also be removed.`}
           busy={remove.isPending}
           error={remove.error}
           onClose={() => {

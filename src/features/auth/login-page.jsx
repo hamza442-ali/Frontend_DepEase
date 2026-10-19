@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, Check, Eye, EyeOff, GraduationCap, Layers3 } from 'lucide-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../app/auth';
@@ -8,6 +8,9 @@ import { Button, ErrorNotice, Field } from '../../components/ui';
 export default function LoginPage() {
   const { session, login, expired } = useAuth();
   const location = useLocation();
+  useEffect(() => {
+    document.title = 'Sign in | DepEase';
+  }, []);
   const [kind, setKind] = useState('student');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -94,7 +97,8 @@ export default function LoginPage() {
           <div className="login-role-tabs" role="group" aria-label="Account type">
             {[
               { value: 'student', label: 'Student' },
-              { value: 'teacher', label: 'Supervisor / Admin' },
+              { value: 'teacher', label: 'Teacher' },
+              { value: 'admin', label: 'Administrator' },
             ].map((item) => (
               <button
                 key={item.value}

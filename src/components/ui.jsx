@@ -230,7 +230,15 @@ export function Modal({ title, description, onClose, children, wide = false }) {
   );
 }
 
-export function ConfirmDialog({ title, description, busy, error, onConfirm, onClose }) {
+export function ConfirmDialog({
+  title,
+  description,
+  busy,
+  error,
+  onConfirm,
+  onClose,
+  confirmLabel = 'Delete',
+}) {
   return (
     <Modal title={title} description={description} onClose={onClose}>
       <ErrorNotice error={error} />
@@ -239,7 +247,7 @@ export function ConfirmDialog({ title, description, busy, error, onConfirm, onCl
           Cancel
         </Button>
         <Button variant="danger" onClick={onConfirm} busy={busy}>
-          Delete
+          {confirmLabel}
         </Button>
       </div>
     </Modal>

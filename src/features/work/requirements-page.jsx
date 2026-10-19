@@ -25,7 +25,7 @@ export default function RequirementsPage() {
 }
 
 function Requirements() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const { account } = useAuth();
   const [discussion, setDiscussion] = useState(null);
   const [attachment, setAttachment] = useState(null);
@@ -58,6 +58,9 @@ function Requirements() {
   return (
     <>
       <ResourcePage
+        canCreate={canManageProject}
+        canEdit={canManageProject}
+        canDelete={canManageProject}
         key={project._id}
         title="Requirements"
         description="Turn your project scope into clear, trackable requirements."
@@ -106,6 +109,7 @@ function Requirements() {
 }
 
 function RequirementDiscussion({ record, onClose }) {
+  const { canManageProject } = useWorkspace();
   const query = useData(`/requirements/getComments/${encode(record._id)}`);
   const [content, setContent] = useState('');
   const send = useAction(() =>
@@ -131,38 +135,41 @@ function RequirementDiscussion({ record, onClose }) {
           )}
         </div>
       </QueryState>
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          if (!content.trim()) return;
-          try {
-            await send.mutateAsync();
-            setContent('');
-          } catch {
-            /* Retain the draft. */
-          }
-        }}
-      >
-        <Field
-          label="Comment"
-          type="textarea"
-          required
-          value={content}
-          maxLength={5000}
-          onChange={(event) => setContent(event.target.value)}
-        />
-        <ErrorNotice error={send.error} />
-        <div className="form-actions">
-          <Button type="submit" busy={send.isPending}>
-            Post comment
-          </Button>
-        </div>
-      </form>
+      {canManageProject && (
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            if (!content.trim()) return;
+            try {
+              await send.mutateAsync();
+              setContent('');
+            } catch {
+              /* Retain the draft. */
+            }
+          }}
+        >
+          <Field
+            label="Comment"
+            type="textarea"
+            required
+            value={content}
+            maxLength={5000}
+            onChange={(event) => setContent(event.target.value)}
+          />
+          <ErrorNotice error={send.error} />
+          <div className="form-actions">
+            <Button type="submit" busy={send.isPending}>
+              Post comment
+            </Button>
+          </div>
+        </form>
+      )}
     </Modal>
   );
 }
 
 function RequirementAttachments({ record, onClose }) {
+  const { canManageProject } = useWorkspace();
   const query = useData(`/requirements/findRequirement/${encode(record._id)}`);
   const [url, setUrl] = useState('');
   const add = useAction(() => {
@@ -190,32 +197,34 @@ function RequirementAttachments({ record, onClose }) {
           {!list(query.data?.attachments).length && <p className="muted">No attachments yet.</p>}
         </div>
       </QueryState>
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          try {
-            await add.mutateAsync();
-            setUrl('');
-          } catch {
-            /* Show validation or request error. */
-          }
-        }}
-      >
-        <Field
-          label="Attachment URL"
-          type="url"
-          value={url}
-          required
-          onChange={(event) => setUrl(event.target.value)}
-          placeholder="https://…"
-        />
-        <ErrorNotice error={add.error} />
-        <div className="form-actions">
-          <Button type="submit" busy={add.isPending}>
-            Add attachment
-          </Button>
-        </div>
-      </form>
+      {canManageProject && (
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            try {
+              await add.mutateAsync();
+              setUrl('');
+            } catch {
+              /* Show validation or request error. */
+            }
+          }}
+        >
+          <Field
+            label="Attachment URL"
+            type="url"
+            value={url}
+            required
+            onChange={(event) => setUrl(event.target.value)}
+            placeholder="https://…"
+          />
+          <ErrorNotice error={add.error} />
+          <div className="form-actions">
+            <Button type="submit" busy={add.isPending}>
+              Add attachment
+            </Button>
+          </div>
+        </form>
+      )}
     </Modal>
   );
 }

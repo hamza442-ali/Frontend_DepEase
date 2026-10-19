@@ -92,6 +92,7 @@ export function EntityForm({
               onChange: (event) => setValues({ ...values, [field.key]: event.target.value }),
               required: field.required !== false,
               disabled: save.isPending,
+              readOnly: field.readOnly,
               autoComplete: field.autoComplete || 'off',
             };
             return (

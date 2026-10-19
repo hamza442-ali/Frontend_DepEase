@@ -26,7 +26,7 @@ export default function EvaluationsPage() {
   const templates = useData('/evaluation/getAll');
   const marks = useData(project ? `/addMarks/getmine/${encode(project.ProjectId)}` : null);
   const [editor, setEditor] = useState(null);
-  const [marking, setMarking] = useState(false);
+  const [marking, setMarking] = useState(null);
   const [details, setDetails] = useState(null);
   const [deleting, setDeleting] = useState(null);
   const remove = useAction(({ item, type }) =>
@@ -49,7 +49,7 @@ export default function EvaluationsPage() {
               New template
             </Button>
             <Button
-              onClick={() => setMarking(true)}
+              onClick={() => setMarking({})}
               disabled={!project || !list(templates.data).length}
             >
               <ClipboardCheck size={17} />
@@ -100,16 +100,25 @@ export default function EvaluationsPage() {
                           View feedback
                         </Button>
                         {(role === 'admin' || row.TeacherId === account.employeeId) && (
-                          <button
-                            className="icon-button text-danger"
-                            aria-label="Delete evaluation"
-                            onClick={() => {
-                              remove.reset();
-                              setDeleting({ item: row, type: 'marks' });
-                            }}
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                          <>
+                            <button
+                              className="icon-button"
+                              aria-label="Edit evaluation"
+                              onClick={() => setMarking(row)}
+                            >
+                              <Pencil size={16} />
+                            </button>
+                            <button
+                              className="icon-button text-danger"
+                              aria-label="Delete evaluation"
+                              onClick={() => {
+                                remove.reset();
+                                setDeleting({ item: row, type: 'marks' });
+                              }}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </>
                         )}
                       </div>
                     ),
@@ -180,7 +189,8 @@ export default function EvaluationsPage() {
           templates={list(templates.data)}
           project={project}
           account={account}
-          onClose={() => setMarking(false)}
+          record={marking}
+          onClose={() => setMarking(null)}
         />
       )}
       {details && (
@@ -353,11 +363,14 @@ function TemplateForm({ record, onClose }) {
   );
 }
 
-function MarkForm({ templates, project, account, onClose }) {
-  const [templateId, setTemplateId] = useState('');
-  const template = templates.find((item) => item._id === templateId);
-  const [scores, setScores] = useState({});
-  const [comments, setComments] = useState('');
+function MarkForm({ templates, project, account, record, onClose }) {
+  const [templateId, setTemplateId] = useState(record.evalFormId || '');
+  const choices = record._id ? [{ ...record, _id: record.evalFormId }] : templates;
+  const template = choices.find((item) => item._id === templateId);
+  const [scores, setScores] = useState(() =>
+    Object.fromEntries(list(record.fields).map((field, index) => [index, field.Subobtain])),
+  );
+  const [comments, setComments] = useState(record.comments || '');
   const total = list(template?.fields).reduce(
     (sum, field, index) => sum + Number(scores[index] || 0),
     0,
@@ -381,20 +394,23 @@ function MarkForm({ templates, project, account, onClose }) {
       )
     )
       throw new Error('Enter marks within the limit for every criterion.');
-    return api.post('/addMarks/add', {
+    const payload = {
       ProjectId: project.ProjectId,
       evalFormId: template._id,
-      TeacherId: account.employeeId,
+      TeacherId: record.TeacherId || account.employeeId,
       totalWeightage: template.totalWeightage,
       evaluationType: template.evaluationType,
       fields,
       obtainedMarks: total,
       comments: comments.trim(),
-    });
+    };
+    return record._id
+      ? api.put(`/addMarks/record/${encode(record._id)}`, payload)
+      : api.post('/addMarks/add', payload);
   });
   return (
     <Modal
-      title="Evaluate project"
+      title={record._id ? 'Edit evaluation' : 'Evaluate project'}
       description={project.ProjectId}
       onClose={() => {
         if (!save.isPending) onClose();
@@ -415,11 +431,12 @@ function MarkForm({ templates, project, account, onClose }) {
           label="Evaluation template"
           required
           value={templateId}
+          disabled={Boolean(record._id)}
           onChange={(event) => {
             setTemplateId(event.target.value);
             setScores({});
           }}
-          options={templates.map((item) => ({ value: item._id, label: item.evaluationType }))}
+          options={choices.map((item) => ({ value: item._id, label: item.evaluationType }))}
         />
         {list(template?.fields).map((field, index) => (
           <Field
@@ -453,7 +470,7 @@ function MarkForm({ templates, project, account, onClose }) {
         <ErrorNotice error={save.error} />
         <div className="form-actions">
           <Button type="submit" busy={save.isPending} disabled={!template}>
-            Record evaluation
+            {record._id ? 'Save evaluation' : 'Record evaluation'}
           </Button>
         </div>
       </form>

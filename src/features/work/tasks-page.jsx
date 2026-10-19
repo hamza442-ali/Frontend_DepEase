@@ -25,7 +25,7 @@ export default function TasksPage() {
 }
 
 function TaskBoard() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const { account } = useAuth();
   const query = useData(`/tasks/getmine/${encode(project.ProjectId)}`);
   const [search, setSearch] = useState('');
@@ -56,7 +56,7 @@ function TaskBoard() {
         title="Task board"
         description="Give every next step a clear owner and a place to move forward."
         action={
-          <Button onClick={() => setAdding(true)}>
+          <Button disabled={!canManageProject} onClick={() => setAdding(true)}>
             <Plus size={17} />
             New task
           </Button>
@@ -91,6 +91,7 @@ function TaskBoard() {
                         <Badge>{task.priority}</Badge>
                         <button
                           className="icon-button"
+                          disabled={!canManageProject}
                           aria-label={`Delete task: ${task.summary}`}
                           onClick={() => {
                             remove.reset();
@@ -110,7 +111,7 @@ function TaskBoard() {
                         <select
                           aria-label={`Status for ${task.summary}`}
                           value={STATUS_OPTIONS.includes(task.status) ? task.status : status}
-                          disabled={move.isPending}
+                          disabled={move.isPending || !canManageProject}
                           onChange={(event) =>
                             move.mutate({ id: task._id, status: event.target.value })
                           }

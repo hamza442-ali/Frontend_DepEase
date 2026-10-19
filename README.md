@@ -14,7 +14,7 @@ npm run dev
 
 Open `http://localhost:5173`. Configure `VITE_API_URL` in `.env.local` to point at the consolidated backend; the development default is `http://localhost:3001`. The backend must allow the frontend origin in its CORS configuration. Variables prefixed with `VITE_` become public build output: never put credentials in them.
 
-Sign in with an existing department account. Student and staff sign-in use their respective backend endpoints; the server determines the administrator role. Provision initial accounts through the backend's documented administrator setup.
+For the complete Docker product, run `scripts/start-local.ps1` from the sibling backend repository and open `http://localhost:8080`. Select **Administrator** and use `admin@hamza.com` with the generated password in the backend's ignored `.local/credentials.local.json`. Other teachers use **Teacher** and cannot access admin pages or APIs. Student and staff sign-in use their respective backend endpoints; the server determines the role. Provision initial accounts through the backend's documented administrator setup.
 
 ## Structure
 
@@ -36,9 +36,11 @@ Feature routes load separately to keep the first page light. Common legacy branc
 - Supervisors: assigned projects and shared workflows, project announcements, resource decisions, panels, evaluation templates/marks, project scheduling, and deployment pipelines.
 - Administrators: department projects and people, panels and project assignments, department announcements, scheduling, evaluations, resource decisions, and deployments.
 
-Document uploads require the backend's Cloudinary configuration. Outgoing messages require SMTP. Pipelines require Jenkins and expose the integration's ReactJs, Node/Express js, and Flask tools. The UI reports missing-service errors without substituting simulated results. The old container screen used dummy state; its URL now opens the real deployment workflow.
+Documents default to protected local storage and authenticated downloads. Internal messages between registered users work without SMTP; external email requires SMTP configuration. Pipelines require a configured Jenkins bridge, and the deployment page explains when it has not been connected.
 
-Linked deliverable modules are stored as snapshots. Relink a module to refresh it after changes. Evaluation corrections create a new record after deletion because the legacy update endpoint identifies only the project and cannot distinguish multiple evaluations. Proposal creation consists of three backend writes; completed IDs and drafts are retained in this tab's session storage so a later step can be retried. Closing the tab ends that recovery window. Atomic creation and network-ambiguous retries require a future backend transaction/idempotency contract.
+Proposal submission uses a transactional backend operation and stable request key. Draft fields and the request key survive page refreshes in this tab's session storage; retries do not duplicate a completed project. Evaluations can be corrected through their record IDs while preserving the evaluator and historical criteria. Panel members can review assigned workspaces and grade them, while management controls are limited to the supervisor. Project archival closes its workspace and reserves the identifier to protect retained data.
+
+Linked deliverable modules remain snapshots. Relink a module to refresh it after changes.
 
 ## Quality checks and build
 
@@ -49,7 +51,7 @@ npm run build
 npm run preview
 ```
 
-`check` runs ESLint (including React Hooks rules) and validates source syntax, relative import paths/casing, centralized API origins, and accidental debug logging. `build` produces `dist/`. Functional verification with the database and external services is a separate final project phase, as requested; a production build does not establish end-to-end correctness. See [the verification checklist](docs/verification.md).
+`check` runs ESLint (including React Hooks rules) and validates source syntax, relative import paths/casing, centralized API origins, and accidental debug logging. `build` produces `dist/`. MongoDB integration regressions live in the backend repository. Browser verification exercises the built frontend against the local stack; real external service connectivity must be configured and verified separately. See [the verification checklist](docs/verification.md).
 
 ## Deploy
 

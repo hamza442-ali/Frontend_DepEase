@@ -69,6 +69,10 @@ export function AuthProvider({ children }) {
           .map((key) => [key, profile[key]]),
       );
     const next = { token: response.data.token, role: response.data.role, account };
+    if (kind === 'admin' && next.role !== 'admin')
+      throw new Error('This account does not have administrator access. Use Teacher sign in.');
+    if (kind === 'teacher' && next.role === 'admin')
+      throw new Error('Use Administrator sign in for this account.');
     if (!account?._id || !next.token || !['student', 'teacher', 'admin'].includes(next.role))
       throw new Error('The server returned an invalid session.');
     client.clear();

@@ -15,7 +15,7 @@ import {
   SuccessNotice,
   Tabs,
 } from '../../components/ui';
-import { api, useAction } from '../../lib/api';
+import { api, useAction, useData } from '../../lib/api';
 import { safeUrl } from '../../lib/format';
 
 export default function DeploymentsPage() {
@@ -27,12 +27,15 @@ export default function DeploymentsPage() {
 }
 
 function Deployments() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
+  const capabilities = useData('/workspace/capabilities');
+  const configured = capabilities.data?.deployments.configured === true;
   const [type, setType] = useState('Frontend');
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [notice, setNotice] = useState('');
   const query = useQuery({
+    enabled: configured,
     queryKey: ['pipeline', project.ProjectId, type],
     queryFn: async ({ signal }) => {
       try {
@@ -88,6 +91,32 @@ function Deployments() {
       default: `${project.ProjectId}-${type}`.replace(/[^a-zA-Z0-9_-]/g, '-'),
     },
   ];
+  if (!capabilities.isSuccess || !configured || !canManageProject)
+    return (
+      <>
+        <PageHeader
+          title="Deployments"
+          description="Build and publish your project applications."
+        />
+        <QueryState query={capabilities}>
+          <section className="panel">
+            <EmptyState
+              icon={Rocket}
+              title={
+                !canManageProject
+                  ? 'Deployment access is limited to the supervisor'
+                  : 'Jenkins is not connected yet'
+              }
+              description={
+                !canManageProject
+                  ? 'Panel members can review this project. Its supervisor manages deployments.'
+                  : 'Your administrator can connect the department Jenkins service to enable builds and deployment links.'
+              }
+            />
+          </section>
+        </QueryState>
+      </>
+    );
   return (
     <>
       <PageHeader

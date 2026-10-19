@@ -24,7 +24,7 @@ export default function DeliverablesPage() {
 }
 
 function Deliverables() {
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const [tab, setTab] = useState('deliverables');
   const [linking, setLinking] = useState(null);
   const shared = [
@@ -47,6 +47,9 @@ function Deliverables() {
         ]}
       />
       <ResourcePage
+        canCreate={canManageProject}
+        canEdit={canManageProject}
+        canDelete={canManageProject}
         key={`${project._id}-${tab}`}
         title={isModule ? 'Modules' : 'Deliverables'}
         description={
@@ -81,7 +84,7 @@ function Deliverables() {
         deleteUrl={`/${tab}/delete`}
         makePayload={(data) => ({ ...data, projectId: project.ProjectId })}
         extraActions={
-          !isModule
+          !isModule && canManageProject
             ? (record) => (
                 <button
                   className="icon-button"

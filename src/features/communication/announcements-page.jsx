@@ -18,7 +18,7 @@ import { dateLabel } from '../../lib/format';
 
 export default function AnnouncementsPage() {
   const { role, account } = useAuth();
-  const { project } = useWorkspace();
+  const { project, canManageProject } = useWorkspace();
   const [tab, setTab] = useState('department');
   const [adding, setAdding] = useState(false);
   const [deleting, setDeleting] = useState(null);
@@ -30,7 +30,8 @@ export default function AnnouncementsPage() {
         : null,
   );
   const remove = useAction((item) => api.delete(`/announcement/delete/${encode(item._id)}`));
-  const canPublish = tab === 'department' ? role === 'admin' : role !== 'student' && project;
+  const canPublish =
+    tab === 'department' ? role === 'admin' : role !== 'student' && canManageProject;
   return (
     <>
       <PageHeader
