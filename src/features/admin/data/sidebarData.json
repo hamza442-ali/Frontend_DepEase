@@ -1,0 +1,150 @@
+[
+  {
+    "label": "Home",
+    "icon": "home",
+    "path": "/home",
+    "submenus": []
+  },
+
+  {
+    "label": "FYP Panel",
+    "icon": "people-group",
+    "path": "/fypPanel",
+    "submenus": [
+      {
+        "label": "Add",
+        "path": "/fypPanel/add",
+        "icon": "add"
+      },
+      {
+        "label": "Display ",
+        "path": "/fypPanel/display",
+        "icon": "file-lines"
+      },
+      {
+        "label" : "Assign Panel",
+        "path" : "/fypPanel/assign",
+        "icon" : "user-plus"
+      }
+    ]
+  },
+
+  {
+    "label": "Add Users",
+    "icon": "people-group",
+    "path": "/users",
+    "submenus": [
+      {
+        "label": "Add Teacher",
+        "path": "/users/addTeacher",
+        "icon": "add"
+      },
+      {
+        "label": "Add Student",
+        "path": "/users/addStudent",
+        "icon": "add"
+      }
+    ]
+  },
+  {
+
+    "label" : "Evaluation",
+    "path" : "/eval",
+    "icon" : "fa-calculator",
+    "submenus": [
+
+      {
+        "label": "Add",
+        "path": "/eval/add",
+        "icon": "add"
+      },
+      {
+        "label": "Display",
+        "path": "/eval/view",
+        "icon": "file-lines"
+      }
+      ,
+      {
+        "label": "Evaluate Group",
+        "path": "/eval/calculate",
+        "icon": "fa-pen-to-square"
+      }
+
+    ]
+
+  }
+  ,
+  {
+    "label": "Scheduling",
+    "icon": "list-check",
+    "path": "/scheduling",
+    "submenus": [
+   
+      {
+        "label": "Manage",
+        "path": "/scheduling/add",
+        "icon": "user-gear"
+      }
+    ]
+  },
+
+  {
+    "label": "Proposal",
+    "icon": "fa-book",
+    "path": "/",
+    "submenus": [
+      {
+        "label": "View",
+        "path": "/proposal",
+        "icon": "file-lines"
+      }
+    ]
+  }, 
+  {
+
+    "label" : "FYP Projects",
+    "path" : "/fypProject",
+    "icon" : "fa-file",
+    "submenus": [
+
+      {
+        "label": "Add",
+        "path": "/fypProject/add",
+        "icon": "add"
+      } 
+    ]
+
+  },
+  {
+
+    "label" : "Make Announcement",
+    "path" : "/announcement",
+    "icon" : "fa-bullhorn",
+    "submenus": [
+
+      {
+        "label": "Add",
+        "path": "/announcement/add",
+        "icon": "add"
+      }
+
+    ]
+
+  },
+  {
+
+    "label" : "Resource Management",
+    "path" : "/resource",
+    "icon" : "fa-layer-group",
+    "submenus": [
+
+      {
+        "label": "Display",
+        "path": "/resource/requestApproval",
+        "icon": "file-lines"
+      }
+
+    ]
+
+  }
+]

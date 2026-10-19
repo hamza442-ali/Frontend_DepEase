@@ -1,0 +1,49 @@
+[
+  {
+    "label": "Home",
+    "icon": "home",
+    "path": "/"
+   
+  },
+  {
+    "label": "Projects Manage",
+    "icon": "list-check",
+    "path": "/projectsManage"
+     
+  },
+  {
+    "label": "Resoure Approve",
+    "icon": "screwdriver-wrench",
+    "path": "/resourceApprove"
+     
+  },
+  
+  {
+    "label": "Scheduler",
+    "icon": "info-circle",
+    "path": "/scheduler"
+  },
+  {
+    "label": "Prject Ideas",
+    "icon": "lightbulb",
+    "path": "/ProjectIdeas"
+   
+  },
+  {
+    "label": "FYP Panels",
+    "icon": "people-group",
+    "path": "/fypPanels"
+  },
+  
+
+  {
+    "label": "Announcements",
+    "icon": "bell",
+    "path": "/announce"
+  },
+  {
+    "label": "Logout",
+    "path": "/logout",
+    "icon": "right-from-bracket"
+  }
+]

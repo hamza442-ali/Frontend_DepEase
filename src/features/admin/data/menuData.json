@@ -1,0 +1,74 @@
+[
+    {
+      "label": "Home",
+      "icon": "home",
+      "path": "/",
+      "submenus": []
+    },
+    {
+      "label": "About",
+      "icon": "info",
+      "path": "/about",
+      "submenus": []
+    },
+    {
+      "label": "Blog",
+      "icon": "newspaper",
+      "path": "/blog",
+      "submenus": []
+    },
+    {
+      "label": "Support",
+      "icon": "question-circle",
+      "path": "/contact",
+      "submenus": []
+    },
+    {
+      "label": "Pages",
+      "icon": "file-alt",
+      "path": "/pages",
+      "submenus": [
+        {
+          "label": "About Page",
+          "icon": "info",
+          "path": "/about"
+        },
+        {
+          "label": "Contact Page",
+          "icon": "address-card",
+          "path": "/contact"
+        },
+        {
+          "label": "Blog Grid Page",
+          "icon": "th-large",
+          "path": "/blog"
+        },
+        {
+          "label": "Blog Sidebar Page",
+          "icon": "columns",
+          "path": "/blog-sidebar"
+        },
+        {
+          "label": "Blog Details Page",
+          "icon": "newspaper",
+          "path": "/blog-details"
+        },
+        {
+          "label": "Sign In Page",
+          "icon": "sign-in-alt",
+          "path": "/signin"
+        },
+        {
+          "label": "Sign Up Page",
+          "icon": "user-plus",
+          "path": "/signup"
+        },
+        {
+          "label": "Error Page",
+          "icon": "exclamation-circle",
+          "path": "/error"
+        }
+      ]
+    }
+  ]
+  
